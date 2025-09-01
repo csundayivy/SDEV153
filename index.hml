@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preppy - Your AI SDLC Companion</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="app-container">
@@ -28,28 +28,28 @@
             <div class="sidebar-content">
                 <div class="section-title">Development Stages</div>
                 <nav id="navigation">
-                    <div class="nav-item active" data-stage="planning">
+                    <div class="nav-item active" data-stage="planning" data-tooltip="Planning">
                         <i class="nav-icon" data-lucide="bar-chart-3"></i>
                         <span class="nav-text">Planning</span>
                         <span class="nav-badge">Active</span>
                     </div>
-                    <div class="nav-item" data-stage="design">
+                    <div class="nav-item" data-stage="design" data-tooltip="Design">
                         <i class="nav-icon" data-lucide="sparkles"></i>
                         <span class="nav-text">Design</span>
                     </div>
-                    <div class="nav-item" data-stage="development">
+                    <div class="nav-item" data-stage="development" data-tooltip="Development">
                         <i class="nav-icon" data-lucide="code-2"></i>
                         <span class="nav-text">Development</span>
                     </div>
-                    <div class="nav-item" data-stage="testing">
+                    <div class="nav-item" data-stage="testing" data-tooltip="Testing">
                         <i class="nav-icon" data-lucide="test-tube"></i>
                         <span class="nav-text">Testing</span>
                     </div>
-                    <div class="nav-item" data-stage="deployment">
+                    <div class="nav-item" data-stage="deployment" data-tooltip="Deployment">
                         <i class="nav-icon" data-lucide="rocket"></i>
                         <span class="nav-text">Deployment</span>
                     </div>
-                    <div class="nav-item" data-stage="maintenance">
+                    <div class="nav-item" data-stage="maintenance" data-tooltip="Maintenance">
                         <i class="nav-icon" data-lucide="shield"></i>
                         <span class="nav-text">Maintenance</span>
                     </div>
@@ -328,6 +328,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html> 
