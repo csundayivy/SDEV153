@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Planning - Preppy AI SDLC Companion</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/planning.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-toggle" id="sidebarToggle">
+                    <i data-lucide="menu"></i>
+                </div>
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i data-lucide="sparkles" style="color: white;"></i>
+                    </div>
+                    <div class="logo-text">
+                        <div class="logo-title">Preppy</div>
+                        <div class="logo-subtitle">Your AI SDLC Companion</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="section-title">Development Stages</div>
+                <nav id="navigation">
+                    <a href="index.html" class="nav-item" data-stage="dashboard" data-tooltip="Dashboard">
+                        <i class="nav-icon" data-lucide="home"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                    <div class="nav-item active" data-stage="planning" data-tooltip="Planning">
+                        <i class="nav-icon" data-lucide="bar-chart-3"></i>
+                        <span class="nav-text">Planning</span>
+                        <span class="nav-badge">Active</span>
+                    </div>
+                    <div class="nav-item" data-stage="design" data-tooltip="Design">
+                        <i class="nav-icon" data-lucide="sparkles"></i>
+                        <span class="nav-text">Design</span>
+                    </div>
+                    <div class="nav-item" data-stage="development" data-tooltip="Development">
+                        <i class="nav-icon" data-lucide="code-2"></i>
+                        <span class="nav-text">Development</span>
+                    </div>
+                    <div class="nav-item" data-stage="testing" data-tooltip="Testing">
+                        <i class="nav-icon" data-lucide="test-tube"></i>
+                        <span class="nav-text">Testing</span>
+                    </div>
+                    <div class="nav-item" data-stage="deployment" data-tooltip="Deployment">
+                        <i class="nav-icon" data-lucide="rocket"></i>
+                        <span class="nav-text">Deployment</span>
+                    </div>
+                    <div class="nav-item" data-stage="maintenance" data-tooltip="Maintenance">
+                        <i class="nav-icon" data-lucide="shield"></i>
+                        <span class="nav-text">Maintenance</span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Planning Page -->
+            <div id="planning" class="content-area">
+                <div class="planning-container">
+                    <div class="planning-header">
+                        <div class="planning-icon">
+                            <i data-lucide="lightbulb"></i>
+                        </div>
+                        <div>
+                            <h1 class="page-title">AI Project Planning</h1>
+                            <p class="page-subtitle">Transform your app idea into a comprehensive development plan using AI</p>
+                        </div>
+                    </div>
+                    <div class="badge planning-badge">Powered by ChatGPT-4</div>
+
+                    <!-- Input Card -->
+                    <div class="card input-card">
+                        <h2 class="input-title">Describe Your App Idea</h2>
+                        <p class="input-description">Provide a detailed description of your application concept. Include the target audience, main features, and any specific requirements you have in mind.</p>
+                        <textarea 
+                            id="conceptInput" 
+                            class="textarea" 
+                            placeholder="Example: I want to create a mobile app for fitness enthusiasts that allows users to track their workouts, set personal goals, and connect with trainers. The app should include features like workout logging, progress tracking, social sharing, and in-app purchases for premium content. Target audience: 18-45 year olds who are interested in fitness and wellness..."
+                        ></textarea>
+                        <div class="input-footer">
+                            <div class="character-count">
+                                <span id="charCount">0</span> characters
+                            </div>
+                            <button id="analyzeButton" class="button">
+                                <span id="buttonText">Generate AI Project Plan</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Results -->
+                    <div id="analysisResults" class="analysis-section hidden">
+                        <div class="analysis-header-success">
+                            <div class="success-icon">
+                                <i data-lucide="check-circle"></i>
+                            </div>
+                            <div>
+                                <h2 class="analysis-title-main">Your AI-Generated Project Plan</h2>
+                                <p class="analysis-subtitle">Comprehensive analysis and implementation roadmap</p>
+                            </div>
+                        </div>
+
+                        <div id="analysisContent"></div>
+
+                        <!-- Export Options -->
+                        <div class="export-section">
+                            <h3>Export Your Plan</h3>
+                            <div class="export-buttons">
+                                <button id="exportPDF" class="button button-outline">
+                                    <i data-lucide="file-text"></i>
+                                    Export as PDF
+                                </button>
+                                <button id="exportJSON" class="button button-outline">
+                                    <i data-lucide="download"></i>
+                                    Export as JSON
+                                </button>
+                                <button id="copyToClipboard" class="button button-outline">
+                                    <i data-lucide="copy"></i>
+                                    Copy to Clipboard
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div id="loadingState" class="loading-section hidden">
+                        <div class="loading-content">
+                            <div class="loading-spinner">
+                                <i data-lucide="loader-2" class="loading"></i>
+                            </div>
+                            <h3>AI is analyzing your concept...</h3>
+                            <p>This may take a few moments while we generate your comprehensive project plan.</p>
+                            <div class="loading-steps">
+                                <div class="step active">
+                                    <i data-lucide="check"></i>
+                                    <span>Processing your input</span>
+                                </div>
+                                <div class="step">
+                                    <i data-lucide="brain"></i>
+                                    <span>Analyzing with AI</span>
+                                </div>
+                                <div class="step">
+                                    <i data-lucide="file-text"></i>
+                                    <span>Generating plan</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    <script src="js/planning.js"></script>
+</body>
+</html>

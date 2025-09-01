@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preppy - Your AI SDLC Companion</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-toggle" id="sidebarToggle">
+                    <i data-lucide="menu"></i>
+                </div>
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i data-lucide="sparkles" style="color: white;"></i>
+                    </div>
+                    <div class="logo-text">
+                        <div class="logo-title">Preppy</div>
+                        <div class="logo-subtitle">Your AI SDLC Companion</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+                
+                <div class="section-title">Development Stages</div>
+                <nav id="navigation">
+                    <a href="planning.html" class="nav-item" data-stage="planning" data-tooltip="Planning">
+                        <i class="nav-icon" data-lucide="bar-chart-3"></i>
+                        <span class="nav-text">Planning</span>
+                    </a>
+                    <a href="design.html" class="nav-item" data-stage="design" data-tooltip="Design">
+                        <i class="nav-icon" data-lucide="sparkles"></i>
+                        <span class="nav-text">Design</span>
+                    </a>
+                    <a href="development.html" class="nav-item" data-stage="development" data-tooltip="Development">
+                        <i class="nav-icon" data-lucide="code-2"></i>
+                        <span class="nav-text">Development</span>
+                    </a>
+                    <a href="testing.html" class="nav-item" data-stage="testing" data-tooltip="Testing">
+                        <i class="nav-icon" data-lucide="test-tube"></i>
+                        <span class="nav-text">Testing</span>
+                    </a>
+                    <a href="deployment.html" class="nav-item" data-stage="deployment" data-tooltip="Deployment">
+                        <i class="nav-icon" data-lucide="rocket"></i>
+                        <span class="nav-text">Deployment</span>
+                    </a>
+                    <a href="maintenance.html" class="nav-item" data-stage="maintenance" data-tooltip="Maintenance">
+                        <i class="nav-icon" data-lucide="shield"></i>
+                        <span class="nav-text">Maintenance</span>
+                    </a>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <button class="logout-btn" id="logoutBtn">
+                        <i data-lucide="log-out"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Content -->
+            <div id="dashboard" class="content-area">
+                <div class="page-header">
+                    <h1 class="page-title">Welcome to Preppy</h1>
+                    <p class="page-subtitle">Your AI-powered SDLC companion. Choose a development stage to get started.</p>
+                </div>
+
+                <!-- SDLC Quick Actions -->
+                <div class="sdlc-actions-grid">
+                    <a href="planning.html" class="sdlc-action-card">
+                        <div class="sdlc-card-header">
+                            <div class="sdlc-icon planning">
+                                <i data-lucide="bar-chart-3"></i>
+                            </div>
+                            <div class="sdlc-badge">Start Here</div>
+                        </div>
+                        <div class="sdlc-content">
+                            <h3>Project Planning</h3>
+                            <p>Transform your app idea into a comprehensive development plan with AI-powered analysis</p>
+                            <ul class="sdlc-features">
+                                <li>Problem definition & business analysis</li>
+                                <li>Feasibility assessment</li>
+                                <li>User stories & requirements</li>
+                                <li>Technical specifications</li>
+                                <li>Timeline & resource planning</li>
+                            </ul>
+                            </div>
+                        <div class="sdlc-footer">
+                            <span class="sdlc-link">Start Planning →</span>
+                        </div>
+                    </a>
+
+                    <a href="design.html" class="sdlc-action-card">
+                        <div class="sdlc-card-header">
+                            <div class="sdlc-icon design">
+                                <i data-lucide="sparkles"></i>
+                            </div>
+                            <div class="sdlc-badge">UI/UX</div>
+                        </div>
+                        <div class="sdlc-content">
+                            <h3>Design & Prototyping</h3>
+                            <p>Create beautiful user interfaces and experiences with AI-assisted design tools</p>
+                            <ul class="sdlc-features">
+                                <li>Wireframe generation</li>
+                                <li>UI component design</li>
+                                <li>User experience optimization</li>
+                                <li>Prototype creation</li>
+                                <li>Design system development</li>
+                            </ul>
+                    </div>
+                        <div class="sdlc-footer">
+                            <span class="sdlc-link">Start Designing →</span>
+                        </div>
+                    </a>
+
+                    <a href="development.html" class="sdlc-action-card">
+                        <div class="sdlc-card-header">
+                            <div class="sdlc-icon development">
+                                <i data-lucide="code-2"></i>
+                            </div>
+                            <div class="sdlc-badge">Code</div>
+                        </div>
+                        <div class="sdlc-content">
+                            <h3>Code Generation</h3>
+                            <p>Generate clean, production-ready code with AI-powered development assistance</p>
+                            <ul class="sdlc-features">
+                                <li>Code generation from specifications</li>
+                                <li>API development</li>
+                                <li>Database schema design</li>
+                                <li>Code optimization & refactoring</li>
+                                <li>Best practices implementation</li>
+                            </ul>
+                        </div>
+                        <div class="sdlc-footer">
+                            <span class="sdlc-link">Start Coding →</span>
+                        </div>
+                    </a>
+
+                    <a href="testing.html" class="sdlc-action-card">
+                        <div class="sdlc-card-header">
+                            <div class="sdlc-icon testing">
+                                <i data-lucide="test-tube"></i>
+                            </div>
+                            <div class="sdlc-badge">Quality</div>
+                        </div>
+                        <div class="sdlc-content">
+                            <h3>Test Case Development</h3>
+                            <p>Create comprehensive test suites and ensure code quality with AI testing tools</p>
+                            <ul class="sdlc-features">
+                                <li>Unit test generation</li>
+                                <li>Integration test creation</li>
+                                <li>Performance testing</li>
+                                <li>Security testing</li>
+                                <li>Test automation setup</li>
+                            </ul>
+                        </div>
+                        <div class="sdlc-footer">
+                            <span class="sdlc-link">Start Testing →</span>
+                        </div>
+                    </a>
+
+                    <a href="deployment.html" class="sdlc-action-card">
+                        <div class="sdlc-card-header">
+                            <div class="sdlc-icon deployment">
+                                <i data-lucide="rocket"></i>
+                            </div>
+                            <div class="sdlc-badge">Deploy</div>
+                        </div>
+                        <div class="sdlc-content">
+                            <h3>Deployment & DevOps</h3>
+                            <p>Deploy your application with confidence using AI-optimized deployment strategies</p>
+                            <ul class="sdlc-features">
+                                <li>CI/CD pipeline setup</li>
+                                <li>Cloud deployment configuration</li>
+                                <li>Environment management</li>
+                                <li>Monitoring & logging</li>
+                                <li>Scaling strategies</li>
+                            </ul>
+                        </div>
+                        <div class="sdlc-footer">
+                            <span class="sdlc-link">Start Deploying →</span>
+                        </div>
+                    </a>
+
+                    <a href="maintenance.html" class="sdlc-action-card">
+                        <div class="sdlc-card-header">
+                            <div class="sdlc-icon maintenance">
+                                <i data-lucide="shield"></i>
+                    </div>
+                            <div class="sdlc-badge">Maintain</div>
+                        </div>
+                        <div class="sdlc-content">
+                            <h3>Maintenance & Support</h3>
+                            <p>Keep your application running smoothly with AI-powered maintenance tools</p>
+                            <ul class="sdlc-features">
+                                <li>Performance monitoring</li>
+                                <li>Bug detection & fixing</li>
+                                <li>Security updates</li>
+                                <li>Feature enhancements</li>
+                                <li>Documentation updates</li>
+                            </ul>
+                            </div>
+                        <div class="sdlc-footer">
+                            <span class="sdlc-link">Start Maintaining →</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html> 

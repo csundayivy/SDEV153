@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance & Support - Preppy AI SDLC Companion</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/planning.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-toggle" id="sidebarToggle">
+                    <i data-lucide="menu"></i>
+                </div>
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i data-lucide="sparkles" style="color: white;"></i>
+                    </div>
+                    <div class="logo-text">
+                        <div class="logo-title">Preppy</div>
+                        <div class="logo-subtitle">Your AI SDLC Companion</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="section-title">Development Stages</div>
+                <nav id="navigation">
+                    <a href="index.html" class="nav-item" data-stage="dashboard" data-tooltip="Dashboard">
+                        <i class="nav-icon" data-lucide="home"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                    <a href="planning.html" class="nav-item" data-stage="planning" data-tooltip="Planning">
+                        <i class="nav-icon" data-lucide="bar-chart-3"></i>
+                        <span class="nav-text">Planning</span>
+                    </a>
+                    <a href="design.html" class="nav-item" data-stage="design" data-tooltip="Design">
+                        <i class="nav-icon" data-lucide="sparkles"></i>
+                        <span class="nav-text">Design</span>
+                    </a>
+                    <a href="development.html" class="nav-item" data-stage="development" data-tooltip="Development">
+                        <i class="nav-icon" data-lucide="code-2"></i>
+                        <span class="nav-text">Development</span>
+                    </a>
+                    <a href="testing.html" class="nav-item" data-stage="testing" data-tooltip="Testing">
+                        <i class="nav-icon" data-lucide="test-tube"></i>
+                        <span class="nav-text">Testing</span>
+                    </a>
+                    <a href="deployment.html" class="nav-item" data-stage="deployment" data-tooltip="Deployment">
+                        <i class="nav-icon" data-lucide="rocket"></i>
+                        <span class="nav-text">Deployment</span>
+                    </a>
+                    <div class="nav-item active" data-stage="maintenance" data-tooltip="Maintenance">
+                        <i class="nav-icon" data-lucide="shield"></i>
+                        <span class="nav-text">Maintenance</span>
+                        <span class="nav-badge">Active</span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Maintenance Page -->
+            <div id="maintenance" class="content-area">
+                <div class="planning-container">
+                    <div class="planning-header">
+                        <div class="planning-icon">
+                            <i data-lucide="shield"></i>
+                        </div>
+                        <div>
+                            <h1 class="page-title">Maintenance & Support</h1>
+                            <p class="page-subtitle">Keep your application running smoothly with AI-powered maintenance tools</p>
+                        </div>
+                    </div>
+                    <div class="badge planning-badge">Powered by AI Maintenance Assistant</div>
+
+                    <!-- Coming Soon Card -->
+                    <div class="card input-card">
+                        <div class="coming-soon-content">
+                            <div class="coming-soon-icon">
+                                <i data-lucide="shield"></i>
+                            </div>
+                            <h2>Maintenance Tools Coming Soon</h2>
+                            <p>We're building intelligent maintenance and support tools to help you keep your applications running smoothly and efficiently.</p>
+                            
+                            <div class="feature-preview">
+                                <h3>Planned Features:</h3>
+                                <ul class="feature-list">
+                                    <li><i data-lucide="activity"></i> Performance monitoring</li>
+                                    <li><i data-lucide="bug"></i> Bug detection & fixing</li>
+                                    <li><i data-lucide="shield"></i> Security updates</li>
+                                    <li><i data-lucide="plus"></i> Feature enhancements</li>
+                                    <li><i data-lucide="file-text"></i> Documentation updates</li>
+                                    <li><i data-lucide="users"></i> User support automation</li>
+                                </ul>
+                            </div>
+
+                            <div class="cta-section">
+                                <a href="deployment.html" class="button">
+                                    <i data-lucide="arrow-left"></i>
+                                    <span>Back to Deployment</span>
+                                </a>
+                                <a href="planning.html" class="button button-outline">
+                                    <span>Start New Project</span>
+                                    <i data-lucide="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/planning.js"></script>
+</body>
+</html>
