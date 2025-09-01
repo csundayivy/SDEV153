@@ -23,14 +23,54 @@ const chatSend = document.getElementById('chatSend');
 
 // Sidebar toggle functionality
 sidebarToggle.addEventListener('click', () => {
-    sidebarCollapsed = !sidebarCollapsed;
-    sidebar.classList.toggle('collapsed', sidebarCollapsed);
-    
-    // Update toggle icon
-    const icon = sidebarToggle.querySelector('i');
-    icon.setAttribute('data-lucide', sidebarCollapsed ? 'menu' : 'chevron-left');
-    lucide.createIcons();
+    toggleSidebar();
 });
+
+// Add keyboard shortcut (Esc key) to collapse sidebar
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !sidebarCollapsed) {
+        toggleSidebar();
+    }
+});
+
+// Enhanced sidebar toggle function
+function toggleSidebar() {
+    sidebarCollapsed = !sidebarCollapsed;
+    
+    // Handle mobile vs desktop behavior
+    if (window.innerWidth <= 768) {
+        if (sidebarCollapsed) {
+            sidebar.classList.remove('expanded');
+            sidebar.classList.add('collapsed');
+        } else {
+            sidebar.classList.remove('collapsed');
+            sidebar.classList.add('expanded');
+        }
+    } else {
+        sidebar.classList.toggle('collapsed', sidebarCollapsed);
+    }
+    
+    // Update toggle icon with smooth transition
+    const icon = sidebarToggle.querySelector('i');
+    icon.style.transition = 'transform 0.3s ease';
+    
+    if (sidebarCollapsed) {
+        icon.setAttribute('data-lucide', 'menu');
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        icon.setAttribute('data-lucide', 'chevron-left');
+        icon.style.transform = 'rotate(180deg)';
+    }
+    
+    lucide.createIcons();
+    
+    // Store preference in localStorage
+    localStorage.setItem('sidebarCollapsed', sidebarCollapsed);
+    
+    // Add visual feedback
+    sidebarToggle.classList.add('toggled');
+    setTimeout(() => sidebarToggle.classList.remove('toggled'), 300);
+}
 
 // Navigation functionality
 navigation.addEventListener('click', (e) => {
@@ -278,6 +318,34 @@ function init() {
     
     // Initialize icons
     lucide.createIcons();
+
+    // Restore sidebar state from localStorage
+    const savedCollapsedState = localStorage.getItem('sidebarCollapsed');
+    if (savedCollapsedState !== null) {
+        sidebarCollapsed = JSON.parse(savedCollapsedState);
+        // Apply the new logic for restoring sidebar state
+        if (window.innerWidth <= 768) {
+            if (sidebarCollapsed) {
+                sidebar.classList.remove('expanded');
+                sidebar.classList.add('collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+                sidebar.classList.add('expanded');
+            }
+        } else {
+            sidebar.classList.toggle('collapsed', sidebarCollapsed);
+        }
+        const icon = sidebarToggle.querySelector('i');
+        icon.style.transition = 'transform 0.3s ease';
+        if (sidebarCollapsed) {
+            icon.setAttribute('data-lucide', 'menu');
+            icon.style.transform = 'rotate(0deg)';
+        } else {
+            icon.setAttribute('data-lucide', 'chevron-left');
+            icon.style.transform = 'rotate(180deg)';
+        }
+        lucide.createIcons();
+    }
 }
 
 // Start the application
