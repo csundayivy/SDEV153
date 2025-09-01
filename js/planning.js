@@ -23,7 +23,7 @@ const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
 
 // ChatGPT API Configuration
-const CHATGPT_API_KEY = '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';
+const CHATGPT_API_KEY = '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';
 const CHATGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 // Sidebar toggle functionality
