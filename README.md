@@ -2,6 +2,8 @@ Preppy - AI SDLC Companion
 A web application that provides AI-assistance for Software Development Life Cycle (SDLC).
 
 Create a software feature that uses AI to generate automated outputs for various stages of SDLC, specifically:
+
+
 Planning 
 Design 
 Implementation
