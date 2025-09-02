@@ -3,19 +3,19 @@ A web application that provides AI-powered Software Development Life Cycle (SDLC
 
 Create a software feature that uses AI to generate automated outputs for the Planning Stage of SDLC, specifically:
 
-//In Class SDLC Planning Lab//
+#In Class SDLC Planning Lab
 
-Problem/need definition
+#Problem/need definition
 
-Scope & goals
+#Scope & goals
 
-Feasibility assessment
+#Target Audience
 
-User Stories
+#User Stories
 
-Features
+#Features
 
-Technical Requirements
+#Technical Requirements
 
 
 
