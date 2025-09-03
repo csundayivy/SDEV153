@@ -21,55 +21,86 @@ const analysisContent = document.getElementById('analysisContent');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
 
-// Sidebar toggle functionality
+// Mobile menu functionality
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+// Mobile menu toggle
+if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', () => {
+        toggleMobileSidebar();
+    });
+}
+
+// Sidebar overlay click to close
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', () => {
+        closeMobileSidebar();
+    });
+}
+
+// Desktop sidebar toggle functionality
 sidebarToggle.addEventListener('click', () => {
     toggleSidebar();
 });
 
 // Add keyboard shortcut (Esc key) to collapse sidebar
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !sidebarCollapsed) {
-        toggleSidebar();
+    if (e.key === 'Escape') {
+        if (window.innerWidth < 768) {
+            closeMobileSidebar();
+        } else if (!sidebarCollapsed) {
+            toggleSidebar();
+        }
     }
 });
 
+// Mobile sidebar functions
+function toggleMobileSidebar() {
+    if (window.innerWidth < 768) {
+        sidebar.classList.toggle('mobile-open');
+        sidebarOverlay.classList.toggle('active');
+        document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
+    }
+}
+
+function closeMobileSidebar() {
+    if (window.innerWidth < 768) {
+        sidebar.classList.remove('mobile-open');
+        sidebarOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
 // Enhanced sidebar toggle function
 function toggleSidebar() {
-    sidebarCollapsed = !sidebarCollapsed;
-    
-    // Handle mobile vs desktop behavior
-    if (window.innerWidth <= 768) {
-        if (sidebarCollapsed) {
-            sidebar.classList.remove('expanded');
-            sidebar.classList.add('collapsed');
-        } else {
-            sidebar.classList.remove('collapsed');
-            sidebar.classList.add('expanded');
-        }
-    } else {
+    if (window.innerWidth >= 768) {
+        sidebarCollapsed = !sidebarCollapsed;
+        
+        // Handle desktop behavior
         sidebar.classList.toggle('collapsed', sidebarCollapsed);
+        
+        // Update toggle icon with smooth transition
+        const icon = sidebarToggle.querySelector('i');
+        icon.style.transition = 'transform 0.3s ease';
+        
+        if (sidebarCollapsed) {
+            icon.setAttribute('data-lucide', 'menu');
+            icon.style.transform = 'rotate(0deg)';
+        } else {
+            icon.setAttribute('data-lucide', 'chevron-left');
+            icon.style.transform = 'rotate(180deg)';
+        }
+        
+        lucide.createIcons();
+        
+        // Store preference in localStorage
+        localStorage.setItem('sidebarCollapsed', sidebarCollapsed);
+        
+        // Add visual feedback
+        sidebarToggle.classList.add('toggled');
+        setTimeout(() => sidebarToggle.classList.remove('toggled'), 300);
     }
-    
-    // Update toggle icon with smooth transition
-    const icon = sidebarToggle.querySelector('i');
-    icon.style.transition = 'transform 0.3s ease';
-    
-    if (sidebarCollapsed) {
-        icon.setAttribute('data-lucide', 'menu');
-        icon.style.transform = 'rotate(0deg)';
-    } else {
-        icon.setAttribute('data-lucide', 'chevron-left');
-        icon.style.transform = 'rotate(180deg)';
-    }
-    
-    lucide.createIcons();
-    
-    // Store preference in localStorage
-    localStorage.setItem('sidebarCollapsed', sidebarCollapsed);
-    
-    // Add visual feedback
-    sidebarToggle.classList.add('toggled');
-    setTimeout(() => sidebarToggle.classList.remove('toggled'), 300);
 }
 
 // Navigation functionality
@@ -121,14 +152,25 @@ analyzeButton.addEventListener('click', async () => {
     hideAnalysis();
 
     try {
-        // Simulate API call with mock response
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Make real API call to OpenAI
+        const response = await fetch('/api/analyze', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ concept })
+        });
         
-        // Mock analysis result
-        const mockAnalysis = generateMockAnalysis(concept);
-        displayAnalysis(mockAnalysis);
+        const result = await response.json();
+        
+        if (result.success) {
+            displayAnalysis(result.analysis);
+        } else {
+            showError(result.error || 'Failed to generate analysis');
+        }
         
     } catch (error) {
+        console.error('Analysis error:', error);
         showError('An unexpected error occurred while generating the analysis. Please try again.');
     } finally {
         setLoading(false);

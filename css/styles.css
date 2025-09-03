@@ -37,7 +37,7 @@
     --sidebar-border: #404040;
 }
 
-/* Base Styles */
+/* Base Styles - Mobile First */
 * {
     margin: 0;
     padding: 0;
@@ -50,27 +50,54 @@ body {
     color: var(--foreground);
     line-height: 1.6;
     overflow-x: hidden;
+    font-size: 16px;
 }
 
-/* App Container */
+/* Mobile-first App Container */
 .app-container {
-    display: flex;
-    height: 100vh;
+    display: block;
+    min-height: 100vh;
+    position: relative;
 }
 
-/* Sidebar Styles */
+/* Mobile Sidebar - Hidden by default */
 .sidebar {
+    position: fixed;
+    top: 0;
+    left: -320px;
     width: 320px;
+    height: 100vh;
     background: var(--sidebar);
     border-right: 1px solid var(--sidebar-border);
     display: flex;
     flex-direction: column;
-    transition: width 0.3s ease;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.sidebar.mobile-open {
+    left: 0;
 }
 
 .sidebar.collapsed {
-    width: 64px;
-    overflow: hidden;
+    left: -320px;
+}
+
+/* Mobile sidebar overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.sidebar-overlay.active {
+    display: block;
 }
 
 .sidebar-header {
@@ -1402,4 +1429,152 @@ body {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Mobile-first Responsive Breakpoints */
+
+/* Small tablets and large phones: 640px and up */
+@media (min-width: 640px) {
+    .container {
+        padding: 0 32px;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+    }
+}
+
+/* Tablets: 768px and up */
+@media (min-width: 768px) {
+    .app-container {
+        display: flex;
+    }
+    
+    .sidebar {
+        position: static;
+        left: 0;
+        width: 320px;
+        border-right: 1px solid var(--sidebar-border);
+    }
+    
+    .sidebar.collapsed {
+        width: 64px;
+        left: 0;
+        overflow: hidden;
+    }
+    
+    .sidebar.mobile-open {
+        left: 0;
+    }
+    
+    .sidebar-overlay {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .mobile-header {
+        display: none;
+    }
+}
+
+/* Large tablets and desktops: 1024px and up */
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1024px;
+        margin: 0 auto;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .hero-title {
+        font-size: 4rem;
+    }
+}
+
+/* Large desktops: 1280px and up */
+@media (min-width: 1280px) {
+    .container {
+        max-width: 1200px;
+    }
+    
+    .sidebar {
+        width: 350px;
+    }
+    
+    .sidebar.collapsed {
+        width: 80px;
+    }
+}
+
+/* Mobile Header for dashboard */
+.mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-btn:hover {
+    background: var(--muted);
+}
+
+.mobile-menu-btn i {
+    width: 20px;
+    height: 20px;
+    color: var(--foreground);
+}
+
+.mobile-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--foreground);
+}
+
+.mobile-logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--primary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-logo-icon i {
+    width: 18px;
+    height: 18px;
+    color: white;
+}
+
+/* Main content adjustments for mobile */
+.main-content {
+    padding: 20px;
+    width: 100%;
+    min-height: calc(100vh - 70px);
 } 

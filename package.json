@@ -18,5 +18,8 @@
     "web-app"
   ],
   "author": "Preppy Team",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "openai": "^5.18.1"
+  }
 }
