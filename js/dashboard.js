@@ -305,18 +305,44 @@ function setupNavigationFunctionality() {
     // Handle navigation item clicks
     navItems.forEach(item => {
         item.addEventListener('click', function(e) {
-            // Check if this is a dashboard link
             const href = this.getAttribute('href');
             const stage = this.getAttribute('data-stage');
             
-            // If it's a dashboard navigation, redirect to dashboard.html
-            if (stage === 'dashboard' || href === 'index.html' || href === '#') {
-                e.preventDefault();
-                window.location.href = 'dashboard.html';
+            // Handle nav items without href (for dashboard navigation)
+            if (!href && stage) {
+                const stageMap = {
+                    'planning': 'planning.html',
+                    'design': 'design.html', 
+                    'development': 'development.html',
+                    'testing': 'testing.html',
+                    'deployment': 'deployment.html',
+                    'maintenance': 'maintenance.html'
+                };
+                
+                if (stageMap[stage]) {
+                    // Close mobile sidebar if open
+                    const sidebar = document.getElementById('sidebar');
+                    const sidebarOverlay = document.getElementById('sidebarOverlay');
+                    
+                    if (sidebar && sidebar.classList.contains('mobile-open')) {
+                        sidebar.classList.remove('mobile-open');
+                        if (sidebarOverlay) {
+                            sidebarOverlay.classList.remove('active');
+                        }
+                        document.body.style.overflow = '';
+                    }
+                    
+                    // Add visual feedback
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                        window.location.href = stageMap[stage];
+                    }, 150);
+                }
                 return;
             }
             
-            // For other valid links, allow normal navigation
+            // For links with href, allow normal navigation
             if (href && href !== '#') {
                 // Close mobile sidebar if open
                 const sidebar = document.getElementById('sidebar');

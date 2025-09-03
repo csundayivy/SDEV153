@@ -148,8 +148,8 @@ function setupSidebarNavigation() {
     }
     
     // Keyboard shortcuts (only add once)
-    if (!document.hasAttribute('data-keyboard-listener')) {
-        document.setAttribute('data-keyboard-listener', 'true');
+    if (!document.body.hasAttribute('data-keyboard-listener')) {
+        document.body.setAttribute('data-keyboard-listener', 'true');
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (window.innerWidth < 768 && sidebar) {
