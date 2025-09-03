@@ -3,7 +3,7 @@
 
 // Wait for both DOM and Lucide to be ready
 function waitForLucide(callback) {
-    if (typeof lucide !== 'undefined') {
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
         callback();
     } else {
         setTimeout(() => waitForLucide(callback), 50);
@@ -18,8 +18,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializePage() {
-    // Initialize Lucide icons
-    lucide.createIcons();
+    // Initialize Lucide icons with error handling
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        try {
+            lucide.createIcons();
+        } catch (error) {
+            console.warn('Error creating Lucide icons:', error);
+        }
+    }
     
     // Setup mobile navigation
     setupMobileNavigation();
@@ -39,14 +45,14 @@ function setupMobileNavigation() {
     
     if (mobileMenuBtn && sidebar && sidebarOverlay) {
         // Only add event listeners if not already added
-        if (!mobileMenuBtn.hasAttribute('data-mobile-listener')) {
+        if (typeof mobileMenuBtn.addEventListener === 'function' && !mobileMenuBtn.hasAttribute('data-mobile-listener')) {
             mobileMenuBtn.setAttribute('data-mobile-listener', 'true');
             mobileMenuBtn.addEventListener('click', () => {
                 toggleMobileSidebar(sidebar, sidebarOverlay);
             });
         }
         
-        if (!sidebarOverlay.hasAttribute('data-overlay-listener')) {
+        if (typeof sidebarOverlay.addEventListener === 'function' && !sidebarOverlay.hasAttribute('data-overlay-listener')) {
             sidebarOverlay.setAttribute('data-overlay-listener', 'true');
             sidebarOverlay.addEventListener('click', () => {
                 closeMobileSidebar(sidebar, sidebarOverlay);
@@ -60,12 +66,14 @@ function setupMobileNavigation() {
 
 // Enhanced SDLC Navigation for Mobile
 function setupSDLCNavigation(sidebar) {
+    if (!sidebar) return;
+    
     // Add navigation link functionality
     const navLinks = sidebar.querySelectorAll('.nav-item[href], a.nav-item');
     
     navLinks.forEach(link => {
         // Only add event listener if link doesn't already have one
-        if (!link.hasAttribute('data-nav-listener')) {
+        if (link && !link.hasAttribute('data-nav-listener')) {
             link.setAttribute('data-nav-listener', 'true');
             link.addEventListener('click', (e) => {
                 // Close mobile menu when navigating
@@ -79,10 +87,12 @@ function setupSDLCNavigation(sidebar) {
                 }
                 
                 // Add smooth transition effect
-                link.style.backgroundColor = 'var(--primary-light)';
-                setTimeout(() => {
-                    link.style.backgroundColor = '';
-                }, 200);
+                if (link.style) {
+                    link.style.backgroundColor = 'var(--primary-light)';
+                    setTimeout(() => {
+                        link.style.backgroundColor = '';
+                    }, 200);
+                }
             });
         }
     });
@@ -125,7 +135,7 @@ function setupSidebarNavigation() {
     
     if (sidebarToggle && sidebar) {
         // Only add event listener if not already added
-        if (!sidebarToggle.hasAttribute('data-toggle-listener')) {
+        if (typeof sidebarToggle.addEventListener === 'function' && !sidebarToggle.hasAttribute('data-toggle-listener')) {
             sidebarToggle.setAttribute('data-toggle-listener', 'true');
             sidebarToggle.addEventListener('click', () => {
                 toggleDesktopSidebar(sidebar, sidebarToggle);
@@ -194,8 +204,12 @@ function toggleDesktopSidebar(sidebar, toggle) {
                 icon.setAttribute('data-lucide', 'menu');
             }
             // Re-initialize icons if Lucide is available
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                try {
+                    lucide.createIcons();
+                } catch (error) {
+                    console.warn('Error creating Lucide icons:', error);
+                }
             }
         }
         
@@ -471,7 +485,7 @@ function loadUserInfo() {
 function setupLogout() {
     const logoutBtn = document.getElementById('logoutBtn');
     
-    if (logoutBtn && !logoutBtn.hasAttribute('data-logout-listener')) {
+    if (logoutBtn && typeof logoutBtn.addEventListener === 'function' && !logoutBtn.hasAttribute('data-logout-listener')) {
         logoutBtn.setAttribute('data-logout-listener', 'true');
         logoutBtn.addEventListener('click', function() {
             if (confirm('Are you sure you want to logout?')) {
