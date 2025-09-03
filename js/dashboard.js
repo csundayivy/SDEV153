@@ -212,7 +212,16 @@ function setupSidebarFunctionality() {
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     
-    if (!sidebar || !sidebarToggle) return;
+    // Add null checks to prevent errors
+    if (!sidebar) {
+        console.warn('Sidebar element not found');
+        return;
+    }
+    
+    if (!sidebarToggle) {
+        console.warn('Sidebar toggle element not found');
+        return;
+    }
     
     // Load saved sidebar state
     const savedState = localStorage.getItem('sidebarCollapsed');
@@ -250,7 +259,9 @@ function setupSidebarFunctionality() {
     // Mobile menu functionality
     if (mobileMenuBtn) {
         mobileMenuBtn.addEventListener('click', function() {
-            sidebar.classList.add('mobile-open');
+            if (sidebar) {
+                sidebar.classList.add('mobile-open');
+            }
             if (sidebarOverlay) {
                 sidebarOverlay.classList.add('active');
             }
@@ -261,9 +272,11 @@ function setupSidebarFunctionality() {
     // Close mobile menu when overlay is clicked
     if (sidebarOverlay) {
         sidebarOverlay.addEventListener('click', function() {
-            sidebar.classList.remove('mobile-open');
-            sidebarOverlay.classList.remove('active');
-            document.body.style.overflow = '';
+            if (sidebar) {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
     }
     
@@ -292,8 +305,18 @@ function setupNavigationFunctionality() {
     // Handle navigation item clicks
     navItems.forEach(item => {
         item.addEventListener('click', function(e) {
-            // Let the default link behavior handle navigation
+            // Check if this is a dashboard link
             const href = this.getAttribute('href');
+            const stage = this.getAttribute('data-stage');
+            
+            // If it's a dashboard navigation, redirect to dashboard.html
+            if (stage === 'dashboard' || href === 'index.html' || href === '#') {
+                e.preventDefault();
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // For other valid links, allow normal navigation
             if (href && href !== '#') {
                 // Close mobile sidebar if open
                 const sidebar = document.getElementById('sidebar');
