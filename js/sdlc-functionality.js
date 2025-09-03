@@ -7,8 +7,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializePage() {
-    // Initialize Lucide icons
-    lucide.createIcons();
+    // Wait for Lucide to be available and initialize icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    } else {
+        // Retry after a short delay if lucide isn't loaded yet
+        setTimeout(() => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }, 100);
+    }
     
     // Setup mobile navigation
     setupMobileNavigation();
@@ -20,7 +29,7 @@ function initializePage() {
     setupPageFunctionality();
 }
 
-// Mobile Navigation Setup
+// Mobile Navigation Setup - Enhanced for SDLC pages
 function setupMobileNavigation() {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const sidebar = document.getElementById('sidebar');
@@ -34,7 +43,63 @@ function setupMobileNavigation() {
         sidebarOverlay.addEventListener('click', () => {
             closeMobileSidebar(sidebar, sidebarOverlay);
         });
+        
+        // Setup simplified SDLC navigation
+        setupSDLCNavigation(sidebar);
     }
+}
+
+// Enhanced SDLC Navigation for Mobile
+function setupSDLCNavigation(sidebar) {
+    // Add navigation link functionality
+    const navLinks = sidebar.querySelectorAll('.nav-item[href], a.nav-item');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Close mobile menu when navigating
+            if (window.innerWidth < 768) {
+                setTimeout(() => {
+                    closeMobileSidebar(sidebar, document.getElementById('sidebarOverlay'));
+                }, 100);
+            }
+            
+            // Add smooth transition effect
+            link.style.backgroundColor = 'var(--primary-light)';
+            setTimeout(() => {
+                link.style.backgroundColor = '';
+            }, 200);
+        });
+    });
+    
+    // Add swipe gesture support for mobile
+    let touchStartX = 0;
+    let touchStartY = 0;
+    
+    document.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    });
+    
+    document.addEventListener('touchend', (e) => {
+        if (window.innerWidth >= 768) return; // Only on mobile
+        
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        
+        // Swipe right to open menu (from left edge)
+        if (deltaX > 100 && Math.abs(deltaY) < 50 && touchStartX < 50) {
+            if (!sidebar.classList.contains('mobile-open')) {
+                toggleMobileSidebar(sidebar, document.getElementById('sidebarOverlay'));
+            }
+        }
+        
+        // Swipe left to close menu
+        if (deltaX < -100 && Math.abs(deltaY) < 50 && sidebar.classList.contains('mobile-open')) {
+            closeMobileSidebar(sidebar, document.getElementById('sidebarOverlay'));
+        }
+    });
 }
 
 // Sidebar Navigation Setup

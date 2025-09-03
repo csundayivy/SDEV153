@@ -5,6 +5,7 @@
     --card: #ffffff;
     --card-foreground: #1a1a1a;
     --primary: #ff6b35;
+    --primary-rgb: 255, 107, 53;
     --primary-foreground: #ffffff;
     --secondary: #f8f9fa;
     --secondary-foreground: #1a1a1a;
@@ -13,6 +14,7 @@
     --accent: #ff6b35;
     --destructive: #dc2626;
     --border: #e5e7eb;
+    --border-rgb: 229, 231, 235;
     --input: #f9fafb;
     --ring: rgba(255, 107, 53, 0.3);
     --sidebar: #ffffff;
@@ -1577,4 +1579,166 @@ body {
     padding: 20px;
     width: 100%;
     min-height: calc(100vh - 70px);
+}
+
+/* Enhanced Mobile Navigation for SDLC Pages */
+.nav-item {
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 4px 8px;
+}
+
+.nav-item:hover {
+    background-color: rgba(var(--primary-rgb), 0.1);
+    transform: translateX(4px);
+}
+
+.nav-item.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.nav-item.active .nav-text {
+    color: white;
+}
+
+.nav-item.active .nav-icon {
+    color: white;
+}
+
+/* SDLC Navigation Progress Indicator */
+.sdlc-progress {
+    position: absolute;
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 20px;
+    background-color: var(--primary);
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-item.active .sdlc-progress {
+    opacity: 1;
+}
+
+/* Mobile Touch Improvements */
+@media (max-width: 767px) {
+    .nav-item {
+        padding: 16px 12px;
+        margin: 6px;
+        font-size: 16px;
+        min-height: 48px; /* Better touch target */
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .nav-text {
+        font-size: 16px;
+        font-weight: 500;
+    }
+    
+    .nav-icon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    /* Smooth mobile menu animation */
+    .sidebar {
+        box-shadow: none;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .sidebar.mobile-open {
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Mobile header improvements */
+    .mobile-header {
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(var(--border-rgb), 0.1);
+    }
+    
+    .mobile-menu-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .mobile-menu-btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(var(--primary-rgb), 0.3);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        transform: translate(-50%, -50%);
+    }
+    
+    .mobile-menu-btn:active::after {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Desktop improvements */
+@media (min-width: 768px) {
+    .nav-item {
+        margin: 2px 4px;
+        padding: 12px 16px;
+    }
+}
+
+/* Quick SDLC Navigation for Mobile */
+.quick-nav {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1001;
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .quick-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .quick-nav-btn {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .quick-nav-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .quick-nav-btn i {
+        width: 24px;
+        height: 24px;
+    }
+    
+    /* Hide quick nav when sidebar is open */
+    .sidebar.mobile-open ~ .main-content .quick-nav {
+        opacity: 0;
+        pointer-events: none;
+    }
 } 
