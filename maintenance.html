@@ -44,6 +44,16 @@
             </div>
 
             <div class="sidebar-content">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+                
                 <div class="section-title">Development Stages</div>
                 <nav id="navigation">
                     <a href="dashboard.html" class="nav-item" data-stage="dashboard" data-tooltip="Dashboard">
@@ -76,6 +86,13 @@
                         <span class="nav-badge">Active</span>
                     </div>
                 </nav>
+                
+                <div class="sidebar-footer">
+                    <button class="logout-btn" id="logoutBtn">
+                        <i data-lucide="log-out"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
             </div>
         </div>
 

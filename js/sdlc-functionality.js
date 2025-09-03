@@ -38,13 +38,20 @@ function setupMobileNavigation() {
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     
     if (mobileMenuBtn && sidebar && sidebarOverlay) {
-        mobileMenuBtn.addEventListener('click', () => {
-            toggleMobileSidebar(sidebar, sidebarOverlay);
-        });
+        // Only add event listeners if not already added
+        if (!mobileMenuBtn.hasAttribute('data-mobile-listener')) {
+            mobileMenuBtn.setAttribute('data-mobile-listener', 'true');
+            mobileMenuBtn.addEventListener('click', () => {
+                toggleMobileSidebar(sidebar, sidebarOverlay);
+            });
+        }
         
-        sidebarOverlay.addEventListener('click', () => {
-            closeMobileSidebar(sidebar, sidebarOverlay);
-        });
+        if (!sidebarOverlay.hasAttribute('data-overlay-listener')) {
+            sidebarOverlay.setAttribute('data-overlay-listener', 'true');
+            sidebarOverlay.addEventListener('click', () => {
+                closeMobileSidebar(sidebar, sidebarOverlay);
+            });
+        }
         
         // Setup simplified SDLC navigation
         setupSDLCNavigation(sidebar);
@@ -57,20 +64,27 @@ function setupSDLCNavigation(sidebar) {
     const navLinks = sidebar.querySelectorAll('.nav-item[href], a.nav-item');
     
     navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            // Close mobile menu when navigating
-            if (window.innerWidth < 768) {
+        // Only add event listener if link doesn't already have one
+        if (!link.hasAttribute('data-nav-listener')) {
+            link.setAttribute('data-nav-listener', 'true');
+            link.addEventListener('click', (e) => {
+                // Close mobile menu when navigating
+                if (window.innerWidth < 768) {
+                    setTimeout(() => {
+                        const overlay = document.getElementById('sidebarOverlay');
+                        if (sidebar && overlay) {
+                            closeMobileSidebar(sidebar, overlay);
+                        }
+                    }, 100);
+                }
+                
+                // Add smooth transition effect
+                link.style.backgroundColor = 'var(--primary-light)';
                 setTimeout(() => {
-                    closeMobileSidebar(sidebar, document.getElementById('sidebarOverlay'));
-                }, 100);
-            }
-            
-            // Add smooth transition effect
-            link.style.backgroundColor = 'var(--primary-light)';
-            setTimeout(() => {
-                link.style.backgroundColor = '';
-            }, 200);
-        });
+                    link.style.backgroundColor = '';
+                }, 200);
+            });
+        }
     });
     
     // Add swipe gesture support for mobile
@@ -110,19 +124,43 @@ function setupSidebarNavigation() {
     const sidebar = document.getElementById('sidebar');
     
     if (sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', () => {
-            toggleDesktopSidebar(sidebar, sidebarToggle);
-        });
-    }
-    
-    // Keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            if (window.innerWidth < 768) {
-                closeMobileSidebar(sidebar, document.getElementById('sidebarOverlay'));
+        // Only add event listener if not already added
+        if (!sidebarToggle.hasAttribute('data-toggle-listener')) {
+            sidebarToggle.setAttribute('data-toggle-listener', 'true');
+            sidebarToggle.addEventListener('click', () => {
+                toggleDesktopSidebar(sidebar, sidebarToggle);
+            });
+        }
+        
+        // Load saved sidebar state
+        const savedState = localStorage.getItem('sidebarCollapsed');
+        if (savedState === 'true' && window.innerWidth >= 768) {
+            sidebar.classList.add('collapsed');
+            const icon = sidebarToggle.querySelector('i');
+            if (icon) {
+                icon.setAttribute('data-lucide', 'menu');
+                // Re-initialize icons if Lucide is available
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
             }
         }
-    });
+    }
+    
+    // Keyboard shortcuts (only add once)
+    if (!document.hasAttribute('data-keyboard-listener')) {
+        document.setAttribute('data-keyboard-listener', 'true');
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (window.innerWidth < 768 && sidebar) {
+                    const overlay = document.getElementById('sidebarOverlay');
+                    if (overlay) {
+                        closeMobileSidebar(sidebar, overlay);
+                    }
+                }
+            }
+        });
+    }
 }
 
 // Mobile Sidebar Functions
@@ -155,8 +193,14 @@ function toggleDesktopSidebar(sidebar, toggle) {
             } else {
                 icon.setAttribute('data-lucide', 'menu');
             }
-            lucide.createIcons();
+            // Re-initialize icons if Lucide is available
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         }
+        
+        // Save collapsed state
+        localStorage.setItem('sidebarCollapsed', !isCollapsed);
     }
 }
 
@@ -427,7 +471,8 @@ function loadUserInfo() {
 function setupLogout() {
     const logoutBtn = document.getElementById('logoutBtn');
     
-    if (logoutBtn) {
+    if (logoutBtn && !logoutBtn.hasAttribute('data-logout-listener')) {
+        logoutBtn.setAttribute('data-logout-listener', 'true');
         logoutBtn.addEventListener('click', function() {
             if (confirm('Are you sure you want to logout?')) {
                 logout();
