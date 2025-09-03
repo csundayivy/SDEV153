@@ -1,0 +1,22 @@
+{
+  "name": "preppy-sdlc-companion",
+  "version": "1.0.0",
+  "description": "AI-powered SDLC companion web application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "sdlc",
+    "ai",
+    "software-development",
+    "planning",
+    "web-app"
+  ],
+  "author": "Preppy Team",
+  "license": "MIT"
+}
