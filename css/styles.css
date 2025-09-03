@@ -1526,6 +1526,13 @@ body {
     z-index: 100;
 }
 
+/* Hide mobile header on desktop */
+@media (min-width: 768px) {
+    .mobile-header {
+        display: none;
+    }
+}
+
 .mobile-menu-btn {
     display: flex;
     align-items: center;

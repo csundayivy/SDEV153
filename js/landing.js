@@ -1,14 +1,17 @@
+// Wait for Lucide to be available
+function waitForLucide(callback) {
+    if (typeof lucide !== 'undefined') {
+        callback();
+    } else {
+        setTimeout(() => waitForLucide(callback), 50);
+    }
+}
+
 // Initialize Lucide icons when available
 document.addEventListener('DOMContentLoaded', function() {
-    if (typeof lucide !== 'undefined') {
+    waitForLucide(() => {
         lucide.createIcons();
-    } else {
-        setTimeout(() => {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        }, 100);
-    }
+    });
 });
 
 // Navigation functionality

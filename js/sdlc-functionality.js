@@ -1,23 +1,25 @@
-// SDLC Pages Functionality - Shared functions for all SDLC phases
+// SDLC Pages Functionality - Shared functions for all SDLC phase pages
 // This file provides common functionality for all SDLC phase pages
+
+// Wait for both DOM and Lucide to be ready
+function waitForLucide(callback) {
+    if (typeof lucide !== 'undefined') {
+        callback();
+    } else {
+        setTimeout(() => waitForLucide(callback), 50);
+    }
+}
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    initializePage();
+    waitForLucide(() => {
+        initializePage();
+    });
 });
 
 function initializePage() {
-    // Wait for Lucide to be available and initialize icons
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    } else {
-        // Retry after a short delay if lucide isn't loaded yet
-        setTimeout(() => {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        }, 100);
-    }
+    // Initialize Lucide icons
+    lucide.createIcons();
     
     // Setup mobile navigation
     setupMobileNavigation();

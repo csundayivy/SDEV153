@@ -1,5 +1,16 @@
-// Initialize Lucide icons
-lucide.createIcons();
+// Wait for Lucide to be available
+function waitForLucide(callback) {
+    if (typeof lucide !== 'undefined') {
+        callback();
+    } else {
+        setTimeout(() => waitForLucide(callback), 50);
+    }
+}
+
+// Initialize Lucide icons when ready
+waitForLucide(() => {
+    lucide.createIcons();
+});
 
 // State management
 let currentStage = 'planning';
