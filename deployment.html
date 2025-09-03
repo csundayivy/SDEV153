@@ -10,6 +10,22 @@
 </head>
 <body>
     <div class="app-container">
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i data-lucide="menu"></i>
+            </button>
+            <div class="mobile-logo">
+                <div class="mobile-logo-icon">
+                    <i data-lucide="sparkles"></i>
+                </div>
+                <span>Preppy</span>
+            </div>
+        </div>
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
@@ -28,9 +44,19 @@
             </div>
 
             <div class="sidebar-content">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+                
                 <div class="section-title">Development Stages</div>
                 <nav id="navigation">
-                    <a href="index.html" class="nav-item" data-stage="dashboard" data-tooltip="Dashboard">
+                    <a href="dashboard.html" class="nav-item" data-stage="dashboard" data-tooltip="Dashboard">
                         <i class="nav-icon" data-lucide="home"></i>
                         <span class="nav-text">Dashboard</span>
                     </a>
@@ -60,6 +86,13 @@
                         <span class="nav-text">Maintenance</span>
                     </a>
                 </nav>
+                
+                <div class="sidebar-footer">
+                    <button class="logout-btn" id="logoutBtn">
+                        <i data-lucide="log-out"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -117,6 +150,6 @@
         </div>
     </div>
 
-    <script src="js/planning.js"></script>
+    <script src="js/sdlc-functionality.js"></script>
 </body>
 </html>
