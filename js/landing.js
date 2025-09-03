@@ -1,5 +1,18 @@
-// Initialize Lucide icons
-lucide.createIcons();
+// Wait for Lucide to be available
+function waitForLucide(callback) {
+    if (typeof lucide !== 'undefined') {
+        callback();
+    } else {
+        setTimeout(() => waitForLucide(callback), 50);
+    }
+}
+
+// Initialize Lucide icons when available
+document.addEventListener('DOMContentLoaded', function() {
+    waitForLucide(() => {
+        lucide.createIcons();
+    });
+});
 
 // Navigation functionality
 const navToggle = document.getElementById('navToggle');

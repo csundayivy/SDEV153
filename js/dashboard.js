@@ -6,8 +6,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeDashboard() {
-    // Initialize Lucide icons
-    lucide.createIcons();
+    // Wait for Lucide to be available
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    } else {
+        setTimeout(() => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }, 100);
+    }
     
     // Check authentication status
     checkAuthentication();
@@ -17,6 +25,12 @@ function initializeDashboard() {
     
     // Load user information
     loadUserInfo();
+    
+    // Setup sidebar functionality
+    setupSidebarFunctionality();
+    
+    // Setup navigation functionality
+    setupNavigationFunctionality();
 }
 
 function checkAuthentication() {
@@ -190,3 +204,175 @@ document.addEventListener('visibilitychange', function() {
 window.addEventListener('popstate', function() {
     checkAuthentication();
 });
+
+// Sidebar functionality for dashboard
+function setupSidebarFunctionality() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    
+    // Add null checks to prevent errors
+    if (!sidebar) {
+        console.warn('Sidebar element not found');
+        return;
+    }
+    
+    if (!sidebarToggle) {
+        console.warn('Sidebar toggle element not found');
+        return;
+    }
+    
+    // Load saved sidebar state
+    const savedState = localStorage.getItem('sidebarCollapsed');
+    let sidebarCollapsed = savedState === 'true';
+    
+    // Apply initial state
+    if (sidebarCollapsed && window.innerWidth >= 768) {
+        sidebar.classList.add('collapsed');
+    }
+    
+    // Desktop sidebar toggle functionality
+    sidebarToggle.addEventListener('click', function() {
+        if (window.innerWidth >= 768) {
+            sidebarCollapsed = !sidebarCollapsed;
+            sidebar.classList.toggle('collapsed', sidebarCollapsed);
+            localStorage.setItem('sidebarCollapsed', sidebarCollapsed);
+            
+            // Update toggle icon
+            const icon = sidebarToggle.querySelector('i');
+            if (sidebarCollapsed) {
+                icon.setAttribute('data-lucide', 'menu');
+            } else {
+                icon.setAttribute('data-lucide', 'chevron-left');
+            }
+            
+            // Reinitialize icons
+            setTimeout(() => {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }, 10);
+        }
+    });
+    
+    // Mobile menu functionality
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+            if (sidebar) {
+                sidebar.classList.add('mobile-open');
+            }
+            if (sidebarOverlay) {
+                sidebarOverlay.classList.add('active');
+            }
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    // Close mobile menu when overlay is clicked
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function() {
+            if (sidebar) {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768) {
+            sidebar.classList.remove('mobile-open');
+            if (sidebarOverlay) {
+                sidebarOverlay.classList.remove('active');
+            }
+            document.body.style.overflow = '';
+            
+            // Restore desktop collapsed state
+            sidebar.classList.toggle('collapsed', sidebarCollapsed);
+        } else {
+            sidebar.classList.remove('collapsed');
+        }
+    });
+}
+
+// Navigation functionality for dashboard
+function setupNavigationFunctionality() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const sdlcActionCards = document.querySelectorAll('.sdlc-action-card');
+    
+    // Handle navigation item clicks
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            const stage = this.getAttribute('data-stage');
+            
+            // Handle nav items without href (for dashboard navigation)
+            if (!href && stage) {
+                const stageMap = {
+                    'planning': 'planning.html',
+                    'design': 'design.html', 
+                    'development': 'development.html',
+                    'testing': 'testing.html',
+                    'deployment': 'deployment.html',
+                    'maintenance': 'maintenance.html'
+                };
+                
+                if (stageMap[stage]) {
+                    // Close mobile sidebar if open
+                    const sidebar = document.getElementById('sidebar');
+                    const sidebarOverlay = document.getElementById('sidebarOverlay');
+                    
+                    if (sidebar && sidebar.classList.contains('mobile-open')) {
+                        sidebar.classList.remove('mobile-open');
+                        if (sidebarOverlay) {
+                            sidebarOverlay.classList.remove('active');
+                        }
+                        document.body.style.overflow = '';
+                    }
+                    
+                    // Add visual feedback
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                        window.location.href = stageMap[stage];
+                    }, 150);
+                }
+                return;
+            }
+            
+            // For links with href, allow normal navigation
+            if (href && href !== '#') {
+                // Close mobile sidebar if open
+                const sidebar = document.getElementById('sidebar');
+                const sidebarOverlay = document.getElementById('sidebarOverlay');
+                
+                if (sidebar && sidebar.classList.contains('mobile-open')) {
+                    sidebar.classList.remove('mobile-open');
+                    if (sidebarOverlay) {
+                        sidebarOverlay.classList.remove('active');
+                    }
+                    document.body.style.overflow = '';
+                }
+                
+                // Add visual feedback
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            }
+        });
+    });
+    
+    // Handle SDLC action card clicks
+    sdlcActionCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Add visual feedback
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    });
+}

@@ -22,9 +22,9 @@ const loadingState = document.getElementById('loadingState');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
 
-// ChatGPT API Configuration
-const CHATGPT_API_KEY = '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';
-const CHATGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
+// Mobile menu functionality
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
 
 // Sidebar toggle functionality
 sidebarToggle.addEventListener('click', () => {
