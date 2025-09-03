@@ -164,6 +164,12 @@ function toggleDesktopSidebar(sidebar, toggle) {
 function setupPageFunctionality() {
     const currentPage = getCurrentPage();
     
+    // Load user information for all SDLC pages
+    loadUserInfo();
+    
+    // Setup logout functionality
+    setupLogout();
+    
     switch(currentPage) {
         case 'planning':
             setupPlanningPage();
@@ -389,5 +395,96 @@ function displayGenerationResults(content) {
         resultsDiv.classList.remove('hidden');
         lucide.createIcons();
         showSuccess('Content generated successfully!');
+    }
+}
+
+// Load user information for SDLC pages
+function loadUserInfo() {
+    const user = localStorage.getItem('preppy_user');
+    
+    if (user) {
+        try {
+            const userData = JSON.parse(user);
+            
+            // Update user name
+            const userNameElement = document.getElementById('userName');
+            if (userNameElement) {
+                userNameElement.textContent = userData.fullName || 'User';
+            }
+            
+            // Update user email
+            const userEmailElement = document.getElementById('userEmail');
+            if (userEmailElement) {
+                userEmailElement.textContent = userData.email || '';
+            }
+        } catch (error) {
+            console.error('Error loading user info:', error);
+        }
+    }
+}
+
+// Setup logout functionality for SDLC pages
+function setupLogout() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                logout();
+            }
+        });
+    }
+}
+
+function logout() {
+    // Clear user data
+    localStorage.removeItem('preppy_user');
+    localStorage.removeItem('preppy_auth_token');
+    
+    // Show loading state
+    showLogoutLoading();
+    
+    // Simulate logout process
+    setTimeout(() => {
+        showLogoutSuccess();
+        
+        // Redirect to login after showing success
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 1500);
+    }, 1000);
+}
+
+function showLogoutLoading() {
+    // Create logout loading overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'logout-overlay';
+    overlay.innerHTML = `
+        <div class="logout-content">
+            <div class="loading-spinner"></div>
+            <p>Logging out...</p>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+}
+
+function showLogoutSuccess() {
+    // Update overlay content
+    const overlay = document.querySelector('.logout-overlay');
+    if (overlay) {
+        overlay.innerHTML = `
+            <div class="logout-content">
+                <div class="success-icon">
+                    <i data-lucide="check-circle"></i>
+                </div>
+                <p>Logged out successfully!</p>
+            </div>
+        `;
+        
+        // Re-initialize icons if available
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     }
 }
