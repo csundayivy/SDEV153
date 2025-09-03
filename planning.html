@@ -10,6 +10,22 @@
 </head>
 <body>
     <div class="app-container">
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i data-lucide="menu"></i>
+            </button>
+            <div class="mobile-logo">
+                <div class="mobile-logo-icon">
+                    <i data-lucide="sparkles"></i>
+                </div>
+                <span>Preppy</span>
+            </div>
+        </div>
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
@@ -28,9 +44,19 @@
             </div>
 
             <div class="sidebar-content">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+                
                 <div class="section-title">Development Stages</div>
                 <nav id="navigation">
-                    <a href="index.html" class="nav-item" data-stage="dashboard" data-tooltip="Dashboard">
+                    <a href="dashboard.html" class="nav-item" data-stage="dashboard" data-tooltip="Dashboard">
                         <i class="nav-icon" data-lucide="home"></i>
                         <span class="nav-text">Dashboard</span>
                     </a>
@@ -39,27 +65,34 @@
                         <span class="nav-text">Planning</span>
                         <span class="nav-badge">Active</span>
                     </div>
-                    <div class="nav-item" data-stage="design" data-tooltip="Design">
+                    <a href="design.html" class="nav-item" data-stage="design" data-tooltip="Design">
                         <i class="nav-icon" data-lucide="sparkles"></i>
                         <span class="nav-text">Design</span>
-                    </div>
-                    <div class="nav-item" data-stage="development" data-tooltip="Development">
+                    </a>
+                    <a href="development.html" class="nav-item" data-stage="development" data-tooltip="Development">
                         <i class="nav-icon" data-lucide="code-2"></i>
                         <span class="nav-text">Development</span>
-                    </div>
-                    <div class="nav-item" data-stage="testing" data-tooltip="Testing">
+                    </a>
+                    <a href="testing.html" class="nav-item" data-stage="testing" data-tooltip="Testing">
                         <i class="nav-icon" data-lucide="test-tube"></i>
                         <span class="nav-text">Testing</span>
-                    </div>
-                    <div class="nav-item" data-stage="deployment" data-tooltip="Deployment">
+                    </a>
+                    <a href="deployment.html" class="nav-item" data-stage="deployment" data-tooltip="Deployment">
                         <i class="nav-icon" data-lucide="rocket"></i>
                         <span class="nav-text">Deployment</span>
-                    </div>
-                    <div class="nav-item" data-stage="maintenance" data-tooltip="Maintenance">
+                    </a>
+                    <a href="maintenance.html" class="nav-item" data-stage="maintenance" data-tooltip="Maintenance">
                         <i class="nav-icon" data-lucide="shield"></i>
                         <span class="nav-text">Maintenance</span>
-                    </div>
+                    </a>
                 </nav>
+                
+                <div class="sidebar-footer">
+                    <button class="logout-btn" id="logoutBtn">
+                        <i data-lucide="log-out"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -160,6 +193,6 @@
             </div>
 
 
-    <script src="js/planning.js"></script>
+    <script src="js/sdlc-functionality.js"></script>
 </body>
 </html>
