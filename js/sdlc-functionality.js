@@ -356,14 +356,34 @@ function setupGenericSDLCPage(type, placeholder) {
     }
 }
 
-// API helper function - works for both Replit and GitHub Pages
+// API helper function - works for Replit, Netlify, and GitHub Pages
 async function makeAPIRequest(endpoint, data) {
     try {
-        // Check if we're on GitHub Pages and have AI configured
+        // Detect environment
+        const isNetlify = window.NETLIFY_ENVIRONMENT || window.location.hostname.includes('netlify');
         const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname.includes('github.com');
+        const isReplit = window.location.hostname.includes('replit');
         
+        // Netlify: Use serverless functions (server-side)
+        if (isNetlify) {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+            }
+            
+            return await response.json();
+        }
+        
+        // GitHub Pages: Use client-side AI if configured
         if (isGitHubPages && window.githubPagesAI && window.githubPagesAI.isReady()) {
-            // Use client-side AI for GitHub Pages
             if (endpoint === '/api/analyze') {
                 const result = await window.githubPagesAI.generateSDLCAnalysis(data.concept);
                 return { success: true, analysis: result };
@@ -376,7 +396,7 @@ async function makeAPIRequest(endpoint, data) {
             return getGitHubPagesFallback(endpoint, data);
         }
         
-        // Use server-side API for Replit
+        // Replit: Use server-side API
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
