@@ -33,9 +33,12 @@ Preferred communication style: Simple, everyday language.
 - **User Experience**: Complete signup/login flow with form validation and user feedback
 
 ## AI Integration Architecture
-- **OpenAI Integration**: Direct API calls to OpenAI services for AI-powered assistance
-- **Environment Variables**: API key management through environment variables
-- **Error Handling**: Comprehensive error handling for API failures and network issues
+- **Multi-Platform Real AI Integration**: Consistent OpenAI API calls across all three deployment platforms
+- **Replit**: Server-side OpenAI integration with environment variable management
+- **Netlify**: Serverless functions with OpenAI API for secure server-side processing
+- **GitHub Pages**: Client-side OpenAI integration with secure session-based API key storage
+- **Comprehensive Error Handling**: Robust error handling for API failures, rate limits, and network issues
+- **Smart Environment Detection**: Automatic platform detection to use optimal AI integration method
 
 # External Dependencies
 
