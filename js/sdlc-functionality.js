@@ -366,7 +366,9 @@ async function makeAPIRequest(endpoint, data) {
         
         // Netlify: Use serverless functions (server-side)
         if (isNetlify) {
-            const response = await fetch(endpoint, {
+            // Convert endpoint to Netlify functions path
+            const netlifyEndpoint = endpoint.replace('/api/', '/.netlify/functions/');
+            const response = await fetch(netlifyEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -382,18 +384,20 @@ async function makeAPIRequest(endpoint, data) {
             return await response.json();
         }
         
-        // GitHub Pages: Use client-side AI if configured
-        if (isGitHubPages && window.githubPagesAI && window.githubPagesAI.isReady()) {
-            if (endpoint === '/api/analyze') {
-                const result = await window.githubPagesAI.generateSDLCAnalysis(data.concept);
-                return { success: true, analysis: result };
-            } else if (endpoint === '/api/generate') {
-                const result = await window.githubPagesAI.generateContent(data.prompt, data.type);
-                return { success: true, result: result };
+        // GitHub Pages: Use client-side AI if configured, otherwise fallback
+        if (isGitHubPages) {
+            if (window.githubPagesAI && window.githubPagesAI.isReady()) {
+                if (endpoint === '/api/analyze') {
+                    const result = await window.githubPagesAI.generateSDLCAnalysis(data.concept);
+                    return { success: true, analysis: result };
+                } else if (endpoint === '/api/generate') {
+                    const result = await window.githubPagesAI.generateContent(data.prompt, data.type);
+                    return { success: true, result: result };
+                }
+            } else {
+                // Fallback for GitHub Pages without API key
+                return getGitHubPagesFallback(endpoint, data);
             }
-        } else if (isGitHubPages) {
-            // Fallback for GitHub Pages without API key
-            return getGitHubPagesFallback(endpoint, data);
         }
         
         // Replit: Use server-side API
