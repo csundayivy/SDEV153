@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "build:github": "node build-github.js"
+    "build:github": "node build-github.js",
+    "build:netlify": "node build-netlify.js",
+    "dev:netlify": "netlify dev"
   },
   "engines": {
     "node": ">=14.0.0"
