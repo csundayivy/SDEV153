@@ -147,14 +147,31 @@ async function generateSDLCAnalysis(concept) {
         messages: [
             {
                 role: "system",
-                content: "You are an expert software development consultant. Generate a comprehensive SDLC analysis with structured sections including problem definition, project scope, feasibility assessment, resource estimates, user stories, and technical requirements. Format your response as HTML with proper structure and styling classes."
+                content: `You are an expert software development consultant and business analyst. Analyze the given project concept and provide a comprehensive project analysis that includes:
+
+1. **Project Scope & Goals** - Clear definition of what the project will accomplish
+2. **Target Audience** - Detailed user personas and demographics  
+3. **User Stories** - Specific user scenarios and acceptance criteria
+4. **Functional Requirements** - Core features and capabilities
+5. **Non-Functional Requirements** - Performance, security, scalability needs
+6. **Technical Requirements** - Technology stack, infrastructure, and architecture
+
+Format your response in clean HTML with proper headings, sections, and bullet points. Use professional styling with clear structure. Make it comprehensive yet concise, suitable for project planning and stakeholder review.`
             },
             {
                 role: "user",
-                content: `Please analyze this software project concept and provide a detailed SDLC analysis: "${concept}"`
+                content: `Analyze this project concept for comprehensive SDLC planning: ${concept}
+
+Please provide detailed analysis covering:
+- Project scope and strategic goals
+- Target audience definition and user personas
+- User stories with acceptance criteria
+- Complete functional requirements
+- Non-functional requirements (performance, security, etc.)
+- Technical requirements and architecture recommendations`
             }
         ],
-        max_tokens: 2000,
+        max_tokens: 3000,
         temperature: 0.7
     });
     

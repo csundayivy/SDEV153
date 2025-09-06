@@ -77,15 +77,32 @@ class GitHubPagesAI {
         const messages = [
             {
                 role: "system",
-                content: "You are an expert software development consultant. Analyze the given project concept and provide detailed SDLC recommendations including planning, design, development, testing, deployment, and maintenance phases. Format your response in HTML with proper headings and sections."
+                content: `You are an expert software development consultant and business analyst. Analyze the given project concept and provide a comprehensive project analysis that includes:
+
+1. **Project Scope & Goals** - Clear definition of what the project will accomplish
+2. **Target Audience** - Detailed user personas and demographics  
+3. **User Stories** - Specific user scenarios and acceptance criteria
+4. **Functional Requirements** - Core features and capabilities
+5. **Non-Functional Requirements** - Performance, security, scalability needs
+6. **Technical Requirements** - Technology stack, infrastructure, and architecture
+
+Format your response in clean HTML with proper headings, sections, and bullet points. Use professional styling with clear structure. Make it comprehensive yet concise, suitable for project planning and stakeholder review.`
             },
             {
                 role: "user",
-                content: `Analyze this project concept for SDLC planning: ${concept}`
+                content: `Analyze this project concept for comprehensive SDLC planning: ${concept}
+
+Please provide detailed analysis covering:
+- Project scope and strategic goals
+- Target audience definition and user personas
+- User stories with acceptance criteria
+- Complete functional requirements
+- Non-functional requirements (performance, security, etc.)
+- Technical requirements and architecture recommendations`
             }
         ];
 
-        return await this.makeAPICall(messages, { maxTokens: 2000 });
+        return await this.makeAPICall(messages, { maxTokens: 3000 });
     }
 
     // Generate content for specific SDLC phases
