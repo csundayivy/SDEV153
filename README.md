@@ -1,5 +1,9 @@
 # Preppy - AI-Powered SDLC Companion
 
+## Goal 
+Provide students with a hands on agile lab for AI product development to better understand Software Development Life Cycle (SDLC) and accelerate development workflows. 
+
+
 ## Project Overview
 Preppy is a web application that provides AI assistance for the Software Development Life Cycle (SDLC) process. It guides users through various stages of software development including Planning, Design, Implementation, Testing, Deployment, and Maintenance.
 
@@ -52,7 +56,6 @@ Preppy is a web application that provides AI assistance for the Software Develop
 - ✅ Dashboard with multiple SDLC phases
 - ✅ Interactive UI with Lucide icons
 - ✅ Session management
-- ✅ Cache control headers for Replit
 
 ## Architecture Decisions
 1. **Static Website Approach**: Chosen for simplicity and fast deployment
