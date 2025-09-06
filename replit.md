@@ -42,6 +42,11 @@ Preferred communication style: Simple, everyday language.
 ## Third-party Services
 - **OpenAI API**: Primary AI service for generating SDLC guidance and assistance (requires OPENAI_API_KEY environment variable)
 
+## Deployment Platforms
+- **Replit**: Primary development and hosting platform with full server-side functionality
+- **Netlify**: Production deployment with serverless functions for optimal performance and security
+- **GitHub Pages**: Static demo deployment with client-side AI integration
+
 ## External Libraries
 - **Lucide Icons**: Icon library loaded via CDN (`https://unpkg.com/lucide@latest/dist/umd/lucide.js`)
 - **OpenAI Node.js SDK**: Official OpenAI library (^5.18.1) for backend API integration
