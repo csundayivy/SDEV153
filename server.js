@@ -5,9 +5,20 @@ const url = require('url');
 const OpenAI = require('openai');
 
 const port = 5000;
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+
+// Environment-aware OpenAI initialization
+let openai = null;
+if (process.env.OPENAI_API_KEY) {
+    openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+    });
+    console.log('✅ OpenAI API initialized successfully');
+} else {
+    console.log('⚠️  OpenAI API key not found. API features will be disabled.');
+    console.log('   To enable AI features:');
+    console.log('   - In Replit: Add OPENAI_API_KEY to the Secrets tab');
+    console.log('   - In GitHub: Add OPENAI_API_KEY to Repository Secrets');
+}
 
 // MIME types mapping
 const mimeTypes = {
@@ -127,6 +138,10 @@ async function handleApiRequest(req, res, endpoint, query) {
 
 // Generate SDLC analysis using OpenAI
 async function generateSDLCAnalysis(concept) {
+    if (!openai) {
+        throw new Error('OpenAI API not initialized. Please check your API key configuration.');
+    }
+    
     const completion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
@@ -148,6 +163,9 @@ async function generateSDLCAnalysis(concept) {
 
 // Generate content for different SDLC phases
 async function generateContent(prompt, type) {
+    if (!openai) {
+        throw new Error('OpenAI API not initialized. Please check your API key configuration.');
+    }
     const systemPrompts = {
         design: "You are a UX/UI design expert. Generate wireframes, design specifications, and user experience recommendations.",
         development: "You are a senior software developer. Generate code structure, implementation plans, and technical specifications.",

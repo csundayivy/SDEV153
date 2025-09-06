@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "build:github": "node build-github.js"
   },
   "engines": {
     "node": ">=14.0.0"
