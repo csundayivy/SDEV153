@@ -360,7 +360,7 @@ function setupGenericSDLCPage(type, placeholder) {
 async function makeAPIRequest(endpoint, data) {
     try {
         // Detect environment
-        const isNetlify = window.NETLIFY_ENVIRONMENT || window.location.hostname.includes('netlify');
+        const isNetlify = window.NETLIFY_ENVIRONMENT || window.location.hostname.includes('netlify.app') || window.location.hostname.includes('netlify.com');
         const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname.includes('github.com');
         const isReplit = window.location.hostname.includes('replit');
         
