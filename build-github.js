@@ -144,10 +144,10 @@ if (window.location.hostname.includes('github.io')) {
 }
 `;
 
-// Write the GitHub Pages API handler
-fs.writeFileSync(path.join(distDir, 'js', 'github-pages-api.js'), clientApiHandler);
+// GitHub Pages AI handler is already included as github-pages-ai.js
+// No need to write additional API handler
 
-// Update HTML files to include the GitHub Pages API handler
+// Update HTML files to include the GitHub Pages AI handler
 const htmlFiles = ['index.html', 'dashboard.html', 'planning.html', 'design.html', 'development.html', 'testing.html', 'deployment.html', 'maintenance.html'];
 
 htmlFiles.forEach(file => {
@@ -155,9 +155,8 @@ htmlFiles.forEach(file => {
     if (fs.existsSync(filePath)) {
         let content = fs.readFileSync(filePath, 'utf8');
         
-        // Add GitHub Pages API script before closing body tag
-        const scriptTag = '    <script src="js/github-pages-api.js"></script>\\n</body>';
-        content = content.replace('</body>', scriptTag);
+        // The GitHub Pages AI script is already included in the SDLC pages
+        // Just ensure it's copied to the dist directory
         
         fs.writeFileSync(filePath, content);
     }

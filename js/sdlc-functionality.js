@@ -295,13 +295,7 @@ async function handleAnalyzeClick() {
     hideAlerts();
     
     try {
-        const response = await fetch('/api/analyze', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ concept })
-        });
-        
-        const result = await response.json();
+        const result = await makeAPIRequest('/api/analyze', { concept });
         
         if (result.success) {
             displayAnalysisResults(result.analysis);
@@ -362,6 +356,112 @@ function setupGenericSDLCPage(type, placeholder) {
     }
 }
 
+// API helper function - works for both Replit and GitHub Pages
+async function makeAPIRequest(endpoint, data) {
+    try {
+        // Check if we're on GitHub Pages and have AI configured
+        const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname.includes('github.com');
+        
+        if (isGitHubPages && window.githubPagesAI && window.githubPagesAI.isReady()) {
+            // Use client-side AI for GitHub Pages
+            if (endpoint === '/api/analyze') {
+                const result = await window.githubPagesAI.generateSDLCAnalysis(data.concept);
+                return { success: true, analysis: result };
+            } else if (endpoint === '/api/generate') {
+                const result = await window.githubPagesAI.generateContent(data.prompt, data.type);
+                return { success: true, result: result };
+            }
+        } else if (isGitHubPages) {
+            // Fallback for GitHub Pages without API key
+            return getGitHubPagesFallback(endpoint, data);
+        }
+        
+        // Use server-side API for Replit
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error('API Request failed:', error);
+        throw error;
+    }
+}
+
+// Fallback responses for GitHub Pages without API key
+function getGitHubPagesFallback(endpoint, data) {
+    if (endpoint === '/api/analyze') {
+        return {
+            success: true,
+            analysis: `
+                <div class="analysis-result">
+                    <h3>Project Analysis: ${data.concept}</h3>
+                    <div class="github-pages-notice">
+                        <p><strong>🔑 Demo Mode:</strong> To get real AI-powered analysis, please set up your OpenAI API key.</p>
+                        <button onclick="location.reload()" class="setup-ai-btn">Set Up AI Features</button>
+                    </div>
+                    <div class="analysis-section">
+                        <h4>📋 Planning Phase</h4>
+                        <p>Define requirements, user stories, and project scope for "${data.concept}".</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h4>🎨 Design Phase</h4>
+                        <p>Create wireframes, user interface designs, and system architecture.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h4>💻 Development Phase</h4>
+                        <p>Implement features, write code, and integrate components.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h4>🧪 Testing Phase</h4>
+                        <p>Create test plans, run quality assurance, and validate functionality.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h4>🚀 Deployment Phase</h4>
+                        <p>Deploy to production, configure CI/CD, and monitor performance.</p>
+                    </div>
+                    <div class="analysis-section">
+                        <h4>🔧 Maintenance Phase</h4>
+                        <p>Monitor, update, and maintain the system for optimal performance.</p>
+                    </div>
+                </div>
+            `
+        };
+    } else if (endpoint === '/api/generate') {
+        return {
+            success: true,
+            result: `
+                <div class="generated-content">
+                    <h3>SDLC Guidance</h3>
+                    <div class="github-pages-notice">
+                        <p><strong>🔑 Demo Mode:</strong> To get AI-powered content generation, please set up your OpenAI API key.</p>
+                        <button onclick="location.reload()" class="setup-ai-btn">Set Up AI Features</button>
+                    </div>
+                    <div class="content-section">
+                        <h4>General Best Practices</h4>
+                        <p><strong>Your request:</strong> ${data.prompt}</p>
+                        <ul>
+                            <li>Follow industry standards and proven methodologies</li>
+                            <li>Consider scalability and future maintenance needs</li>
+                            <li>Document all decisions and architectural choices</li>
+                            <li>Include comprehensive testing strategies</li>
+                            <li>Plan for continuous integration and deployment</li>
+                        </ul>
+                    </div>
+                </div>
+            `
+        };
+    }
+}
+
 // Generic content generation
 async function handleGenericGenerate(type) {
     const input = document.getElementById(`${type}Input`) || document.getElementById('projectInput');
@@ -372,13 +472,7 @@ async function handleGenericGenerate(type) {
     hideAlerts();
     
     try {
-        const response = await fetch('/api/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt, type })
-        });
-        
-        const result = await response.json();
+        const result = await makeAPIRequest('/api/generate', { prompt, type });
         
         if (result.success) {
             displayGenerationResults(result.result);

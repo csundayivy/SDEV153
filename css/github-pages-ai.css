@@ -1,0 +1,250 @@
+/* GitHub Pages AI Integration Styles */
+.api-key-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+}
+
+.api-key-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: 1rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color, #e5e7eb);
+}
+
+.api-key-content h3 {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary, #111827);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.api-key-content p {
+    margin: 0 0 1.5rem 0;
+    color: var(--text-secondary, #6b7280);
+    line-height: 1.6;
+}
+
+.api-key-form {
+    margin: 1.5rem 0;
+}
+
+.api-key-form input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color, #d1d5db);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.api-key-form input:focus {
+    outline: none;
+    border-color: var(--primary-color, #4f46e5);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.api-key-form button {
+    padding: 0.75rem 1.5rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.api-key-form button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#saveApiKey {
+    background: var(--primary-color, #4f46e5);
+    color: white;
+}
+
+#saveApiKey:hover {
+    background: var(--primary-dark, #3730a3);
+}
+
+#skipApiKey {
+    background: var(--gray-500, #6b7280);
+    color: white;
+}
+
+#skipApiKey:hover {
+    background: var(--gray-600, #4b5563);
+}
+
+.api-key-help {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+.api-key-help p {
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+}
+
+.api-key-help a {
+    color: var(--primary-color, #4f46e5);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.api-key-help a:hover {
+    text-decoration: underline;
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    z-index: 10001;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notification-success {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.notification-error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.notification-info {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* GitHub Pages Notice Styles */
+.github-pages-notice {
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    border: 1px solid var(--border-color, #d1d5db);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.github-pages-notice p {
+    margin: 0 0 1rem 0;
+    color: var(--text-secondary, #6b7280);
+    font-size: 0.875rem;
+}
+
+.github-pages-notice strong {
+    color: var(--text-primary, #111827);
+}
+
+.setup-ai-btn {
+    background: var(--primary-color, #4f46e5) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 6px !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.setup-ai-btn:hover {
+    background: var(--primary-dark, #3730a3) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .api-key-content {
+        margin: 0.5rem;
+        padding: 1.5rem;
+        max-width: calc(100vw - 1rem);
+    }
+    
+    .api-key-form button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .api-key-content {
+        background: var(--dark-bg, #1f2937);
+        color: var(--dark-text, #f9fafb);
+        border-color: var(--dark-border, #374151);
+    }
+    
+    .api-key-content h3 {
+        color: var(--dark-text, #f9fafb);
+    }
+    
+    .api-key-content p {
+        color: var(--dark-text-secondary, #d1d5db);
+    }
+    
+    .api-key-form input {
+        background: var(--dark-input-bg, #374151);
+        border-color: var(--dark-border, #4b5563);
+        color: var(--dark-text, #f9fafb);
+    }
+    
+    .api-key-form input:focus {
+        border-color: var(--primary-color, #4f46e5);
+        background: var(--dark-input-focus-bg, #4b5563);
+    }
+    
+    .github-pages-notice {
+        background: var(--dark-notice-bg, #374151);
+        border-color: var(--dark-border, #4b5563);
+    }
+}
