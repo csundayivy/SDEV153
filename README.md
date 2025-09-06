@@ -13,6 +13,9 @@ Preppy is a web application that provides AI assistance for the Software Develop
 - Authentication system using localStorage (demo implementation)
 - All pages functional and accessible
 
+- Functional demo available below: 
+  https://preppysdlcai.netlify.app
+
 ## Project Structure
 ```
 /
