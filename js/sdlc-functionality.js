@@ -428,29 +428,71 @@ function getGitHubPagesFallback(endpoint, data) {
                         <p><strong>🔑 Demo Mode:</strong> To get real AI-powered analysis, please set up your OpenAI API key.</p>
                         <button onclick="location.reload()" class="setup-ai-btn">Set Up AI Features</button>
                     </div>
+                    
                     <div class="analysis-section">
-                        <h4>📋 Planning Phase</h4>
-                        <p>Define requirements, user stories, and project scope for "${data.concept}".</p>
+                        <h4>🎯 Project Scope & Goals</h4>
+                        <p>The project "${data.concept}" aims to provide value through digital solutions. Key objectives include user engagement, functionality, and scalable architecture.</p>
+                        <ul>
+                            <li>Primary goal: Deliver core functionality to target users</li>
+                            <li>Secondary goal: Ensure scalability and maintainability</li>
+                            <li>Success metrics: User adoption and performance indicators</li>
+                        </ul>
                     </div>
+                    
                     <div class="analysis-section">
-                        <h4>🎨 Design Phase</h4>
-                        <p>Create wireframes, user interface designs, and system architecture.</p>
+                        <h4>👥 Target Audience</h4>
+                        <p>Understanding the user base is crucial for project success.</p>
+                        <ul>
+                            <li><strong>Primary Users:</strong> Tech-savvy individuals seeking efficient solutions</li>
+                            <li><strong>Secondary Users:</strong> Business stakeholders and administrators</li>
+                            <li><strong>User Demographics:</strong> Ages 25-45, comfortable with digital tools</li>
+                        </ul>
                     </div>
+                    
                     <div class="analysis-section">
-                        <h4>💻 Development Phase</h4>
-                        <p>Implement features, write code, and integrate components.</p>
+                        <h4>📝 User Stories</h4>
+                        <p>Key user scenarios and acceptance criteria:</p>
+                        <ul>
+                            <li><strong>As a user,</strong> I want to easily access main features so that I can accomplish my goals efficiently</li>
+                            <li><strong>As a user,</strong> I want responsive design so that I can use the application on any device</li>
+                            <li><strong>As an admin,</strong> I want to manage user accounts so that I can maintain system security</li>
+                        </ul>
                     </div>
+                    
                     <div class="analysis-section">
-                        <h4>🧪 Testing Phase</h4>
-                        <p>Create test plans, run quality assurance, and validate functionality.</p>
+                        <h4>⚙️ Functional Requirements</h4>
+                        <p>Core features and capabilities needed:</p>
+                        <ul>
+                            <li>User authentication and authorization system</li>
+                            <li>Responsive user interface with intuitive navigation</li>
+                            <li>Data management and storage capabilities</li>
+                            <li>Search and filtering functionality</li>
+                            <li>Real-time updates and notifications</li>
+                        </ul>
                     </div>
+                    
                     <div class="analysis-section">
-                        <h4>🚀 Deployment Phase</h4>
-                        <p>Deploy to production, configure CI/CD, and monitor performance.</p>
+                        <h4>🔒 Non-Functional Requirements</h4>
+                        <p>Performance, security, and scalability considerations:</p>
+                        <ul>
+                            <li><strong>Performance:</strong> Page load times under 3 seconds</li>
+                            <li><strong>Security:</strong> Data encryption and secure authentication</li>
+                            <li><strong>Scalability:</strong> Support for growing user base</li>
+                            <li><strong>Availability:</strong> 99.9% uptime target</li>
+                            <li><strong>Usability:</strong> Intuitive interface requiring minimal training</li>
+                        </ul>
                     </div>
+                    
                     <div class="analysis-section">
-                        <h4>🔧 Maintenance Phase</h4>
-                        <p>Monitor, update, and maintain the system for optimal performance.</p>
+                        <h4>🛠️ Technical Requirements</h4>
+                        <p>Technology stack and architecture recommendations:</p>
+                        <ul>
+                            <li><strong>Frontend:</strong> Modern web technologies (React, Vue, or Angular)</li>
+                            <li><strong>Backend:</strong> Node.js, Python, or similar server technology</li>
+                            <li><strong>Database:</strong> PostgreSQL or MongoDB for data storage</li>
+                            <li><strong>Hosting:</strong> Cloud platform (AWS, Azure, or Google Cloud)</li>
+                            <li><strong>Security:</strong> HTTPS, authentication tokens, input validation</li>
+                        </ul>
                     </div>
                 </div>
             `
