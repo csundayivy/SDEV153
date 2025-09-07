@@ -113,37 +113,125 @@
                     </div>
                     <div class="badge planning-badge">Powered by AI Design Assistant</div>
 
-                    <!-- Coming Soon Card -->
+                    <!-- High Level Design Generator -->
                     <div class="card input-card">
-                        <div class="coming-soon-content">
-                            <div class="coming-soon-icon">
-                                <i data-lucide="sparkles"></i>
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i data-lucide="layout"></i>
                             </div>
-                            <h2>Design Tools Coming Soon</h2>
-                            <p>We're building powerful AI-assisted design tools to help you create stunning user interfaces and experiences.</p>
-                            
-                            <div class="feature-preview">
-                                <h3>Planned Features:</h3>
-                                <ul class="feature-list">
-                                    <li><i data-lucide="layout"></i> Wireframe generation from requirements</li>
-                                    <li><i data-lucide="palette"></i> UI component design and styling</li>
-                                    <li><i data-lucide="users"></i> User experience optimization</li>
-                                    <li><i data-lucide="smartphone"></i> Responsive design generation</li>
-                                    <li><i data-lucide="layers"></i> Design system creation</li>
-                                    <li><i data-lucide="play"></i> Interactive prototype generation</li>
-                                </ul>
+                            <div>
+                                <h2 class="card-title">High Level Design Generator</h2>
+                                <p class="card-description">Transform your requirements document into comprehensive system architecture and design decisions</p>
                             </div>
+                        </div>
 
-                            <div class="cta-section">
-                                <a href="planning.html" class="button">
-                                    <i data-lucide="arrow-left"></i>
-                                    <span>Start with Planning</span>
-                                </a>
-                                <a href="development.html" class="button button-outline">
-                                    <span>Skip to Development</span>
-                                    <i data-lucide="arrow-right"></i>
-                                </a>
+                        <div class="input-section">
+                            <label for="requirementsInput" class="input-label">
+                                Requirements Document
+                                <span class="required">*</span>
+                            </label>
+                            <textarea 
+                                id="requirementsInput"
+                                class="ai-input"
+                                placeholder="Paste your requirements document from the planning stage here. Include functional requirements, non-functional requirements, user stories, and any technical constraints..."
+                                maxlength="5000"
+                                rows="8"
+                            ></textarea>
+                            <div class="character-count">
+                                <span id="requirementsCharCount">0/5000</span>
                             </div>
+                        </div>
+
+                        <div class="feature-info">
+                            <h3>What you'll get:</h3>
+                            <div class="feature-grid">
+                                <div class="feature-item">
+                                    <i data-lucide="network"></i>
+                                    <span>System Architecture Overview</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="components"></i>
+                                    <span>Major Component Identification</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="layers"></i>
+                                    <span>Technology Stack Decisions</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="puzzle"></i>
+                                    <span>System-wide Design Patterns</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="git-merge"></i>
+                                    <span>Integration Approaches</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i data-lucide="database"></i>
+                                    <span>Database Architecture</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="button-section">
+                            <button 
+                                id="generateDesignButton"
+                                class="button primary-button"
+                                onclick="generateHighLevelDesign()"
+                            >
+                                <i data-lucide="sparkles"></i>
+                                <span>Generate High Level Design</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Alert Messages -->
+                    <div id="errorAlert" class="alert error-alert hidden">
+                        <div class="alert-icon">
+                            <i data-lucide="alert-circle"></i>
+                        </div>
+                        <div>
+                            <strong>Error:</strong>
+                            <span id="errorMessage"></span>
+                        </div>
+                        <button onclick="this.parentElement.classList.add('hidden')" class="alert-close">
+                            <i data-lucide="x"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="successAlert" class="alert success-alert hidden">
+                        <div class="alert-icon">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <div>
+                            <strong>Success:</strong>
+                            <span id="successMessage"></span>
+                        </div>
+                        <button onclick="this.parentElement.classList.add('hidden')" class="alert-close">
+                            <i data-lucide="x"></i>
+                        </button>
+                    </div>
+
+                    <!-- Design Results -->
+                    <div id="designResults" class="card results-card hidden">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i data-lucide="layout"></i>
+                            </div>
+                            <div>
+                                <h2 class="card-title">High Level Design</h2>
+                                <p class="card-description">Generated system architecture and design decisions</p>
+                            </div>
+                        </div>
+                        <div id="designContent" class="results-content"></div>
+                        <div class="results-actions">
+                            <button class="button button-outline" onclick="copyDesignToClipboard()">
+                                <i data-lucide="copy"></i>
+                                <span>Copy Design</span>
+                            </button>
+                            <button class="button button-outline" onclick="exportDesignToPDF()">
+                                <i data-lucide="download"></i>
+                                <span>Export PDF</span>
+                            </button>
                         </div>
                     </div>
                 </div>
