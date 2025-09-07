@@ -313,6 +313,25 @@ async function handleAnalyzeClick() {
 // Design Page Functionality
 function setupDesignPage() {
     setupGenericSDLCPage('design', 'Generate wireframes, design specifications, and user experience recommendations for your project.');
+    
+    // Setup requirements input character counter
+    const requirementsInput = document.getElementById('requirementsInput');
+    const charCount = document.getElementById('requirementsCharCount');
+    
+    if (requirementsInput && charCount) {
+        requirementsInput.addEventListener('input', () => {
+            const count = requirementsInput.value.length;
+            charCount.textContent = `${count}/5000`;
+            
+            if (count > 4800) {
+                charCount.style.color = '#EF4444';
+            } else if (count > 4000) {
+                charCount.style.color = '#F59E0B';
+            } else {
+                charCount.style.color = '#6B7280';
+            }
+        });
+    }
 }
 
 // Development Page Functionality
@@ -393,6 +412,9 @@ async function makeAPIRequest(endpoint, data) {
                 } else if (endpoint === '/api/generate') {
                     const result = await window.githubPagesAI.generateContent(data.prompt, data.type);
                     return { success: true, result: result };
+                } else if (endpoint === '/api/design') {
+                    const result = await window.githubPagesAI.generateHighLevelDesign(data.requirements);
+                    return { success: true, design: result };
                 }
             } else {
                 // Fallback for GitHub Pages without API key
@@ -706,4 +728,145 @@ function showLogoutSuccess() {
             lucide.createIcons();
         }
     }
+}
+
+// High Level Design Generator Functions
+async function generateHighLevelDesign() {
+    const requirementsInput = document.getElementById('requirementsInput');
+    const generateButton = document.getElementById('generateDesignButton');
+    
+    if (!requirementsInput || !generateButton) {
+        console.error('Required elements not found');
+        return;
+    }
+    
+    const requirements = requirementsInput.value.trim();
+    
+    if (!requirements) {
+        showError('Please enter your requirements document to generate a high level design.');
+        requirementsInput.focus();
+        return;
+    }
+    
+    if (requirements.length < 50) {
+        showError('Please provide more detailed requirements (at least 50 characters) for a comprehensive design.');
+        requirementsInput.focus();
+        return;
+    }
+    
+    // Hide alerts
+    hideAlerts();
+    
+    // Set loading state
+    setDesignLoadingState(true);
+    
+    try {
+        const response = await makeAPIRequest('/api/design', { requirements });
+        
+        if (response.success) {
+            displayDesignResults(response.design);
+            
+            // Scroll to results
+            setTimeout(() => {
+                document.getElementById('designResults')?.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+        } else {
+            throw new Error(response.error || 'Failed to generate design');
+        }
+    } catch (error) {
+        console.error('Design generation failed:', error);
+        showError(error.message || 'Failed to generate high level design. Please try again.');
+    } finally {
+        setDesignLoadingState(false);
+    }
+}
+
+function setDesignLoadingState(loading) {
+    const button = document.getElementById('generateDesignButton');
+    const buttonText = button?.querySelector('span');
+    const buttonIcon = button?.querySelector('i');
+    
+    if (button) {
+        button.disabled = loading;
+        
+        if (loading) {
+            button.classList.add('loading');
+            if (buttonText) buttonText.textContent = 'Generating Design...';
+            if (buttonIcon) buttonIcon.setAttribute('data-lucide', 'loader-2');
+        } else {
+            button.classList.remove('loading');
+            if (buttonText) buttonText.textContent = 'Generate High Level Design';
+            if (buttonIcon) buttonIcon.setAttribute('data-lucide', 'sparkles');
+        }
+        
+        // Update Lucide icons
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            lucide.createIcons();
+        }
+    }
+}
+
+function displayDesignResults(design) {
+    const resultsDiv = document.getElementById('designResults');
+    const contentDiv = document.getElementById('designContent');
+    
+    if (resultsDiv && contentDiv) {
+        contentDiv.innerHTML = design;
+        resultsDiv.classList.remove('hidden');
+        
+        // Update Lucide icons
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            lucide.createIcons();
+        }
+        
+        showSuccess('High level design generated successfully!');
+    }
+}
+
+function copyDesignToClipboard() {
+    const contentDiv = document.getElementById('designContent');
+    if (!contentDiv) return;
+    
+    // Get text content without HTML
+    const textContent = contentDiv.innerText || contentDiv.textContent;
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(textContent).then(() => {
+            showSuccess('Design copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            fallbackCopy(textContent);
+        });
+    } else {
+        fallbackCopy(textContent);
+    }
+}
+
+function fallbackCopy(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        showSuccess('Design copied to clipboard!');
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        showError('Failed to copy to clipboard. Please select and copy manually.');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function exportDesignToPDF() {
+    // For now, show a helpful message about PDF export
+    showSuccess('PDF export feature coming soon! Use "Copy Design" to save the content for now.');
 }

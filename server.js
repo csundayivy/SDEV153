@@ -125,6 +125,23 @@ async function handleApiRequest(req, res, endpoint, query) {
                     res.end(JSON.stringify({ success: false, error: 'Failed to generate content' }));
                 }
             });
+        } else if (endpoint === '/api/design' && req.method === 'POST') {
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+            req.on('end', async () => {
+                try {
+                    const { requirements } = JSON.parse(body);
+                    const design = await generateHighLevelDesign(requirements);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: true, design }));
+                } catch (error) {
+                    console.error('Design generation error:', error);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, error: 'Failed to generate design' }));
+                }
+            });
         } else {
             res.writeHead(404, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: false, error: 'Endpoint not found' }));
@@ -204,6 +221,50 @@ async function generateContent(prompt, type) {
             }
         ],
         max_tokens: 1500,
+        temperature: 0.7
+    });
+    
+    return completion.choices[0].message.content;
+}
+
+// Generate High Level Design using OpenAI
+async function generateHighLevelDesign(requirements) {
+    if (!openai) {
+        throw new Error('OpenAI API not initialized. Please check your API key configuration.');
+    }
+    
+    const completion = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+            {
+                role: "system",
+                content: `You are an expert system architect and technical lead. Analyze the given requirements document and generate a comprehensive high level design that includes:
+
+1. **System Architecture Overview** - Overall system structure, layers, and architectural patterns
+2. **Major Component Identification** - Key components, modules, and their responsibilities
+3. **Technology Stack Decisions** - Recommended technologies, frameworks, and tools with justifications
+4. **System-wide Design Patterns** - Architectural patterns, design principles, and best practices
+5. **Integration Approaches** - How components communicate, APIs, messaging, and data flow
+6. **Database Architecture** - Data models, storage solutions, and data management strategies
+
+Format your response in clean HTML with proper headings, sections, bullet points, and professional styling. Make it comprehensive, technically sound, and suitable for development teams and technical stakeholders. Include specific recommendations and technical rationale for all decisions.`
+            },
+            {
+                role: "user",
+                content: `Based on these requirements, generate a comprehensive high level system design:
+
+${requirements}
+
+Please provide detailed technical analysis covering:
+- Complete system architecture with component relationships
+- Specific technology recommendations with reasoning
+- Database design and data architecture decisions  
+- Integration patterns and communication protocols
+- Security considerations and non-functional requirements
+- Scalability and performance design decisions`
+            }
+        ],
+        max_tokens: 4000,
         temperature: 0.7
     });
     
