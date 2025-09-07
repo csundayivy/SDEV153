@@ -263,5 +263,63 @@
     </footer>
 
     <script src="js/landing.js"></script>
+    
+    <!-- Mobile navigation toggle script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.getElementById('navToggle');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (navToggle && navMenu) {
+                navToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    
+                    // Update icon
+                    const icon = navToggle.querySelector('i');
+                    if (icon) {
+                        if (navMenu.classList.contains('active')) {
+                            icon.setAttribute('data-lucide', 'x');
+                        } else {
+                            icon.setAttribute('data-lucide', 'menu');
+                        }
+                        
+                        // Re-initialize Lucide icons
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons();
+                        }
+                    }
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                        navMenu.classList.remove('active');
+                        const icon = navToggle.querySelector('i');
+                        if (icon) {
+                            icon.setAttribute('data-lucide', 'menu');
+                            if (typeof lucide !== 'undefined') {
+                                lucide.createIcons();
+                            }
+                        }
+                    }
+                });
+                
+                // Close menu when clicking on nav links
+                const navLinks = navMenu.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navMenu.classList.remove('active');
+                        const icon = navToggle.querySelector('i');
+                        if (icon) {
+                            icon.setAttribute('data-lucide', 'menu');
+                            if (typeof lucide !== 'undefined') {
+                                lucide.createIcons();
+                            }
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>

@@ -47,6 +47,12 @@
     color: white;
 }
 
+.nav-logo .logo-text {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 20px;
+}
+
 /* Mobile menu - hidden by default */
 .nav-menu {
     position: fixed;
