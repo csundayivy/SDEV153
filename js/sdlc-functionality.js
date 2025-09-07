@@ -346,6 +346,17 @@ function setupDesignPage() {
             lowLevelCharCount.textContent = `${count}`;
         });
     }
+
+    // Setup Website Structure input character counter
+    const websiteStructureInput = document.getElementById('websiteStructureInput');
+    const websiteStructureCharCount = document.getElementById('websiteStructureCharCount');
+    
+    if (websiteStructureInput && websiteStructureCharCount) {
+        websiteStructureInput.addEventListener('input', () => {
+            const count = websiteStructureInput.value.length;
+            websiteStructureCharCount.textContent = `${count}`;
+        });
+    }
 }
 
 // Development Page Functionality
@@ -435,6 +446,9 @@ async function makeAPIRequest(endpoint, data) {
                 } else if (endpoint === '/api/lowlevel') {
                     const result = await window.githubPagesAI.generateLowLevelDiagram(data.requirements);
                     return { success: true, diagrams: result };
+                } else if (endpoint === '/api/website-structure') {
+                    const result = await window.githubPagesAI.generateWebsiteStructure(data.concept);
+                    return { success: true, structure: result };
                 }
             } else {
                 // Fallback for GitHub Pages without API key
@@ -863,6 +877,7 @@ function showToolSelection() {
     document.getElementById('highLevelDesignSection')?.classList.add('hidden');
     document.getElementById('erdGeneratorSection')?.classList.add('hidden');
     document.getElementById('lowLevelDiagramSection')?.classList.add('hidden');
+    document.getElementById('websiteStructureSection')?.classList.add('hidden');
     
     // Show tool selection grid
     document.querySelector('.design-tools-grid')?.classList.remove('hidden');
@@ -873,6 +888,7 @@ function showHighLevelDesignGenerator() {
     document.querySelector('.design-tools-grid')?.classList.add('hidden');
     document.getElementById('erdGeneratorSection')?.classList.add('hidden');
     document.getElementById('lowLevelDiagramSection')?.classList.add('hidden');
+    document.getElementById('websiteStructureSection')?.classList.add('hidden');
     
     // Show high level design generator
     document.getElementById('highLevelDesignSection')?.classList.remove('hidden');
@@ -886,6 +902,7 @@ function showERDGenerator() {
     document.querySelector('.design-tools-grid')?.classList.add('hidden');
     document.getElementById('highLevelDesignSection')?.classList.add('hidden');
     document.getElementById('lowLevelDiagramSection')?.classList.add('hidden');
+    document.getElementById('websiteStructureSection')?.classList.add('hidden');
     
     // Show ERD generator
     document.getElementById('erdGeneratorSection')?.classList.remove('hidden');
@@ -899,12 +916,27 @@ function showLowLevelDiagramGenerator() {
     document.querySelector('.design-tools-grid')?.classList.add('hidden');
     document.getElementById('highLevelDesignSection')?.classList.add('hidden');
     document.getElementById('erdGeneratorSection')?.classList.add('hidden');
+    document.getElementById('websiteStructureSection')?.classList.add('hidden');
     
     // Show low level diagram generator
     document.getElementById('lowLevelDiagramSection')?.classList.remove('hidden');
     
     // Focus input
     document.getElementById('lowLevelInput')?.focus();
+}
+
+function showWebsiteStructureGenerator() {
+    // Hide tool selection and other generators
+    document.querySelector('.design-tools-grid')?.classList.add('hidden');
+    document.getElementById('highLevelDesignSection')?.classList.add('hidden');
+    document.getElementById('erdGeneratorSection')?.classList.add('hidden');
+    document.getElementById('lowLevelDiagramSection')?.classList.add('hidden');
+    
+    // Show website structure generator
+    document.getElementById('websiteStructureSection')?.classList.remove('hidden');
+    
+    // Focus input
+    document.getElementById('websiteStructureInput')?.focus();
 }
 
 // ERD Generator Functions
@@ -1115,6 +1147,112 @@ function fallbackCopyLowLevel(text) {
 }
 
 function exportLowLevelToPDF() {
+    // For now, show a helpful message about PDF export
+    alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
+}
+
+// Website Structure Generator Functions
+async function generateWebsiteStructure() {
+    const websiteStructureInput = document.getElementById('websiteStructureInput');
+    const generateButton = document.getElementById('generateWebsiteStructureButton');
+    
+    if (!websiteStructureInput || !generateButton) {
+        console.error('Required Website Structure elements not found');
+        return;
+    }
+    
+    const concept = websiteStructureInput.value.trim();
+    
+    if (!concept) {
+        alert('Please describe your website concept to generate a project structure.');
+        websiteStructureInput.focus();
+        return;
+    }
+    
+    if (concept.length < 30) {
+        alert('Please provide more details about your website concept (at least 30 characters) for a comprehensive structure.');
+        websiteStructureInput.focus();
+        return;
+    }
+    
+    try {
+        const response = await makeAPIRequest('/api/website-structure', { concept });
+        
+        if (response.success) {
+            displayWebsiteStructureResults(response.structure);
+            
+            // Scroll to results
+            setTimeout(() => {
+                document.getElementById('websiteStructureResults')?.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+        } else {
+            throw new Error(response.error || 'Failed to generate website structure');
+        }
+    } catch (error) {
+        console.error('Website structure generation failed:', error);
+        alert(error.message || 'Failed to generate website structure. Please try again.');
+    }
+}
+
+function displayWebsiteStructureResults(structure) {
+    const resultsDiv = document.getElementById('websiteStructureResults');
+    const contentDiv = document.getElementById('websiteStructureContent');
+    
+    if (resultsDiv && contentDiv) {
+        contentDiv.innerHTML = structure;
+        resultsDiv.classList.remove('hidden');
+        
+        // Update Lucide icons
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            lucide.createIcons();
+        }
+    }
+}
+
+function copyWebsiteStructureToClipboard() {
+    const contentDiv = document.getElementById('websiteStructureContent');
+    if (!contentDiv) return;
+    
+    // Get text content without HTML
+    const textContent = contentDiv.innerText || contentDiv.textContent;
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(textContent).then(() => {
+            alert('Website structure copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            fallbackCopyWebsiteStructure(textContent);
+        });
+    } else {
+        fallbackCopyWebsiteStructure(textContent);
+    }
+}
+
+function fallbackCopyWebsiteStructure(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        alert('Website structure copied to clipboard!');
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        alert('Failed to copy to clipboard. Please select and copy manually.');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function exportWebsiteStructureToPDF() {
     // For now, show a helpful message about PDF export
     alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
 }
