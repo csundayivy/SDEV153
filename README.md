@@ -8,7 +8,7 @@ Preppy is a comprehensive AI-powered Software Development Life Cycle (SDLC) comp
 
 ### Key Features
 - **Multi-Platform AI Integration**: Real ChatGPT functionality across Replit, Netlify, and GitHub Pages
-- **Four Specialized Design Tools**: High-level design, ERD generation, low-level diagrams, and website structure planning
+- **Four Specialized Design Tools**: RequirementHigh-level design, ERD generation, low-level diagrams, and website structure planning
 - **Comprehensive SDLC Coverage**: Complete workflow from planning to maintenance with AI guidance
 - **Mobile-First Responsive Design**: Optimized for all devices with touch-friendly navigation
 - **Cross-Platform Deployment**: Identical functionality whether deployed on Replit, Netlify, or GitHub Pages
