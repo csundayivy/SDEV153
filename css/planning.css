@@ -138,6 +138,32 @@
     cursor: not-allowed;
     transform: none;
     box-shadow: 0 2px 8px rgba(255, 107, 53, 0.2);
+    background: #6b7280;
+    border-color: #6b7280;
+    position: relative;
+}
+
+.button:disabled::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+.button:disabled span {
+    margin-left: 24px;
 }
 
 .button.loading {
