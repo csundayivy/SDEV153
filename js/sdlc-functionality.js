@@ -335,6 +335,17 @@ function setupDesignPage() {
             erdCharCount.textContent = `${count}`;
         });
     }
+
+    // Setup Low Level input character counter
+    const lowLevelInput = document.getElementById('lowLevelInput');
+    const lowLevelCharCount = document.getElementById('lowLevelCharCount');
+    
+    if (lowLevelInput && lowLevelCharCount) {
+        lowLevelInput.addEventListener('input', () => {
+            const count = lowLevelInput.value.length;
+            lowLevelCharCount.textContent = `${count}`;
+        });
+    }
 }
 
 // Development Page Functionality
@@ -421,6 +432,9 @@ async function makeAPIRequest(endpoint, data) {
                 } else if (endpoint === '/api/erd') {
                     const result = await window.githubPagesAI.generateERD(data.requirements);
                     return { success: true, erd: result };
+                } else if (endpoint === '/api/lowlevel') {
+                    const result = await window.githubPagesAI.generateLowLevelDiagram(data.requirements);
+                    return { success: true, diagrams: result };
                 }
             } else {
                 // Fallback for GitHub Pages without API key
@@ -848,15 +862,17 @@ function showToolSelection() {
     // Hide generator sections
     document.getElementById('highLevelDesignSection')?.classList.add('hidden');
     document.getElementById('erdGeneratorSection')?.classList.add('hidden');
+    document.getElementById('lowLevelDiagramSection')?.classList.add('hidden');
     
     // Show tool selection grid
     document.querySelector('.design-tools-grid')?.classList.remove('hidden');
 }
 
 function showHighLevelDesignGenerator() {
-    // Hide tool selection and other generator
+    // Hide tool selection and other generators
     document.querySelector('.design-tools-grid')?.classList.add('hidden');
     document.getElementById('erdGeneratorSection')?.classList.add('hidden');
+    document.getElementById('lowLevelDiagramSection')?.classList.add('hidden');
     
     // Show high level design generator
     document.getElementById('highLevelDesignSection')?.classList.remove('hidden');
@@ -866,15 +882,29 @@ function showHighLevelDesignGenerator() {
 }
 
 function showERDGenerator() {
-    // Hide tool selection and other generator
+    // Hide tool selection and other generators
     document.querySelector('.design-tools-grid')?.classList.add('hidden');
     document.getElementById('highLevelDesignSection')?.classList.add('hidden');
+    document.getElementById('lowLevelDiagramSection')?.classList.add('hidden');
     
     // Show ERD generator
     document.getElementById('erdGeneratorSection')?.classList.remove('hidden');
     
     // Focus input
     document.getElementById('erdInput')?.focus();
+}
+
+function showLowLevelDiagramGenerator() {
+    // Hide tool selection and other generators
+    document.querySelector('.design-tools-grid')?.classList.add('hidden');
+    document.getElementById('highLevelDesignSection')?.classList.add('hidden');
+    document.getElementById('erdGeneratorSection')?.classList.add('hidden');
+    
+    // Show low level diagram generator
+    document.getElementById('lowLevelDiagramSection')?.classList.remove('hidden');
+    
+    // Focus input
+    document.getElementById('lowLevelInput')?.focus();
 }
 
 // ERD Generator Functions
