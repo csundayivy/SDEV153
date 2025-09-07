@@ -411,7 +411,18 @@ async function makeAPIRequest(endpoint, data) {
         // Netlify: Use serverless functions (server-side)
         if (isNetlify) {
             // Convert endpoint to Netlify functions path
-            const netlifyEndpoint = endpoint.replace('/api/', '/.netlify/functions/');
+            let functionName = endpoint.replace('/api/', '');
+            // Map specific endpoints to correct function names
+            if (functionName === 'design') {
+                functionName = 'design';
+            } else if (functionName === 'erd') {
+                functionName = 'erd';
+            } else if (functionName === 'lowlevel') {
+                functionName = 'lowlevel';
+            } else if (functionName === 'website-structure') {
+                functionName = 'website-structure';
+            }
+            const netlifyEndpoint = `/.netlify/functions/${functionName}`;
             const response = await fetch(netlifyEndpoint, {
                 method: 'POST',
                 headers: {

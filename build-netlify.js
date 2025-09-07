@@ -19,11 +19,11 @@ function copyDirectory(src, dest) {
         const srcPath = path.join(src, item);
         const destPath = path.join(dest, item);
         
-        // Skip node_modules, .git, server files, build files, and Netlify functions
+        // Skip node_modules, .git, server files, build files, but allow netlify directory
         if (item === 'node_modules' || item === '.git' || item === 'server.js' || 
             item === 'package.json' || item === 'package-lock.json' || 
             item === 'build-github.js' || item === 'build-netlify.js' || 
-            item === 'dist' || item === 'netlify' || item.startsWith('.')) {
+            item === 'dist' || item.startsWith('.')) {
             continue;
         }
         
