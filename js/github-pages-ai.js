@@ -200,6 +200,41 @@ Please provide detailed database design covering:
         return await this.makeAPICall(messages, { maxTokens: 4000 });
     }
 
+    // Generate Low Level Diagrams
+    async generateLowLevelDiagram(requirements) {
+        const messages = [
+            {
+                role: "system",
+                content: `You are an expert software architect and technical lead specializing in detailed system design. Analyze the given specifications and generate comprehensive low-level technical diagrams that include:
+
+1. **Class/Component Diagrams** - Detailed structure of each module with attributes, methods, and relationships
+2. **Sequence Diagrams** - Step-by-step interaction flows between objects/components
+3. **Database Schema** - Detailed table structures, relationships, constraints, and indexes
+4. **API Specifications** - Complete method signatures, parameters, return types, and HTTP endpoints
+5. **Algorithms** - Pseudocode and flowcharts for complex processing logic
+6. **Error Handling** - Specific exceptions, error codes, and recovery mechanisms
+
+Format your response in clean HTML with proper headings, sections, code blocks, diagrams, and professional styling. Include UML-style diagrams using text representations, detailed code specifications, and comprehensive technical documentation. Make it suitable for developers and technical architects who need to implement the system.`
+            },
+            {
+                role: "user",
+                content: `Based on these system specifications, generate comprehensive low-level technical diagrams:
+
+${requirements}
+
+Please provide detailed technical analysis covering:
+- Complete class/component structures with all methods and properties
+- Detailed sequence diagrams showing object interactions
+- Full database schema with all constraints and relationships
+- Complete API specifications with all endpoints and data formats
+- Algorithmic implementations with pseudocode
+- Comprehensive error handling strategies and exception management`
+            }
+        ];
+
+        return await this.makeAPICall(messages, { maxTokens: 4000 });
+    }
+
     // Clear stored API key
     clearSession() {
         sessionStorage.removeItem('openai_session_key');

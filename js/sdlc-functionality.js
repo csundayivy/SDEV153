@@ -1012,3 +1012,109 @@ function exportERDToPDF() {
     // For now, show a helpful message about PDF export
     alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
 }
+
+// Low Level Diagram Generator Functions
+async function generateLowLevelDiagram() {
+    const lowLevelInput = document.getElementById('lowLevelInput');
+    const generateButton = document.getElementById('generateLowLevelButton');
+    
+    if (!lowLevelInput || !generateButton) {
+        console.error('Required Low Level Diagram elements not found');
+        return;
+    }
+    
+    const requirements = lowLevelInput.value.trim();
+    
+    if (!requirements) {
+        alert('Please describe your system design or module specifications to generate low-level diagrams.');
+        lowLevelInput.focus();
+        return;
+    }
+    
+    if (requirements.length < 50) {
+        alert('Please provide more detailed specifications (at least 50 characters) for comprehensive low-level diagrams.');
+        lowLevelInput.focus();
+        return;
+    }
+    
+    try {
+        const response = await makeAPIRequest('/api/lowlevel', { requirements });
+        
+        if (response.success) {
+            displayLowLevelResults(response.diagrams);
+            
+            // Scroll to results
+            setTimeout(() => {
+                document.getElementById('lowLevelResults')?.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+        } else {
+            throw new Error(response.error || 'Failed to generate low level diagrams');
+        }
+    } catch (error) {
+        console.error('Low level diagram generation failed:', error);
+        alert(error.message || 'Failed to generate low-level diagrams. Please try again.');
+    }
+}
+
+function displayLowLevelResults(diagrams) {
+    const resultsDiv = document.getElementById('lowLevelResults');
+    const contentDiv = document.getElementById('lowLevelContent');
+    
+    if (resultsDiv && contentDiv) {
+        contentDiv.innerHTML = diagrams;
+        resultsDiv.classList.remove('hidden');
+        
+        // Update Lucide icons
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            lucide.createIcons();
+        }
+    }
+}
+
+function copyLowLevelToClipboard() {
+    const contentDiv = document.getElementById('lowLevelContent');
+    if (!contentDiv) return;
+    
+    // Get text content without HTML
+    const textContent = contentDiv.innerText || contentDiv.textContent;
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(textContent).then(() => {
+            alert('Low level diagrams copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            fallbackCopyLowLevel(textContent);
+        });
+    } else {
+        fallbackCopyLowLevel(textContent);
+    }
+}
+
+function fallbackCopyLowLevel(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        alert('Low level diagrams copied to clipboard!');
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        alert('Failed to copy to clipboard. Please select and copy manually.');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function exportLowLevelToPDF() {
+    // For now, show a helpful message about PDF export
+    alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
+}
