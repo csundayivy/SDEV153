@@ -413,7 +413,11 @@ async function makeAPIRequest(endpoint, data) {
             // Convert endpoint to Netlify functions path
             let functionName = endpoint.replace('/api/', '');
             // Map specific endpoints to correct function names
-            if (functionName === 'design') {
+            if (functionName === 'analyze') {
+                functionName = 'analyze';
+            } else if (functionName === 'generate') {
+                functionName = 'generate';
+            } else if (functionName === 'design') {
                 functionName = 'design';
             } else if (functionName === 'erd') {
                 functionName = 'erd';
@@ -800,6 +804,10 @@ async function generateHighLevelDesign() {
     }
     
     try {
+        // Set loading state
+        generateButton.disabled = true;
+        generateButton.innerHTML = '<span>Generating Design...</span>';
+        
         const response = await makeAPIRequest('/api/design', { requirements });
         
         if (response.success) {
@@ -818,6 +826,10 @@ async function generateHighLevelDesign() {
     } catch (error) {
         console.error('Design generation failed:', error);
         alert(error.message || 'Failed to generate high level design. Please try again.');
+    } finally {
+        // Reset button state
+        generateButton.disabled = false;
+        generateButton.innerHTML = '<span>Generate High Level Design</span>';
     }
 }
 
@@ -975,6 +987,10 @@ async function generateERD() {
     }
     
     try {
+        // Set loading state
+        generateButton.disabled = true;
+        generateButton.innerHTML = '<span>Generating ERD...</span>';
+        
         const response = await makeAPIRequest('/api/erd', { requirements });
         
         if (response.success) {
@@ -993,6 +1009,10 @@ async function generateERD() {
     } catch (error) {
         console.error('ERD generation failed:', error);
         alert(error.message || 'Failed to generate Entity-Relationship Diagram. Please try again.');
+    } finally {
+        // Reset button state
+        generateButton.disabled = false;
+        generateButton.innerHTML = '<span>Generate ERD</span>';
     }
 }
 
@@ -1081,6 +1101,10 @@ async function generateLowLevelDiagram() {
     }
     
     try {
+        // Set loading state
+        generateButton.disabled = true;
+        generateButton.innerHTML = '<span>Generating Diagrams...</span>';
+        
         const response = await makeAPIRequest('/api/lowlevel', { requirements });
         
         if (response.success) {
@@ -1099,6 +1123,10 @@ async function generateLowLevelDiagram() {
     } catch (error) {
         console.error('Low level diagram generation failed:', error);
         alert(error.message || 'Failed to generate low-level diagrams. Please try again.');
+    } finally {
+        // Reset button state
+        generateButton.disabled = false;
+        generateButton.innerHTML = '<span>Generate Low Level Diagrams</span>';
     }
 }
 
@@ -1187,6 +1215,10 @@ async function generateWebsiteStructure() {
     }
     
     try {
+        // Set loading state
+        generateButton.disabled = true;
+        generateButton.innerHTML = '<span>Generating Structure...</span>';
+        
         const response = await makeAPIRequest('/api/website-structure', { concept });
         
         if (response.success) {
@@ -1205,6 +1237,10 @@ async function generateWebsiteStructure() {
     } catch (error) {
         console.error('Website structure generation failed:', error);
         alert(error.message || 'Failed to generate website structure. Please try again.');
+    } finally {
+        // Reset button state
+        generateButton.disabled = false;
+        generateButton.innerHTML = '<span>Generate Website Structure</span>';
     }
 }
 
