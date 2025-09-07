@@ -7,8 +7,6 @@ Provide students with a hands-on agile lab for AI product development to better 
 Preppy is a comprehensive AI-powered Software Development Life Cycle (SDLC) companion web application designed to help students understand and navigate the software development process. The application provides guided assistance through all phases of SDLC including planning, design, development, testing, deployment, and maintenance. Built as a static web application with Node.js backend, it features a complete authentication system and interactive AI-powered tools for each development phase.
 
 ### Key Features
-- **Multi-Platform AI Integration**: Real ChatGPT functionality across Replit, Netlify, and GitHub Pages
-- **Four Specialized Design Tools**: High-level design, ERD generation, low-level diagrams, and website structure planning
 - **Comprehensive SDLC Coverage**: Complete workflow from planning to maintenance with AI guidance
 - **Mobile-First Responsive Design**: Optimized for all devices with touch-friendly navigation
 - **Cross-Platform Deployment**: Identical functionality whether deployed on Replit, Netlify, or GitHub Pages
@@ -116,7 +114,6 @@ preppy-sdlc-companion/
 - **OpenAI API**: Primary AI service for generating SDLC guidance and assistance (requires OPENAI_API_KEY environment variable)
 
 ### Deployment Platforms
-- **Replit**: Primary development and hosting platform with full server-side functionality
 - **Netlify**: Production deployment with serverless functions for optimal performance and security
 - **GitHub Pages**: Static demo deployment with client-side AI integration
 
@@ -132,7 +129,6 @@ preppy-sdlc-companion/
 - **URL Module**: Built-in Node.js module for URL parsing
 
 ## Development Environment
-- **Replit Hosting**: Configured for Replit deployment with autoscale
 - **Environment Variable Management**: OPENAI_API_KEY stored in Replit Secrets
 - **Package Management**: npm with package.json configuration for dependencies
 
