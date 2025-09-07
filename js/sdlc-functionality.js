@@ -1267,3 +1267,26 @@ function exportWebsiteStructureToPDF() {
     // For now, show a helpful message about PDF export
     alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
 }
+
+// Design Tools Navigation - Global exposure for onclick handlers
+window.showToolSelection = showToolSelection;
+window.showHighLevelDesignGenerator = showHighLevelDesignGenerator;
+window.showERDGenerator = showERDGenerator;
+window.showLowLevelDiagramGenerator = showLowLevelDiagramGenerator;
+window.showWebsiteStructureGenerator = showWebsiteStructureGenerator;
+
+// Design Tools Functions - Global exposure for onclick handlers
+window.generateHighLevelDesign = generateHighLevelDesign;
+window.generateERD = generateERD;
+window.generateLowLevelDiagram = generateLowLevelDiagram;
+window.generateWebsiteStructure = generateWebsiteStructure;
+
+// Export Functions - Global exposure for onclick handlers
+window.exportDesignToPDF = exportDesignToPDF;
+window.copyDesignToClipboard = copyDesignToClipboard;
+window.exportERDToPDF = exportERDToPDF;
+window.copyERDToClipboard = copyERDToClipboard;
+window.exportLowLevelToPDF = exportLowLevelToPDF;
+window.copyLowLevelToClipboard = copyLowLevelToClipboard;
+window.exportWebsiteStructureToPDF = exportWebsiteStructureToPDF;
+window.copyWebsiteStructureToClipboard = copyWebsiteStructureToClipboard;
