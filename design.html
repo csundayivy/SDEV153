@@ -153,6 +153,19 @@
                                 <span class="feature-tag">API Specs</span>
                             </div>
                         </div>
+
+                        <div class="design-tool-card" onclick="showWebsiteStructureGenerator()">
+                            <div class="tool-icon">
+                                <i data-lucide="globe"></i>
+                            </div>
+                            <h3 class="tool-title">Website Structure Generator</h3>
+                            <p class="tool-description">Generate complete website structure and project layout based on your concept or idea</p>
+                            <div class="tool-features">
+                                <span class="feature-tag">Site Structure</span>
+                                <span class="feature-tag">File Organization</span>
+                                <span class="feature-tag">Project Layout</span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- High Level Design Generator -->
@@ -327,6 +340,66 @@
                                         Export as PDF
                                     </button>
                                     <button id="copyLowLevelToClipboard" class="button button-outline" onclick="copyLowLevelToClipboard()">
+                                        <i data-lucide="copy"></i>
+                                        Copy to Clipboard
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Website Structure Generator -->
+                    <div id="websiteStructureSection" class="generator-section hidden">
+                        <div class="section-header">
+                            <button class="back-button" onclick="showToolSelection()">
+                                <i data-lucide="arrow-left"></i>
+                                Back to Tools
+                            </button>
+                            <h2 class="section-title">Website Structure Generator</h2>
+                        </div>
+
+                        <div class="card input-card">
+                            <h2 class="input-title">Website Project Layout</h2>
+                            <p class="input-description">Describe your website concept or project idea to generate a complete structure including file organization, folder hierarchy, and project layout recommendations.</p>
+                            <textarea 
+                                id="websiteStructureInput" 
+                                class="textarea" 
+                                placeholder="Example: Create a portfolio website for a freelance web developer with sections for about, portfolio projects, blog, contact form, and client testimonials. Include modern responsive design, contact functionality, and blog management..."
+                                rows="12"
+                            ></textarea>
+                            <div class="input-footer">
+                                <div class="character-count">
+                                    <span id="websiteStructureCharCount">0</span> characters
+                                </div>
+                                <button id="generateWebsiteStructureButton" class="button" onclick="generateWebsiteStructure()">
+                                    <span>Generate Website Structure</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Website Structure Results -->
+                        <div id="websiteStructureResults" class="analysis-section hidden">
+                            <div class="analysis-header-success">
+                                <div class="success-icon">
+                                    <i data-lucide="check-circle"></i>
+                                </div>
+                                <div>
+                                    <h2 class="analysis-title-main">Your AI-Generated Website Structure</h2>
+                                    <p class="analysis-subtitle">Complete project layout and file organization</p>
+                                </div>
+                            </div>
+
+                            <div id="websiteStructureContent"></div>
+
+                            <!-- Export Options -->
+                            <div class="export-section">
+                                <h3>Export Your Structure</h3>
+                                <div class="export-buttons">
+                                    <button id="exportWebsiteStructurePDF" class="button button-outline" onclick="exportWebsiteStructureToPDF()">
+                                        <i data-lucide="file-text"></i>
+                                        Export as PDF
+                                    </button>
+                                    <button id="copyWebsiteStructureToClipboard" class="button button-outline" onclick="copyWebsiteStructureToClipboard()">
                                         <i data-lucide="copy"></i>
                                         Copy to Clipboard
                                     </button>
