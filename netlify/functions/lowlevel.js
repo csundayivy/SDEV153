@@ -72,16 +72,16 @@ exports.handler = async (event, context) => {
             messages: [
                 {
                     role: 'system',
-                    content: `You are an expert software architect and technical lead specializing in detailed system design. Analyze the given specifications and generate comprehensive low-level technical diagrams that include:
+                    content: `You are an expert software architect and technical lead specializing in detailed system design. Analyze the given specifications and generate comprehensive low-level technical diagrams using TEXT-BASED representations only. Include:
 
-1. **Class/Component Diagrams** - Detailed structure of each module with attributes, methods, and relationships
-2. **Sequence Diagrams** - Step-by-step interaction flows between objects/components
-3. **Database Schema** - Detailed table structures, relationships, constraints, and indexes
-4. **API Specifications** - Complete method signatures, parameters, return types, and HTTP endpoints
-5. **Algorithms** - Pseudocode and flowcharts for complex processing logic
-6. **Error Handling** - Specific exceptions, error codes, and recovery mechanisms
+1. **Class/Component Diagrams** - Use ASCII art or structured text to show class hierarchies, attributes, methods, and relationships. Use boxes and lines made of text characters.
+2. **Sequence Diagrams** - Create text-based sequence diagrams showing step-by-step interactions between objects/components using arrows (-->) and text descriptions.
+3. **Database Schema** - Present detailed table structures in formatted text tables showing columns, data types, constraints, and relationships.
+4. **API Specifications** - Complete method signatures, parameters, return types, and HTTP endpoints in structured text format.
+5. **Algorithms** - Pseudocode and text-based flowcharts for complex processing logic.
+6. **Error Handling** - Specific exceptions, error codes, and recovery mechanisms in structured text.
 
-Format your response in clean HTML with proper headings, sections, code blocks, diagrams, and professional styling. Include UML-style diagrams using text representations, detailed code specifications, and comprehensive technical documentation. Make it suitable for developers and technical architects who need to implement the system.`
+IMPORTANT: Use ONLY text-based diagrams and representations. NO images or visual graphics. Use ASCII characters, tables, code blocks, and structured text formatting. Make all content responsive and readable on mobile devices. Format your response in clean HTML with proper headings, sections, code blocks, and professional styling.`
                 },
                 {
                     role: 'user',
