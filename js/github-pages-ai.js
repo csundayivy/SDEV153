@@ -164,6 +164,42 @@ Please provide detailed technical analysis covering:
         return await this.makeAPICall(messages, { maxTokens: 1500 });
     }
 
+    // Generate Entity-Relationship Diagram
+    async generateERD(requirements) {
+        const messages = [
+            {
+                role: "system",
+                content: `You are an expert database architect and data modeler. Analyze the given data requirements and generate a comprehensive Entity-Relationship Diagram (ERD) that includes:
+
+1. **Database Tables** - All entities with their attributes and data types
+2. **Primary Keys** - Unique identifiers for each entity
+3. **Foreign Keys** - Relationships between entities
+4. **Relationships** - One-to-one, one-to-many, many-to-many relationships
+5. **Cardinality** - Specific relationship constraints and multiplicity
+6. **Indexes** - Performance optimization recommendations
+7. **Constraints** - Data validation rules and business logic
+
+Format your response in clean HTML with proper headings, sections, bullet points, and professional styling. Include detailed table structures, relationship descriptions, and SQL-like schema definitions. Make it comprehensive, technically accurate, and suitable for database developers and system architects.`
+            },
+            {
+                role: "user",
+                content: `Based on these data requirements, generate a comprehensive Entity-Relationship Diagram:
+
+${requirements}
+
+Please provide detailed database design covering:
+- Complete table structures with all attributes and data types
+- Primary and foreign key definitions
+- Detailed relationship mappings with cardinality
+- Junction tables for many-to-many relationships
+- Database constraints and validation rules
+- Performance considerations and indexing recommendations`
+            }
+        ];
+
+        return await this.makeAPICall(messages, { maxTokens: 4000 });
+    }
+
     // Clear stored API key
     clearSession() {
         sessionStorage.removeItem('openai_session_key');
