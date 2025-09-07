@@ -68,7 +68,7 @@ htmlFiles.forEach(file => {
         // Add Netlify environment script before GitHub Pages AI script
         content = content.replace(
             '<script src="js/github-pages-ai.js"></script>',
-            '<script src="js/netlify-env.js"></script>\\n    <script src="js/github-pages-ai.js"></script>'
+            '<script src="js/netlify-env.js"></script>\n    <script src="js/github-pages-ai.js"></script>'
         );
         
         fs.writeFileSync(filePath, content);
