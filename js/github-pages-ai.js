@@ -105,6 +105,41 @@ Please provide detailed analysis covering:
         return await this.makeAPICall(messages, { maxTokens: 3000 });
     }
 
+    // Generate High Level Design
+    async generateHighLevelDesign(requirements) {
+        const messages = [
+            {
+                role: "system",
+                content: `You are an expert system architect and technical lead. Analyze the given requirements document and generate a comprehensive high level design that includes:
+
+1. **System Architecture Overview** - Overall system structure, layers, and architectural patterns
+2. **Major Component Identification** - Key components, modules, and their responsibilities
+3. **Technology Stack Decisions** - Recommended technologies, frameworks, and tools with justifications
+4. **System-wide Design Patterns** - Architectural patterns, design principles, and best practices
+5. **Integration Approaches** - How components communicate, APIs, messaging, and data flow
+6. **Database Architecture** - Data models, storage solutions, and data management strategies
+
+Format your response in clean HTML with proper headings, sections, bullet points, and professional styling. Make it comprehensive, technically sound, and suitable for development teams and technical stakeholders. Include specific recommendations and technical rationale for all decisions.`
+            },
+            {
+                role: "user",
+                content: `Based on these requirements, generate a comprehensive high level system design:
+
+${requirements}
+
+Please provide detailed technical analysis covering:
+- Complete system architecture with component relationships
+- Specific technology recommendations with reasoning
+- Database design and data architecture decisions  
+- Integration patterns and communication protocols
+- Security considerations and non-functional requirements
+- Scalability and performance design decisions`
+            }
+        ];
+
+        return await this.makeAPICall(messages, { maxTokens: 4000 });
+    }
+
     // Generate content for specific SDLC phases
     async generateContent(prompt, type) {
         const systemPrompts = {
