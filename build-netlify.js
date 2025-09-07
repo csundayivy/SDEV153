@@ -86,8 +86,121 @@ const packageJson = {
 
 fs.writeFileSync(path.join(distDir, 'package.json'), JSON.stringify(packageJson, null, 2));
 
+// Create a simple test file to verify functionality
+const testHTML = `<!DOCTYPE html>
+<html>
+<head>
+    <title>Design Page Function Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-button { margin: 10px; padding: 10px 20px; background: #6366f1; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .test-result { margin: 10px 0; padding: 10px; background: #f0f0f0; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Netlify Design Page Function Test</h1>
+    <p>Click buttons to test if functions are accessible:</p>
+    
+    <button class="test-button" onclick="testShowHighLevel()">Test High Level Design</button>
+    <button class="test-button" onclick="testShowERD()">Test ERD Generator</button>
+    <button class="test-button" onclick="testShowLowLevel()">Test Low Level</button>
+    <button class="test-button" onclick="testShowWebsite()">Test Website Structure</button>
+    
+    <div id="test-results"></div>
+    
+    <script src="js/netlify-env.js"></script>
+    <script src="js/github-pages-ai.js"></script>
+    <script src="js/sdlc-functionality.js"></script>
+    
+    <script>
+        function testShowHighLevel() {
+            const result = document.getElementById('test-results');
+            try {
+                if (typeof window.showHighLevelDesignGenerator === 'function') {
+                    result.innerHTML = '<div class="test-result" style="background: #d1fae5;">✅ showHighLevelDesignGenerator function is accessible</div>';
+                } else {
+                    result.innerHTML = '<div class="test-result" style="background: #fee2e2;">❌ showHighLevelDesignGenerator function not found</div>';
+                }
+            } catch(e) {
+                result.innerHTML = '<div class="test-result" style="background: #fee2e2;">❌ Error: ' + e.message + '</div>';
+            }
+        }
+        
+        function testShowERD() {
+            const result = document.getElementById('test-results');
+            try {
+                if (typeof window.showERDGenerator === 'function') {
+                    result.innerHTML = '<div class="test-result" style="background: #d1fae5;">✅ showERDGenerator function is accessible</div>';
+                } else {
+                    result.innerHTML = '<div class="test-result" style="background: #fee2e2;">❌ showERDGenerator function not found</div>';
+                }
+            } catch(e) {
+                result.innerHTML = '<div class="test-result" style="background: #fee2e2;">❌ Error: ' + e.message + '</div>';
+            }
+        }
+        
+        function testShowLowLevel() {
+            const result = document.getElementById('test-results');
+            try {
+                if (typeof window.showLowLevelDiagramGenerator === 'function') {
+                    result.innerHTML = '<div class="test-result" style="background: #d1fae5;">✅ showLowLevelDiagramGenerator function is accessible</div>';
+                } else {
+                    result.innerHTML = '<div class="test-result" style="background: #fee2e2;">❌ showLowLevelDiagramGenerator function not found</div>';
+                }
+            } catch(e) {
+                result.innerHTML = '<div class="test-result" style="background: #fee2e2;">❌ Error: ' + e.message + '</div>';
+            }
+        }
+        
+        function testShowWebsite() {
+            const result = document.getElementById('test-results');
+            try {
+                if (typeof window.showWebsiteStructureGenerator === 'function') {
+                    result.innerHTML = '<div class="test-result" style="background: #d1fae5;">✅ showWebsiteStructureGenerator function is accessible</div>';
+                } else {
+                    result.innerHTML = '<div class="test-result" style="background: #fee2e2;">❌ showWebsiteStructureGenerator function not found</div>';
+                }
+            } catch(e) {
+                result.innerHTML = '<div class="test-result" style="background: #fee2e2;">❌ Error: ' + e.message + '</div>';
+            }
+        }
+        
+        // Auto-test on load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const allFunctions = [
+                    'showHighLevelDesignGenerator',
+                    'showERDGenerator', 
+                    'showLowLevelDiagramGenerator',
+                    'showWebsiteStructureGenerator'
+                ];
+                
+                const available = allFunctions.filter(fn => typeof window[fn] === 'function');
+                const missing = allFunctions.filter(fn => typeof window[fn] !== 'function');
+                
+                let status = '<div class="test-result">';
+                status += '<strong>Auto-Test Results:</strong><br>';
+                status += \`Available functions: \${available.length}/\${allFunctions.length}<br>\`;
+                if (available.length > 0) {
+                    status += \`✅ Working: \${available.join(', ')}<br>\`;
+                }
+                if (missing.length > 0) {
+                    status += \`❌ Missing: \${missing.join(', ')}<br>\`;
+                }
+                status += '</div>';
+                
+                document.getElementById('test-results').innerHTML = status;
+            }, 1000);
+        });
+    </script>
+</body>
+</html>`;
+
+fs.writeFileSync(path.join(distDir, 'test-functions.html'), testHTML);
+
 console.log('✅ Netlify build completed successfully!');
 console.log('📁 Static files copied to ./dist directory');
 console.log('🔧 Serverless functions configured in ./netlify/functions');
 console.log('🌐 Environment detection added for optimal deployment');
+console.log('🛠️ Function test page created at test-functions.html');
 console.log('🚀 Ready for Netlify deployment with server-side AI');
