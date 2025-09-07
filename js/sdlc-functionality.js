@@ -324,6 +324,17 @@ function setupDesignPage() {
             charCount.textContent = `${count}`;
         });
     }
+
+    // Setup ERD input character counter
+    const erdInput = document.getElementById('erdInput');
+    const erdCharCount = document.getElementById('erdCharCount');
+    
+    if (erdInput && erdCharCount) {
+        erdInput.addEventListener('input', () => {
+            const count = erdInput.value.length;
+            erdCharCount.textContent = `${count}`;
+        });
+    }
 }
 
 // Development Page Functionality
@@ -407,6 +418,9 @@ async function makeAPIRequest(endpoint, data) {
                 } else if (endpoint === '/api/design') {
                     const result = await window.githubPagesAI.generateHighLevelDesign(data.requirements);
                     return { success: true, design: result };
+                } else if (endpoint === '/api/erd') {
+                    const result = await window.githubPagesAI.generateERD(data.requirements);
+                    return { success: true, erd: result };
                 }
             } else {
                 // Fallback for GitHub Pages without API key
@@ -825,6 +839,146 @@ function fallbackCopy(text) {
 }
 
 function exportDesignToPDF() {
+    // For now, show a helpful message about PDF export
+    alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
+}
+
+// Design Tools Navigation Functions
+function showToolSelection() {
+    // Hide generator sections
+    document.getElementById('highLevelDesignSection')?.classList.add('hidden');
+    document.getElementById('erdGeneratorSection')?.classList.add('hidden');
+    
+    // Show tool selection grid
+    document.querySelector('.design-tools-grid')?.classList.remove('hidden');
+}
+
+function showHighLevelDesignGenerator() {
+    // Hide tool selection and other generator
+    document.querySelector('.design-tools-grid')?.classList.add('hidden');
+    document.getElementById('erdGeneratorSection')?.classList.add('hidden');
+    
+    // Show high level design generator
+    document.getElementById('highLevelDesignSection')?.classList.remove('hidden');
+    
+    // Focus input
+    document.getElementById('requirementsInput')?.focus();
+}
+
+function showERDGenerator() {
+    // Hide tool selection and other generator
+    document.querySelector('.design-tools-grid')?.classList.add('hidden');
+    document.getElementById('highLevelDesignSection')?.classList.add('hidden');
+    
+    // Show ERD generator
+    document.getElementById('erdGeneratorSection')?.classList.remove('hidden');
+    
+    // Focus input
+    document.getElementById('erdInput')?.focus();
+}
+
+// ERD Generator Functions
+async function generateERD() {
+    const erdInput = document.getElementById('erdInput');
+    const generateButton = document.getElementById('generateERDButton');
+    
+    if (!erdInput || !generateButton) {
+        console.error('Required ERD elements not found');
+        return;
+    }
+    
+    const requirements = erdInput.value.trim();
+    
+    if (!requirements) {
+        alert('Please describe your data requirements to generate an Entity-Relationship Diagram.');
+        erdInput.focus();
+        return;
+    }
+    
+    if (requirements.length < 50) {
+        alert('Please provide more detailed data requirements (at least 50 characters) for a comprehensive ERD.');
+        erdInput.focus();
+        return;
+    }
+    
+    try {
+        const response = await makeAPIRequest('/api/erd', { requirements });
+        
+        if (response.success) {
+            displayERDResults(response.erd);
+            
+            // Scroll to results
+            setTimeout(() => {
+                document.getElementById('erdResults')?.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+        } else {
+            throw new Error(response.error || 'Failed to generate ERD');
+        }
+    } catch (error) {
+        console.error('ERD generation failed:', error);
+        alert(error.message || 'Failed to generate Entity-Relationship Diagram. Please try again.');
+    }
+}
+
+function displayERDResults(erd) {
+    const resultsDiv = document.getElementById('erdResults');
+    const contentDiv = document.getElementById('erdContent');
+    
+    if (resultsDiv && contentDiv) {
+        contentDiv.innerHTML = erd;
+        resultsDiv.classList.remove('hidden');
+        
+        // Update Lucide icons
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            lucide.createIcons();
+        }
+    }
+}
+
+function copyERDToClipboard() {
+    const contentDiv = document.getElementById('erdContent');
+    if (!contentDiv) return;
+    
+    // Get text content without HTML
+    const textContent = contentDiv.innerText || contentDiv.textContent;
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(textContent).then(() => {
+            alert('ERD copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            fallbackCopyERD(textContent);
+        });
+    } else {
+        fallbackCopyERD(textContent);
+    }
+}
+
+function fallbackCopyERD(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        alert('ERD copied to clipboard!');
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        alert('Failed to copy to clipboard. Please select and copy manually.');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function exportERDToPDF() {
     // For now, show a helpful message about PDF export
     alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
 }

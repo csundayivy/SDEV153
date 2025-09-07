@@ -142,6 +142,23 @@ async function handleApiRequest(req, res, endpoint, query) {
                     res.end(JSON.stringify({ success: false, error: 'Failed to generate design' }));
                 }
             });
+        } else if (endpoint === '/api/erd' && req.method === 'POST') {
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+            req.on('end', async () => {
+                try {
+                    const { requirements } = JSON.parse(body);
+                    const erd = await generateERD(requirements);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: true, erd }));
+                } catch (error) {
+                    console.error('ERD generation error:', error);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, error: 'Failed to generate ERD' }));
+                }
+            });
         } else {
             res.writeHead(404, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: false, error: 'Endpoint not found' }));
@@ -262,6 +279,51 @@ Please provide detailed technical analysis covering:
 - Integration patterns and communication protocols
 - Security considerations and non-functional requirements
 - Scalability and performance design decisions`
+            }
+        ],
+        max_tokens: 4000,
+        temperature: 0.7
+    });
+    
+    return completion.choices[0].message.content;
+}
+
+// Generate Entity-Relationship Diagram using OpenAI
+async function generateERD(requirements) {
+    if (!openai) {
+        throw new Error('OpenAI API not initialized. Please check your API key configuration.');
+    }
+    
+    const completion = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+            {
+                role: "system",
+                content: `You are an expert database architect and data modeler. Analyze the given data requirements and generate a comprehensive Entity-Relationship Diagram (ERD) that includes:
+
+1. **Database Tables** - All entities with their attributes and data types
+2. **Primary Keys** - Unique identifiers for each entity
+3. **Foreign Keys** - Relationships between entities
+4. **Relationships** - One-to-one, one-to-many, many-to-many relationships
+5. **Cardinality** - Specific relationship constraints and multiplicity
+6. **Indexes** - Performance optimization recommendations
+7. **Constraints** - Data validation rules and business logic
+
+Format your response in clean HTML with proper headings, sections, bullet points, and professional styling. Include detailed table structures, relationship descriptions, and SQL-like schema definitions. Make it comprehensive, technically accurate, and suitable for database developers and system architects.`
+            },
+            {
+                role: "user",
+                content: `Based on these data requirements, generate a comprehensive Entity-Relationship Diagram:
+
+${requirements}
+
+Please provide detailed database design covering:
+- Complete table structures with all attributes and data types
+- Primary and foreign key definitions
+- Detailed relationship mappings with cardinality
+- Junction tables for many-to-many relationships
+- Database constraints and validation rules
+- Performance considerations and indexing recommendations`
             }
         ],
         max_tokens: 4000,

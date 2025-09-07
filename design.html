@@ -113,52 +113,151 @@
                     </div>
                     <div class="badge planning-badge">Powered by AI Design Assistant</div>
 
-                    <!-- Input Card -->
-                    <div class="card input-card">
-                        <h2 class="input-title">High Level Design Generator</h2>
-                        <p class="input-description">Transform your requirements document into comprehensive system architecture and design decisions. Include functional requirements, non-functional requirements, user stories, and any technical constraints.</p>
-                        <textarea 
-                            id="requirementsInput" 
-                            class="textarea" 
-                            placeholder="Paste your requirements document from the planning stage here. Include functional requirements, non-functional requirements, user stories, and any technical constraints..."
-                            rows="12"
-                        ></textarea>
-                        <div class="input-footer">
-                            <div class="character-count">
-                                <span id="requirementsCharCount">0</span> characters
+                    <!-- Design Tools Selection -->
+                    <div class="design-tools-grid">
+                        <div class="design-tool-card" onclick="showHighLevelDesignGenerator()">
+                            <div class="tool-icon">
+                                <i data-lucide="layout"></i>
                             </div>
-                            <button id="generateDesignButton" class="button" onclick="generateHighLevelDesign()">
-                                <span>Generate High Level Design</span>
-                            </button>
+                            <h3 class="tool-title">High Level Design Generator</h3>
+                            <p class="tool-description">Transform requirements into comprehensive system architecture and design decisions</p>
+                            <div class="tool-features">
+                                <span class="feature-tag">System Architecture</span>
+                                <span class="feature-tag">Technology Stack</span>
+                                <span class="feature-tag">Design Patterns</span>
+                            </div>
+                        </div>
+
+                        <div class="design-tool-card" onclick="showERDGenerator()">
+                            <div class="tool-icon">
+                                <i data-lucide="database"></i>
+                            </div>
+                            <h3 class="tool-title">Entity-Relationship Diagram Generator</h3>
+                            <p class="tool-description">Create detailed database structure visualizations with tables, relationships, and cardinality</p>
+                            <div class="tool-features">
+                                <span class="feature-tag">Database Structure</span>
+                                <span class="feature-tag">Table Relationships</span>
+                                <span class="feature-tag">Data Modeling</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Design Results -->
-                    <div id="designResults" class="analysis-section hidden">
-                        <div class="analysis-header-success">
-                            <div class="success-icon">
-                                <i data-lucide="check-circle"></i>
-                            </div>
-                            <div>
-                                <h2 class="analysis-title-main">Your AI-Generated High Level Design</h2>
-                                <p class="analysis-subtitle">Comprehensive system architecture and design decisions</p>
+                    <!-- High Level Design Generator -->
+                    <div id="highLevelDesignSection" class="generator-section hidden">
+                        <div class="section-header">
+                            <button class="back-button" onclick="showToolSelection()">
+                                <i data-lucide="arrow-left"></i>
+                                Back to Tools
+                            </button>
+                            <h2 class="section-title">High Level Design Generator</h2>
+                        </div>
+
+                        <div class="card input-card">
+                            <h2 class="input-title">System Architecture Design</h2>
+                            <p class="input-description">Transform your requirements document into comprehensive system architecture and design decisions. Include functional requirements, non-functional requirements, user stories, and any technical constraints.</p>
+                            <textarea 
+                                id="requirementsInput" 
+                                class="textarea" 
+                                placeholder="Paste your requirements document from the planning stage here. Include functional requirements, non-functional requirements, user stories, and any technical constraints..."
+                                rows="12"
+                            ></textarea>
+                            <div class="input-footer">
+                                <div class="character-count">
+                                    <span id="requirementsCharCount">0</span> characters
+                                </div>
+                                <button id="generateDesignButton" class="button" onclick="generateHighLevelDesign()">
+                                    <span>Generate High Level Design</span>
+                                </button>
                             </div>
                         </div>
 
-                        <div id="designContent"></div>
+                        <!-- Design Results -->
+                        <div id="designResults" class="analysis-section hidden">
+                            <div class="analysis-header-success">
+                                <div class="success-icon">
+                                    <i data-lucide="check-circle"></i>
+                                </div>
+                                <div>
+                                    <h2 class="analysis-title-main">Your AI-Generated High Level Design</h2>
+                                    <p class="analysis-subtitle">Comprehensive system architecture and design decisions</p>
+                                </div>
+                            </div>
 
-                        <!-- Export Options -->
-                        <div class="export-section">
-                            <h3>Export Your Design</h3>
-                            <div class="export-buttons">
-                                <button id="exportPDF" class="button button-outline" onclick="exportDesignToPDF()">
-                                    <i data-lucide="file-text"></i>
-                                    Export as PDF
+                            <div id="designContent"></div>
+
+                            <!-- Export Options -->
+                            <div class="export-section">
+                                <h3>Export Your Design</h3>
+                                <div class="export-buttons">
+                                    <button id="exportPDF" class="button button-outline" onclick="exportDesignToPDF()">
+                                        <i data-lucide="file-text"></i>
+                                        Export as PDF
+                                    </button>
+                                    <button id="copyToClipboard" class="button button-outline" onclick="copyDesignToClipboard()">
+                                        <i data-lucide="copy"></i>
+                                        Copy to Clipboard
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ERD Generator -->
+                    <div id="erdGeneratorSection" class="generator-section hidden">
+                        <div class="section-header">
+                            <button class="back-button" onclick="showToolSelection()">
+                                <i data-lucide="arrow-left"></i>
+                                Back to Tools
+                            </button>
+                            <h2 class="section-title">Entity-Relationship Diagram Generator</h2>
+                        </div>
+
+                        <div class="card input-card">
+                            <h2 class="input-title">Database Structure Design</h2>
+                            <p class="input-description">Describe your application's data requirements and relationships. Include entities, attributes, business rules, and data constraints to generate a comprehensive ERD.</p>
+                            <textarea 
+                                id="erdInput" 
+                                class="textarea" 
+                                placeholder="Example: Create an e-commerce database with Users (id, name, email, password), Products (id, name, price, category_id, stock), Orders (id, user_id, order_date, total), Order_Items (order_id, product_id, quantity, price), Categories (id, name, description). Users can place multiple orders, each order contains multiple products..."
+                                rows="12"
+                            ></textarea>
+                            <div class="input-footer">
+                                <div class="character-count">
+                                    <span id="erdCharCount">0</span> characters
+                                </div>
+                                <button id="generateERDButton" class="button" onclick="generateERD()">
+                                    <span>Generate Entity-Relationship Diagram</span>
                                 </button>
-                                <button id="copyToClipboard" class="button button-outline" onclick="copyDesignToClipboard()">
-                                    <i data-lucide="copy"></i>
-                                    Copy to Clipboard
-                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ERD Results -->
+                        <div id="erdResults" class="analysis-section hidden">
+                            <div class="analysis-header-success">
+                                <div class="success-icon">
+                                    <i data-lucide="check-circle"></i>
+                                </div>
+                                <div>
+                                    <h2 class="analysis-title-main">Your AI-Generated Entity-Relationship Diagram</h2>
+                                    <p class="analysis-subtitle">Comprehensive database structure with tables, relationships, and cardinality</p>
+                                </div>
+                            </div>
+
+                            <div id="erdContent"></div>
+
+                            <!-- Export Options -->
+                            <div class="export-section">
+                                <h3>Export Your ERD</h3>
+                                <div class="export-buttons">
+                                    <button id="exportERDPDF" class="button button-outline" onclick="exportERDToPDF()">
+                                        <i data-lucide="file-text"></i>
+                                        Export as PDF
+                                    </button>
+                                    <button id="copyERDToClipboard" class="button button-outline" onclick="copyERDToClipboard()">
+                                        <i data-lucide="copy"></i>
+                                        Copy to Clipboard
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
