@@ -140,6 +140,19 @@
                                 <span class="feature-tag">Data Modeling</span>
                             </div>
                         </div>
+
+                        <div class="design-tool-card" onclick="showLowLevelDiagramGenerator()">
+                            <div class="tool-icon">
+                                <i data-lucide="code"></i>
+                            </div>
+                            <h3 class="tool-title">Low Level Diagram Generator</h3>
+                            <p class="tool-description">Generate detailed technical diagrams including class structures, sequences, and API specifications</p>
+                            <div class="tool-features">
+                                <span class="feature-tag">Class Diagrams</span>
+                                <span class="feature-tag">Sequence Diagrams</span>
+                                <span class="feature-tag">API Specs</span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- High Level Design Generator -->
@@ -254,6 +267,66 @@
                                         Export as PDF
                                     </button>
                                     <button id="copyERDToClipboard" class="button button-outline" onclick="copyERDToClipboard()">
+                                        <i data-lucide="copy"></i>
+                                        Copy to Clipboard
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Low Level Diagram Generator -->
+                    <div id="lowLevelDiagramSection" class="generator-section hidden">
+                        <div class="section-header">
+                            <button class="back-button" onclick="showToolSelection()">
+                                <i data-lucide="arrow-left"></i>
+                                Back to Tools
+                            </button>
+                            <h2 class="section-title">Low Level Diagram Generator</h2>
+                        </div>
+
+                        <div class="card input-card">
+                            <h2 class="input-title">Detailed Technical Diagrams</h2>
+                            <p class="input-description">Provide your system design or module specifications to generate comprehensive low-level technical diagrams including class structures, sequences, database schemas, API specifications, algorithms, and error handling.</p>
+                            <textarea 
+                                id="lowLevelInput" 
+                                class="textarea" 
+                                placeholder="Example: Design a user authentication module with UserController class that handles login/logout, UserService for business logic, UserRepository for data access, JWT token management, password encryption using bcrypt, and proper exception handling for invalid credentials, expired tokens, and database errors..."
+                                rows="12"
+                            ></textarea>
+                            <div class="input-footer">
+                                <div class="character-count">
+                                    <span id="lowLevelCharCount">0</span> characters
+                                </div>
+                                <button id="generateLowLevelButton" class="button" onclick="generateLowLevelDiagram()">
+                                    <span>Generate Low Level Diagrams</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Low Level Results -->
+                        <div id="lowLevelResults" class="analysis-section hidden">
+                            <div class="analysis-header-success">
+                                <div class="success-icon">
+                                    <i data-lucide="check-circle"></i>
+                                </div>
+                                <div>
+                                    <h2 class="analysis-title-main">Your AI-Generated Low Level Diagrams</h2>
+                                    <p class="analysis-subtitle">Detailed technical diagrams and specifications</p>
+                                </div>
+                            </div>
+
+                            <div id="lowLevelContent"></div>
+
+                            <!-- Export Options -->
+                            <div class="export-section">
+                                <h3>Export Your Diagrams</h3>
+                                <div class="export-buttons">
+                                    <button id="exportLowLevelPDF" class="button button-outline" onclick="exportLowLevelToPDF()">
+                                        <i data-lucide="file-text"></i>
+                                        Export as PDF
+                                    </button>
+                                    <button id="copyLowLevelToClipboard" class="button button-outline" onclick="copyLowLevelToClipboard()">
                                         <i data-lucide="copy"></i>
                                         Copy to Clipboard
                                     </button>
