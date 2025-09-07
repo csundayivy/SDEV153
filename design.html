@@ -113,125 +113,53 @@
                     </div>
                     <div class="badge planning-badge">Powered by AI Design Assistant</div>
 
-                    <!-- High Level Design Generator -->
+                    <!-- Input Card -->
                     <div class="card input-card">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i data-lucide="layout"></i>
-                            </div>
-                            <div>
-                                <h2 class="card-title">High Level Design Generator</h2>
-                                <p class="card-description">Transform your requirements document into comprehensive system architecture and design decisions</p>
-                            </div>
-                        </div>
-
-                        <div class="input-section">
-                            <label for="requirementsInput" class="input-label">
-                                Requirements Document
-                                <span class="required">*</span>
-                            </label>
-                            <textarea 
-                                id="requirementsInput"
-                                class="ai-input"
-                                placeholder="Paste your requirements document from the planning stage here. Include functional requirements, non-functional requirements, user stories, and any technical constraints..."
-                                maxlength="5000"
-                                rows="8"
-                            ></textarea>
+                        <h2 class="input-title">High Level Design Generator</h2>
+                        <p class="input-description">Transform your requirements document into comprehensive system architecture and design decisions. Include functional requirements, non-functional requirements, user stories, and any technical constraints.</p>
+                        <textarea 
+                            id="requirementsInput" 
+                            class="textarea" 
+                            placeholder="Paste your requirements document from the planning stage here. Include functional requirements, non-functional requirements, user stories, and any technical constraints..."
+                            rows="12"
+                        ></textarea>
+                        <div class="input-footer">
                             <div class="character-count">
-                                <span id="requirementsCharCount">0/5000</span>
+                                <span id="requirementsCharCount">0</span> characters
                             </div>
-                        </div>
-
-                        <div class="feature-info">
-                            <h3>What you'll get:</h3>
-                            <div class="feature-grid">
-                                <div class="feature-item">
-                                    <i data-lucide="network"></i>
-                                    <span>System Architecture Overview</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i data-lucide="components"></i>
-                                    <span>Major Component Identification</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i data-lucide="layers"></i>
-                                    <span>Technology Stack Decisions</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i data-lucide="puzzle"></i>
-                                    <span>System-wide Design Patterns</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i data-lucide="git-merge"></i>
-                                    <span>Integration Approaches</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i data-lucide="database"></i>
-                                    <span>Database Architecture</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="button-section">
-                            <button 
-                                id="generateDesignButton"
-                                class="button primary-button"
-                                onclick="generateHighLevelDesign()"
-                            >
-                                <i data-lucide="sparkles"></i>
+                            <button id="generateDesignButton" class="button" onclick="generateHighLevelDesign()">
                                 <span>Generate High Level Design</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Alert Messages -->
-                    <div id="errorAlert" class="alert error-alert hidden">
-                        <div class="alert-icon">
-                            <i data-lucide="alert-circle"></i>
-                        </div>
-                        <div>
-                            <strong>Error:</strong>
-                            <span id="errorMessage"></span>
-                        </div>
-                        <button onclick="this.parentElement.classList.add('hidden')" class="alert-close">
-                            <i data-lucide="x"></i>
-                        </button>
-                    </div>
-                    
-                    <div id="successAlert" class="alert success-alert hidden">
-                        <div class="alert-icon">
-                            <i data-lucide="check-circle"></i>
-                        </div>
-                        <div>
-                            <strong>Success:</strong>
-                            <span id="successMessage"></span>
-                        </div>
-                        <button onclick="this.parentElement.classList.add('hidden')" class="alert-close">
-                            <i data-lucide="x"></i>
-                        </button>
-                    </div>
-
                     <!-- Design Results -->
-                    <div id="designResults" class="card results-card hidden">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i data-lucide="layout"></i>
+                    <div id="designResults" class="analysis-section hidden">
+                        <div class="analysis-header-success">
+                            <div class="success-icon">
+                                <i data-lucide="check-circle"></i>
                             </div>
                             <div>
-                                <h2 class="card-title">High Level Design</h2>
-                                <p class="card-description">Generated system architecture and design decisions</p>
+                                <h2 class="analysis-title-main">Your AI-Generated High Level Design</h2>
+                                <p class="analysis-subtitle">Comprehensive system architecture and design decisions</p>
                             </div>
                         </div>
-                        <div id="designContent" class="results-content"></div>
-                        <div class="results-actions">
-                            <button class="button button-outline" onclick="copyDesignToClipboard()">
-                                <i data-lucide="copy"></i>
-                                <span>Copy Design</span>
-                            </button>
-                            <button class="button button-outline" onclick="exportDesignToPDF()">
-                                <i data-lucide="download"></i>
-                                <span>Export PDF</span>
-                            </button>
+
+                        <div id="designContent"></div>
+
+                        <!-- Export Options -->
+                        <div class="export-section">
+                            <h3>Export Your Design</h3>
+                            <div class="export-buttons">
+                                <button id="exportPDF" class="button button-outline" onclick="exportDesignToPDF()">
+                                    <i data-lucide="file-text"></i>
+                                    Export as PDF
+                                </button>
+                                <button id="copyToClipboard" class="button button-outline" onclick="copyDesignToClipboard()">
+                                    <i data-lucide="copy"></i>
+                                    Copy to Clipboard
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

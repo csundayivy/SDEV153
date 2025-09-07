@@ -321,15 +321,7 @@ function setupDesignPage() {
     if (requirementsInput && charCount) {
         requirementsInput.addEventListener('input', () => {
             const count = requirementsInput.value.length;
-            charCount.textContent = `${count}/5000`;
-            
-            if (count > 4800) {
-                charCount.style.color = '#EF4444';
-            } else if (count > 4000) {
-                charCount.style.color = '#F59E0B';
-            } else {
-                charCount.style.color = '#6B7280';
-            }
+            charCount.textContent = `${count}`;
         });
     }
 }
@@ -743,22 +735,16 @@ async function generateHighLevelDesign() {
     const requirements = requirementsInput.value.trim();
     
     if (!requirements) {
-        showError('Please enter your requirements document to generate a high level design.');
+        alert('Please enter your requirements document to generate a high level design.');
         requirementsInput.focus();
         return;
     }
     
     if (requirements.length < 50) {
-        showError('Please provide more detailed requirements (at least 50 characters) for a comprehensive design.');
+        alert('Please provide more detailed requirements (at least 50 characters) for a comprehensive design.');
         requirementsInput.focus();
         return;
     }
-    
-    // Hide alerts
-    hideAlerts();
-    
-    // Set loading state
-    setDesignLoadingState(true);
     
     try {
         const response = await makeAPIRequest('/api/design', { requirements });
@@ -778,36 +764,10 @@ async function generateHighLevelDesign() {
         }
     } catch (error) {
         console.error('Design generation failed:', error);
-        showError(error.message || 'Failed to generate high level design. Please try again.');
-    } finally {
-        setDesignLoadingState(false);
+        alert(error.message || 'Failed to generate high level design. Please try again.');
     }
 }
 
-function setDesignLoadingState(loading) {
-    const button = document.getElementById('generateDesignButton');
-    const buttonText = button?.querySelector('span');
-    const buttonIcon = button?.querySelector('i');
-    
-    if (button) {
-        button.disabled = loading;
-        
-        if (loading) {
-            button.classList.add('loading');
-            if (buttonText) buttonText.textContent = 'Generating Design...';
-            if (buttonIcon) buttonIcon.setAttribute('data-lucide', 'loader-2');
-        } else {
-            button.classList.remove('loading');
-            if (buttonText) buttonText.textContent = 'Generate High Level Design';
-            if (buttonIcon) buttonIcon.setAttribute('data-lucide', 'sparkles');
-        }
-        
-        // Update Lucide icons
-        if (typeof lucide !== 'undefined' && lucide.createIcons) {
-            lucide.createIcons();
-        }
-    }
-}
 
 function displayDesignResults(design) {
     const resultsDiv = document.getElementById('designResults');
@@ -821,8 +781,6 @@ function displayDesignResults(design) {
         if (typeof lucide !== 'undefined' && lucide.createIcons) {
             lucide.createIcons();
         }
-        
-        showSuccess('High level design generated successfully!');
     }
 }
 
@@ -835,7 +793,7 @@ function copyDesignToClipboard() {
     
     if (navigator.clipboard) {
         navigator.clipboard.writeText(textContent).then(() => {
-            showSuccess('Design copied to clipboard!');
+            alert('Design copied to clipboard!');
         }).catch(err => {
             console.error('Failed to copy:', err);
             fallbackCopy(textContent);
@@ -857,10 +815,10 @@ function fallbackCopy(text) {
     
     try {
         document.execCommand('copy');
-        showSuccess('Design copied to clipboard!');
+        alert('Design copied to clipboard!');
     } catch (err) {
         console.error('Fallback copy failed:', err);
-        showError('Failed to copy to clipboard. Please select and copy manually.');
+        alert('Failed to copy to clipboard. Please select and copy manually.');
     }
     
     document.body.removeChild(textArea);
@@ -868,5 +826,5 @@ function fallbackCopy(text) {
 
 function exportDesignToPDF() {
     // For now, show a helpful message about PDF export
-    showSuccess('PDF export feature coming soon! Use "Copy Design" to save the content for now.');
+    alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
 }
