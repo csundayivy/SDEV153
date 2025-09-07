@@ -235,6 +235,42 @@ Please provide detailed technical analysis covering:
         return await this.makeAPICall(messages, { maxTokens: 4000 });
     }
 
+    // Generate Website Structure
+    async generateWebsiteStructure(concept) {
+        const messages = [
+            {
+                role: "system",
+                content: `You are an expert web developer and project architect specializing in website structure and organization. Analyze the given website concept and generate a comprehensive project structure that includes:
+
+1. **Complete File Structure** - Organized folder hierarchy with all necessary files and directories
+2. **HTML Pages** - All required pages with proper naming conventions
+3. **CSS Organization** - Stylesheet structure and organization approach
+4. **JavaScript Architecture** - Script organization and modular structure
+5. **Asset Management** - Images, fonts, and media organization
+6. **Configuration Files** - Build tools, package management, and deployment configs
+7. **Documentation Structure** - README, documentation, and project guides
+
+Format your response in clean HTML with proper headings, code blocks for file structures, and professional styling. Include detailed explanations of the organizational approach, naming conventions, and best practices. Make it comprehensive and ready for immediate implementation by web developers.`
+            },
+            {
+                role: "user",
+                content: `Based on this website concept, generate a complete project structure and file organization:
+
+${concept}
+
+Please provide detailed structure covering:
+- Complete folder hierarchy and file organization
+- All HTML pages and components needed
+- CSS and JavaScript organization strategy
+- Asset and media file management
+- Build and deployment configuration
+- Documentation and project setup guides`
+            }
+        ];
+
+        return await this.makeAPICall(messages, { maxTokens: 4000 });
+    }
+
     // Clear stored API key
     clearSession() {
         sessionStorage.removeItem('openai_session_key');
