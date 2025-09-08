@@ -9,12 +9,27 @@ Preppy is a comprehensive AI-powered Software Development Life Cycle (SDLC) comp
 ### Key Features
 
 - **Multi-Platform AI Integration**: Real ChatGPT functionality across Replit, Netlify, and GitHub Pages
+- **Comprehensive Planning Suite**: Requirements document generator and user story generator with structured outputs
 - **Four Specialized Design Tools**: High-level design, ERD generation, low-level diagrams, and website structure planning
 - **Comprehensive SDLC Coverage**: Complete workflow from planning to maintenance with AI guidance
 - **Mobile-First Responsive Design**: Optimized for all devices with touch-friendly navigation
 - **Cross-Platform Deployment**: Identical functionality whether deployed on Replit, Netlify, or GitHub Pages
 
 - **Live Demo Access**: https://preppysdlcai.netlify.app
+
+## Advanced Planning Tools
+
+### Requirements Document Generator
+- Transform app concepts into comprehensive development plans
+- Detailed project analysis with technical stack recommendations
+- Implementation roadmaps and architectural guidance
+- Business logic and feature specification documentation
+
+### User Story Generator
+- Generate 10 comprehensive user stories from project concepts
+- Structured format: User Story → Website Feature → Implementation Approach
+- Covers diverse user personas and use cases
+- Professional export options for development teams
 
 ## Advanced Design Tools
 
@@ -81,7 +96,7 @@ preppy-sdlc-companion/
 ├── dashboard.html          # Main dashboard (requires auth)
 ├── login.html              # User login page
 ├── signup.html             # User registration page
-├── planning.html           # SDLC planning page with AI analysis
+├── planning.html           # SDLC planning with requirements generator and user story generator
 ├── design.html             # Design phase with four specialized tools
 ├── development.html        # Development phase page
 ├── testing.html            # Testing phase page
@@ -103,7 +118,8 @@ preppy-sdlc-companion/
 │       ├── lowlevel.js     # Low level diagram generator API
 │       ├── website-structure.js  # Website structure API
 │       ├── analyze.js      # Project analysis API
-│       └── generate.js     # Requirements generation API
+│       ├── generate.js     # Requirements generation API
+│       └── user-stories.js # User story generation API
 ├── dist/                   # Netlify build output directory
 ├── server.js               # Node.js HTTP server for Replit
 ├── build-netlify.js        # Netlify build and optimization script

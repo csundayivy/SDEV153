@@ -947,72 +947,100 @@
 /* Design Tools Grid */
 .design-tools-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin: 32px 0;
 }
 
 .design-tool-card {
-    background: white;
-    border: 1px solid #e0e7ff;
-    border-radius: 12px;
-    padding: 2rem;
+    background: linear-gradient(135deg, var(--card), rgba(255, 107, 53, 0.02));
+    border: 1px solid rgba(255, 107, 53, 0.1);
+    border-radius: 16px;
+    padding: 32px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.design-tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(255, 107, 53, 0.02));
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .design-tool-card:hover {
-    border-color: var(--primary-color);
-    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.15);
-    transform: translateY(-2px);
+    border-color: rgba(255, 107, 53, 0.3);
+    box-shadow: 0 8px 32px rgba(255, 107, 53, 0.15);
+    transform: translateY(-4px);
 }
 
-.tool-icon {
-    width: 64px;
-    height: 64px;
-    background: var(--primary-light);
-    border-radius: 50%;
+.design-tool-card:hover::before {
+    opacity: 1;
+}
+
+.design-tool-card .tool-icon {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 107, 53, 0.2));
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem auto;
-    color: var(--primary-color);
+    margin: 0 auto 24px auto;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 20px rgba(255, 107, 53, 0.2);
 }
 
-.tool-icon i {
-    width: 32px;
-    height: 32px;
+.design-tool-card .tool-icon i {
+    width: 36px;
+    height: 36px;
+    color: var(--primary);
 }
 
-.tool-title {
-    color: var(--text-primary);
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0 0 1rem 0;
+.design-tool-card .tool-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    color: var(--foreground);
+    position: relative;
+    z-index: 1;
 }
 
-.tool-description {
-    color: var(--text-secondary);
-    font-size: 1rem;
+.design-tool-card .tool-description {
+    color: var(--muted-foreground);
+    font-size: 16px;
     line-height: 1.6;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 24px 0;
+    position: relative;
+    z-index: 1;
 }
 
-.tool-features {
+.design-tool-card .tool-features {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 8px;
     justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
-.feature-tag {
-    background: var(--primary-light);
-    color: var(--primary-color);
-    font-size: 0.875rem;
-    font-weight: 500;
-    padding: 0.25rem 0.75rem;
+.design-tool-card .feature-tag {
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
     border-radius: 20px;
+    border: 1px solid rgba(255, 107, 53, 0.2);
 }
 
 /* Generator Sections */
