@@ -1442,8 +1442,17 @@ function showUserStoryGenerator() {
 
 // User Story Generation Function
 async function generateUserStories() {
+    console.log('🎯 Generate User Stories function called');
+    
     const userStoryInput = document.getElementById('userStoryInput');
+    if (!userStoryInput) {
+        console.error('❌ User story input element not found');
+        alert('Error: Input field not found. Please refresh the page and try again.');
+        return;
+    }
+    
     const concept = userStoryInput.value.trim();
+    console.log('📝 User concept:', concept);
     
     if (!concept || concept.length < 20) {
         alert('Please provide a more detailed description of your project concept (at least 20 characters).');
@@ -1478,8 +1487,20 @@ async function generateUserStories() {
         if (resultsSection) resultsSection.classList.remove('hidden');
         
     } catch (error) {
-        console.error('Error generating user stories:', error);
-        alert('Failed to generate user stories. Please check your internet connection and try again.');
+        console.error('❌ Full error details:', error);
+        console.error('❌ Error message:', error.message);
+        console.error('❌ Error stack:', error.stack);
+        
+        let errorMessage = 'Failed to generate user stories. ';
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+            errorMessage += 'Network connection issue. Please check your internet connection.';
+        } else if (error.message.includes('HTTP error')) {
+            errorMessage += `Server error: ${error.message}`;
+        } else {
+            errorMessage += `Error: ${error.message}`;
+        }
+        
+        alert(errorMessage);
         
         // Hide loading
         if (loadingState) loadingState.classList.add('hidden');
@@ -1514,8 +1535,15 @@ Please ensure each user story:
 Generate exactly 10 user stories with the format above.`;
 
     // Detect environment and call appropriate API
+    console.log('🌍 Environment detection:', {
+        netlify: !!window.NETLIFY_ENVIRONMENT,
+        githubPages: !!window.githubPagesAI,
+        replit: !window.NETLIFY_ENVIRONMENT && !window.githubPagesAI
+    });
+    
     if (window.NETLIFY_ENVIRONMENT) {
         // Netlify serverless function
+        console.log('☁️ Using Netlify serverless function');
         const response = await fetch('/.netlify/functions/user-stories', {
             method: 'POST',
             headers: {
@@ -1532,9 +1560,12 @@ Generate exactly 10 user stories with the format above.`;
         return data.content;
     } else if (window.githubPagesAI) {
         // GitHub Pages client-side integration
+        console.log('🔗 Using GitHub Pages AI integration');
         return await generateUserStoriesForGitHubPages(concept);
     } else {
         // Replit server-side API
+        console.log('🚀 Calling Replit API with prompt:', prompt.substring(0, 100) + '...');
+        
         const response = await fetch('/api/user-stories', {
             method: 'POST',
             headers: {
@@ -1543,11 +1574,16 @@ Generate exactly 10 user stories with the format above.`;
             body: JSON.stringify({ prompt })
         });
         
+        console.log('📡 API Response status:', response.status);
+        
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorText = await response.text();
+            console.error('❌ API Error:', errorText);
+            throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
         }
         
         const data = await response.json();
+        console.log('✅ API Response received, content length:', data.content ? data.content.length : 'No content');
         return data.content;
     }
 }
