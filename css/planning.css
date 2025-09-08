@@ -36,6 +36,104 @@
     font-weight: 600;
 }
 
+/* Planning Tools Grid */
+.planning-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin: 32px 0;
+}
+
+.planning-tool-card {
+    background: linear-gradient(135deg, var(--card), rgba(255, 107, 53, 0.02));
+    border: 1px solid rgba(255, 107, 53, 0.1);
+    border-radius: 16px;
+    padding: 32px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.planning-tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(255, 107, 53, 0.02));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.planning-tool-card:hover {
+    border-color: rgba(255, 107, 53, 0.3);
+    box-shadow: 0 8px 32px rgba(255, 107, 53, 0.15);
+    transform: translateY(-4px);
+}
+
+.planning-tool-card:hover::before {
+    opacity: 1;
+}
+
+.planning-tool-card .tool-icon {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 107, 53, 0.2));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px auto;
+    position: relative;
+    z-index: 1;
+}
+
+.planning-tool-card .tool-icon i {
+    width: 36px;
+    height: 36px;
+    color: var(--primary);
+}
+
+.planning-tool-card .tool-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    color: var(--foreground);
+    position: relative;
+    z-index: 1;
+}
+
+.planning-tool-card .tool-description {
+    color: var(--muted-foreground);
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0 0 24px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.planning-tool-card .tool-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.planning-tool-card .feature-tag {
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 107, 53, 0.2);
+}
+
 .input-card {
     margin-bottom: 32px;
     background: linear-gradient(135deg, var(--card), rgba(255, 107, 53, 0.02));
@@ -164,6 +262,137 @@
 
 .button:disabled span {
     margin-left: 24px;
+}
+
+/* Generator Sections */
+.generator-section {
+    transition: all 0.3s ease;
+}
+
+.generator-section.hidden {
+    display: none;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: var(--muted);
+    color: var(--muted-foreground);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background: var(--accent);
+    color: var(--accent-foreground);
+    border-color: var(--accent);
+}
+
+.back-button i {
+    width: 16px;
+    height: 16px;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--foreground);
+    margin: 0;
+}
+
+/* User Story Specific Styles */
+.user-story-item {
+    background: linear-gradient(135deg, var(--card), rgba(255, 107, 53, 0.02));
+    border: 1px solid rgba(255, 107, 53, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.user-story-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.story-number {
+    width: 32px;
+    height: 32px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.story-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--foreground);
+    margin: 0;
+}
+
+.story-section {
+    margin-bottom: 16px;
+}
+
+.story-section:last-child {
+    margin-bottom: 0;
+}
+
+.story-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.story-content {
+    color: var(--foreground);
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .planning-tools-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .planning-tool-card {
+        padding: 24px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .section-title {
+        font-size: 24px;
+    }
 }
 
 .button.loading {
