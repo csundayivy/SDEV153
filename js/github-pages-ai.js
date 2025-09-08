@@ -450,3 +450,36 @@ function showNotification(message, type = 'info') {
         notification.remove();
     }, 5000);
 }
+
+// User Stories Generation for GitHub Pages
+async function generateUserStoriesForGitHubPages(concept) {
+    if (!window.githubPagesAI) {
+        throw new Error('GitHub Pages AI not initialized');
+    }
+    
+    const prompt = `As an expert product manager and UX designer, generate 10 comprehensive user stories for the following project concept. Each user story should follow this exact format:
+
+**User Story:** [Write a clear user story in the format "As a [user type], I want [goal] so that [benefit]"]
+
+**Website Feature:** [Describe the specific feature or functionality needed]
+
+**Implementation Approach:** [Provide a technical implementation approach]
+
+Project Concept: "${concept}"
+
+Please ensure each user story:
+1. Represents a different user type or use case
+2. Focuses on specific, actionable functionality
+3. Includes realistic implementation approaches
+4. Covers both primary and secondary features
+5. Considers different user scenarios (new users, returning users, administrators, etc.)
+
+Generate exactly 10 user stories with the format above.`;
+
+    try {
+        return await window.githubPagesAI.generateContent(prompt);
+    } catch (error) {
+        console.error('Error generating user stories:', error);
+        throw error;
+    }
+}

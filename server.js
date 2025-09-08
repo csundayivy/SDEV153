@@ -193,6 +193,23 @@ async function handleApiRequest(req, res, endpoint, query) {
                     res.end(JSON.stringify({ success: false, error: 'Failed to generate website structure' }));
                 }
             });
+        } else if (endpoint === '/api/user-stories' && req.method === 'POST') {
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+            req.on('end', async () => {
+                try {
+                    const { prompt } = JSON.parse(body);
+                    const userStories = await generateUserStories(prompt);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ content: userStories }));
+                } catch (error) {
+                    console.error('User stories generation error:', error);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Failed to generate user stories' }));
+                }
+            });
         } else {
             res.writeHead(404, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: false, error: 'Endpoint not found' }));
@@ -450,6 +467,31 @@ Please provide detailed structure covering:
             }
         ],
         max_tokens: 4000,
+        temperature: 0.7
+    });
+    
+    return completion.choices[0].message.content;
+}
+
+// Generate User Stories using OpenAI
+async function generateUserStories(prompt) {
+    if (!openai) {
+        throw new Error('OpenAI API not initialized. Please check your API key configuration.');
+    }
+    
+    const completion = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+            {
+                role: "system",
+                content: "You are an expert product manager and UX designer. Generate comprehensive user stories with specific features and implementation approaches."
+            },
+            {
+                role: "user",
+                content: prompt
+            }
+        ],
+        max_tokens: 2000,
         temperature: 0.7
     });
     

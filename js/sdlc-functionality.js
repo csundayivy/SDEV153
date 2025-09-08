@@ -1329,7 +1329,16 @@ document.addEventListener('DOMContentLoaded', function() {
     window.exportWebsiteStructureToPDF = exportWebsiteStructureToPDF;
     window.copyWebsiteStructureToClipboard = copyWebsiteStructureToClipboard;
 
+    // Planning Tools Functions - Global exposure for onclick handlers
+    window.showPlanningToolSelection = showPlanningToolSelection;
+    window.showRequirementGenerator = showRequirementGenerator;
+    window.showUserStoryGenerator = showUserStoryGenerator;
+    window.generateUserStories = generateUserStories;
+    window.copyUserStoriesToClipboard = copyUserStoriesToClipboard;
+    window.exportUserStoriesPDF = exportUserStoriesPDF;
+
     console.log('🎯 Design page functions exposed globally');
+    console.log('📋 Planning page functions exposed globally');
 });
 
 // Also expose functions immediately for immediate availability
@@ -1350,3 +1359,355 @@ window.exportLowLevelToPDF = exportLowLevelToPDF;
 window.copyLowLevelToClipboard = copyLowLevelToClipboard;
 window.exportWebsiteStructureToPDF = exportWebsiteStructureToPDF;
 window.copyWebsiteStructureToClipboard = copyWebsiteStructureToClipboard;
+window.showPlanningToolSelection = showPlanningToolSelection;
+window.showRequirementGenerator = showRequirementGenerator;
+window.showUserStoryGenerator = showUserStoryGenerator;
+window.generateUserStories = generateUserStories;
+window.copyUserStoriesToClipboard = copyUserStoriesToClipboard;
+window.exportUserStoriesPDF = exportUserStoriesPDF;
+
+// ========================================
+// PLANNING PAGE FUNCTIONALITY
+// ========================================
+
+// Planning Tools Navigation Functions
+function showPlanningToolSelection() {
+    // Hide all generator sections
+    const requirementSection = document.getElementById('requirementGeneratorSection');
+    const userStorySection = document.getElementById('userStoryGeneratorSection');
+    const toolsGrid = document.querySelector('.planning-tools-grid');
+    
+    if (requirementSection) requirementSection.classList.add('hidden');
+    if (userStorySection) userStorySection.classList.add('hidden');
+    if (toolsGrid) toolsGrid.style.display = 'grid';
+}
+
+function showRequirementGenerator() {
+    // Show requirement generator, hide others
+    const requirementSection = document.getElementById('requirementGeneratorSection');
+    const userStorySection = document.getElementById('userStoryGeneratorSection');
+    const toolsGrid = document.querySelector('.planning-tools-grid');
+    
+    if (toolsGrid) toolsGrid.style.display = 'none';
+    if (userStorySection) userStorySection.classList.add('hidden');
+    if (requirementSection) requirementSection.classList.remove('hidden');
+}
+
+function showUserStoryGenerator() {
+    // Show user story generator, hide others
+    const requirementSection = document.getElementById('requirementGeneratorSection');
+    const userStorySection = document.getElementById('userStoryGeneratorSection');
+    const toolsGrid = document.querySelector('.planning-tools-grid');
+    
+    if (toolsGrid) toolsGrid.style.display = 'none';
+    if (requirementSection) requirementSection.classList.add('hidden');
+    if (userStorySection) userStorySection.classList.remove('hidden');
+    
+    // Initialize character count for user story input
+    const userStoryInput = document.getElementById('userStoryInput');
+    const userStoryCharCount = document.getElementById('userStoryCharCount');
+    
+    if (userStoryInput && userStoryCharCount) {
+        const updateCharCount = () => {
+            const count = userStoryInput.value.length;
+            userStoryCharCount.textContent = count;
+            
+            // Update styling based on character count
+            if (count > 2000) {
+                userStoryCharCount.style.color = 'var(--destructive)';
+            } else if (count > 1500) {
+                userStoryCharCount.style.color = '#f59e0b';
+            } else {
+                userStoryCharCount.style.color = 'var(--muted-foreground)';
+            }
+        };
+        
+        // Initial count
+        updateCharCount();
+        
+        // Add event listener if not already added
+        if (!userStoryInput.dataset.listenerAdded) {
+            userStoryInput.addEventListener('input', updateCharCount);
+            userStoryInput.dataset.listenerAdded = 'true';
+        }
+    }
+    
+    // Add click listener for generate button
+    const generateButton = document.getElementById('generateUserStoriesButton');
+    if (generateButton && !generateButton.dataset.listenerAdded) {
+        generateButton.addEventListener('click', generateUserStories);
+        generateButton.dataset.listenerAdded = 'true';
+    }
+}
+
+// User Story Generation Function
+async function generateUserStories() {
+    const userStoryInput = document.getElementById('userStoryInput');
+    const concept = userStoryInput.value.trim();
+    
+    if (!concept || concept.length < 20) {
+        alert('Please provide a more detailed description of your project concept (at least 20 characters).');
+        return;
+    }
+    
+    if (concept.length > 2000) {
+        alert('Your description is too long. Please keep it under 2000 characters.');
+        return;
+    }
+    
+    // Show loading state
+    const loadingState = document.getElementById('userStoriesLoadingState');
+    const resultsSection = document.getElementById('userStoriesResults');
+    const generateButton = document.getElementById('generateUserStoriesButton');
+    
+    if (loadingState) loadingState.classList.remove('hidden');
+    if (resultsSection) resultsSection.classList.add('hidden');
+    
+    // Disable button and show loading
+    if (generateButton) {
+        generateButton.disabled = true;
+        generateButton.innerHTML = '<span>Generating...</span>';
+    }
+    
+    try {
+        const userStories = await callUserStoryAPI(concept);
+        displayUserStories(userStories);
+        
+        // Hide loading, show results
+        if (loadingState) loadingState.classList.add('hidden');
+        if (resultsSection) resultsSection.classList.remove('hidden');
+        
+    } catch (error) {
+        console.error('Error generating user stories:', error);
+        alert('Failed to generate user stories. Please check your internet connection and try again.');
+        
+        // Hide loading
+        if (loadingState) loadingState.classList.add('hidden');
+    } finally {
+        // Re-enable button
+        if (generateButton) {
+            generateButton.disabled = false;
+            generateButton.innerHTML = '<span>Generate User Stories</span>';
+        }
+    }
+}
+
+// API Call for User Story Generation
+async function callUserStoryAPI(concept) {
+    const prompt = `As an expert product manager and UX designer, generate 10 comprehensive user stories for the following project concept. Each user story should follow this exact format:
+
+**User Story:** [Write a clear user story in the format "As a [user type], I want [goal] so that [benefit]"]
+
+**Website Feature:** [Describe the specific feature or functionality needed]
+
+**Implementation Approach:** [Provide a technical implementation approach]
+
+Project Concept: "${concept}"
+
+Please ensure each user story:
+1. Represents a different user type or use case
+2. Focuses on specific, actionable functionality
+3. Includes realistic implementation approaches
+4. Covers both primary and secondary features
+5. Considers different user scenarios (new users, returning users, administrators, etc.)
+
+Generate exactly 10 user stories with the format above.`;
+
+    // Detect environment and call appropriate API
+    if (window.NETLIFY_ENVIRONMENT) {
+        // Netlify serverless function
+        const response = await fetch('/.netlify/functions/user-stories', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        return data.content;
+    } else if (window.githubPagesAI) {
+        // GitHub Pages client-side integration
+        return await generateUserStoriesForGitHubPages(concept);
+    } else {
+        // Replit server-side API
+        const response = await fetch('/api/user-stories', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        return data.content;
+    }
+}
+
+// Display User Stories Function
+function displayUserStories(content) {
+    const userStoriesContent = document.getElementById('userStoriesContent');
+    if (!userStoriesContent) return;
+    
+    // Parse the user stories from the AI response
+    const stories = parseUserStories(content);
+    
+    let html = '';
+    stories.forEach((story, index) => {
+        html += `
+            <div class="user-story-item">
+                <div class="user-story-header">
+                    <div class="story-number">${index + 1}</div>
+                    <h3 class="story-title">User Story ${index + 1}</h3>
+                </div>
+                
+                <div class="story-section">
+                    <div class="story-label">User Story</div>
+                    <p class="story-content">${story.userStory}</p>
+                </div>
+                
+                <div class="story-section">
+                    <div class="story-label">Website Feature</div>
+                    <p class="story-content">${story.websiteFeature}</p>
+                </div>
+                
+                <div class="story-section">
+                    <div class="story-label">Implementation Approach</div>
+                    <p class="story-content">${story.implementationApproach}</p>
+                </div>
+            </div>
+        `;
+    });
+    
+    userStoriesContent.innerHTML = html;
+    
+    // Add export functionality
+    setupUserStoryExports();
+}
+
+// Parse User Stories from AI Response
+function parseUserStories(content) {
+    const stories = [];
+    const sections = content.split(/\*\*User Story:\*\*/i).slice(1); // Remove first empty element
+    
+    sections.forEach(section => {
+        const userStoryMatch = section.match(/^(.*?)\*\*Website Feature:\*\*/is);
+        const featureMatch = section.match(/\*\*Website Feature:\*\*(.*?)\*\*Implementation Approach:\*\*/is);
+        const implementationMatch = section.match(/\*\*Implementation Approach:\*\*(.*?)(?=\*\*User Story:\*\*|$)/is);
+        
+        if (userStoryMatch && featureMatch && implementationMatch) {
+            stories.push({
+                userStory: userStoryMatch[1].trim(),
+                websiteFeature: featureMatch[1].trim(),
+                implementationApproach: implementationMatch[1].trim()
+            });
+        }
+    });
+    
+    // Fallback parsing if the above doesn't work
+    if (stories.length === 0) {
+        // Try alternative parsing method
+        const lines = content.split('\n').filter(line => line.trim());
+        let currentStory = {};
+        let storyCount = 0;
+        
+        for (const line of lines) {
+            if (line.includes('User Story:') || line.includes('As a ')) {
+                if (currentStory.userStory) {
+                    stories.push(currentStory);
+                    currentStory = {};
+                }
+                currentStory.userStory = line.replace(/\*\*User Story:\*\*|User Story:/gi, '').trim();
+            } else if (line.includes('Website Feature:') || line.includes('Feature:')) {
+                currentStory.websiteFeature = line.replace(/\*\*Website Feature:\*\*|Website Feature:|Feature:/gi, '').trim();
+            } else if (line.includes('Implementation Approach:') || line.includes('Implementation:')) {
+                currentStory.implementationApproach = line.replace(/\*\*Implementation Approach:\*\*|Implementation Approach:|Implementation:/gi, '').trim();
+                if (currentStory.userStory && currentStory.websiteFeature) {
+                    stories.push(currentStory);
+                    currentStory = {};
+                    storyCount++;
+                    if (storyCount >= 10) break;
+                }
+            }
+        }
+    }
+    
+    return stories.slice(0, 10); // Ensure we only return 10 stories
+}
+
+// User Story Export Functions
+function setupUserStoryExports() {
+    const copyButton = document.getElementById('copyUserStoriesToClipboard');
+    const exportButton = document.getElementById('exportUserStoriesPDF');
+    
+    if (copyButton && !copyButton.dataset.listenerAdded) {
+        copyButton.addEventListener('click', copyUserStoriesToClipboard);
+        copyButton.dataset.listenerAdded = 'true';
+    }
+    
+    if (exportButton && !exportButton.dataset.listenerAdded) {
+        exportButton.addEventListener('click', exportUserStoriesPDF);
+        exportButton.dataset.listenerAdded = 'true';
+    }
+}
+
+function copyUserStoriesToClipboard() {
+    const userStoriesContent = document.getElementById('userStoriesContent');
+    if (!userStoriesContent) return;
+    
+    // Get text content without HTML
+    const textContent = userStoriesContent.innerText || userStoriesContent.textContent;
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(textContent).then(() => {
+            alert('User stories copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            fallbackCopyUserStories(textContent);
+        });
+    } else {
+        fallbackCopyUserStories(textContent);
+    }
+}
+
+function fallbackCopyUserStories(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        alert('User stories copied to clipboard!');
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        alert('Failed to copy to clipboard. Please select and copy manually.');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function exportUserStoriesPDF() {
+    // For now, show a helpful message about PDF export
+    alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
+}
+
+// Planning Tools Navigation - Global exposure for onclick handlers
+window.showPlanningToolSelection = showPlanningToolSelection;
+window.showRequirementGenerator = showRequirementGenerator;
+window.showUserStoryGenerator = showUserStoryGenerator;
+window.generateUserStories = generateUserStories;
+window.copyUserStoriesToClipboard = copyUserStoriesToClipboard;
+window.exportUserStoriesPDF = exportUserStoriesPDF;
