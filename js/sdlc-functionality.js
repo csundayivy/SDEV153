@@ -68,32 +68,14 @@ function setupMobileNavigation() {
 function setupSDLCNavigation(sidebar) {
     if (!sidebar) return;
     
-    // Add navigation link functionality - including data-stage nav items
-    const navLinks = sidebar.querySelectorAll('.nav-item[href], a.nav-item, .nav-item[data-stage]');
+    // Add navigation link functionality
+    const navLinks = sidebar.querySelectorAll('.nav-item[href], a.nav-item');
     
     navLinks.forEach(link => {
         // Only add event listener if link doesn't already have one
         if (link && !link.hasAttribute('data-nav-listener')) {
             link.setAttribute('data-nav-listener', 'true');
             link.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // Handle data-stage navigation
-                const stage = link.getAttribute('data-stage');
-                if (stage) {
-                    navigateToStage(stage);
-                }
-                
-                // Handle regular href navigation
-                const href = link.getAttribute('href');
-                if (href && href !== '#') {
-                    window.location.href = href;
-                }
-                
-                // Update active state
-                navLinks.forEach(nav => nav.classList.remove('active'));
-                link.classList.add('active');
-                
                 // Close mobile menu when navigating
                 if (window.innerWidth < 768) {
                     setTimeout(() => {
@@ -233,35 +215,6 @@ function toggleDesktopSidebar(sidebar, toggle) {
         
         // Save collapsed state
         localStorage.setItem('sidebarCollapsed', !isCollapsed);
-    }
-}
-
-// Stage Navigation Function
-function navigateToStage(stage) {
-    // Map stages to their corresponding pages
-    const stagePages = {
-        'dashboard': 'dashboard.html',
-        'planning': 'planning.html', 
-        'design': 'design.html',
-        'development': 'development.html',
-        'testing': 'testing.html',
-        'deployment': 'deployment.html',
-        'maintenance': 'maintenance.html'
-    };
-    
-    const targetPage = stagePages[stage];
-    if (targetPage) {
-        // Add loading state
-        const navItem = document.querySelector(`[data-stage="${stage}"]`);
-        if (navItem) {
-            navItem.style.opacity = '0.6';
-            navItem.style.pointerEvents = 'none';
-        }
-        
-        // Navigate after short delay for visual feedback
-        setTimeout(() => {
-            window.location.href = targetPage;
-        }, 150);
     }
 }
 
