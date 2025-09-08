@@ -1538,10 +1538,16 @@ Generate exactly 10 user stories with the format above.`;
     console.log('🌍 Environment detection:', {
         netlify: !!window.NETLIFY_ENVIRONMENT,
         githubPages: !!window.githubPagesAI,
-        replit: !window.NETLIFY_ENVIRONMENT && !window.githubPagesAI
+        replit: !window.NETLIFY_ENVIRONMENT && !window.githubPagesAI,
+        currentDomain: window.location.hostname
     });
     
-    if (window.NETLIFY_ENVIRONMENT) {
+    // Force Replit environment if we're on localhost or *.replit.dev
+    const isReplit = window.location.hostname === 'localhost' || 
+                     window.location.hostname.includes('replit.dev') ||
+                     window.location.hostname.includes('replit.co');
+    
+    if (window.NETLIFY_ENVIRONMENT && !isReplit) {
         // Netlify serverless function
         console.log('☁️ Using Netlify serverless function');
         const response = await fetch('/.netlify/functions/user-stories', {
@@ -1558,7 +1564,7 @@ Generate exactly 10 user stories with the format above.`;
         
         const data = await response.json();
         return data.content;
-    } else if (window.githubPagesAI) {
+    } else if (window.githubPagesAI && !isReplit) {
         // GitHub Pages client-side integration
         console.log('🔗 Using GitHub Pages AI integration');
         return await generateUserStoriesForGitHubPages(concept);
