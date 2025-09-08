@@ -115,55 +115,75 @@
 
                     <!-- Design Tools Selection -->
                     <div class="design-tools-grid">
-                        <div class="design-tool-card" onclick="showHighLevelDesignGenerator()">
-                            <div class="tool-icon">
-                                <i data-lucide="layout"></i>
+                        <div class="design-tool-card sdlc-action-card" onclick="showHighLevelDesignGenerator()" style="cursor: pointer; text-decoration: none; color: inherit;">
+                            <div class="sdlc-card-header">
+                                <div class="tool-icon sdlc-icon design">
+                                    <i data-lucide="layout"></i>
+                                </div>
+                                <div class="sdlc-badge">Architecture</div>
                             </div>
-                            <h3 class="tool-title">High Level Design Generator</h3>
-                            <p class="tool-description">Transform requirements into comprehensive system architecture and design decisions</p>
-                            <div class="tool-features">
-                                <span class="feature-tag">System Architecture</span>
-                                <span class="feature-tag">Technology Stack</span>
-                                <span class="feature-tag">Design Patterns</span>
-                            </div>
-                        </div>
-
-                        <div class="design-tool-card" onclick="showERDGenerator()">
-                            <div class="tool-icon">
-                                <i data-lucide="database"></i>
-                            </div>
-                            <h3 class="tool-title">Entity-Relationship Diagram Generator</h3>
-                            <p class="tool-description">Create detailed database structure visualizations with tables, relationships, and cardinality</p>
-                            <div class="tool-features">
-                                <span class="feature-tag">Database Structure</span>
-                                <span class="feature-tag">Table Relationships</span>
-                                <span class="feature-tag">Data Modeling</span>
+                            <div class="sdlc-content">
+                                <h3 class="tool-title">High Level Design Generator</h3>
+                                <p class="tool-description">Transform requirements into comprehensive system architecture and design decisions</p>
+                                <div class="tool-features">
+                                    <span class="feature-tag">System Architecture</span>
+                                    <span class="feature-tag">Technology Stack</span>
+                                    <span class="feature-tag">Design Patterns</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="design-tool-card" onclick="showLowLevelDiagramGenerator()">
-                            <div class="tool-icon">
-                                <i data-lucide="code"></i>
+                        <div class="design-tool-card sdlc-action-card" onclick="showERDGenerator()" style="cursor: pointer; text-decoration: none; color: inherit;">
+                            <div class="sdlc-card-header">
+                                <div class="tool-icon sdlc-icon design">
+                                    <i data-lucide="database"></i>
+                                </div>
+                                <div class="sdlc-badge">Database</div>
                             </div>
-                            <h3 class="tool-title">Low Level Diagram Generator</h3>
-                            <p class="tool-description">Generate detailed technical diagrams including class structures, sequences, and API specifications</p>
-                            <div class="tool-features">
-                                <span class="feature-tag">Class Diagrams</span>
-                                <span class="feature-tag">Sequence Diagrams</span>
-                                <span class="feature-tag">API Specs</span>
+                            <div class="sdlc-content">
+                                <h3 class="tool-title">Entity-Relationship Diagram Generator</h3>
+                                <p class="tool-description">Create detailed database structure visualizations with tables, relationships, and cardinality</p>
+                                <div class="tool-features">
+                                    <span class="feature-tag">Database Structure</span>
+                                    <span class="feature-tag">Table Relationships</span>
+                                    <span class="feature-tag">Data Modeling</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="design-tool-card" onclick="showWebsiteStructureGenerator()">
-                            <div class="tool-icon">
-                                <i data-lucide="globe"></i>
+                        <div class="design-tool-card sdlc-action-card" onclick="showLowLevelDiagramGenerator()" style="cursor: pointer; text-decoration: none; color: inherit;">
+                            <div class="sdlc-card-header">
+                                <div class="tool-icon sdlc-icon design">
+                                    <i data-lucide="code"></i>
+                                </div>
+                                <div class="sdlc-badge">Technical</div>
                             </div>
-                            <h3 class="tool-title">Website Structure Generator</h3>
-                            <p class="tool-description">Generate complete website structure and project layout based on your concept or idea</p>
-                            <div class="tool-features">
-                                <span class="feature-tag">Site Structure</span>
-                                <span class="feature-tag">File Organization</span>
-                                <span class="feature-tag">Project Layout</span>
+                            <div class="sdlc-content">
+                                <h3 class="tool-title">Low Level Diagram Generator</h3>
+                                <p class="tool-description">Generate detailed technical diagrams including class structures, sequences, and API specifications</p>
+                                <div class="tool-features">
+                                    <span class="feature-tag">Class Diagrams</span>
+                                    <span class="feature-tag">Sequence Diagrams</span>
+                                    <span class="feature-tag">API Specs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="design-tool-card sdlc-action-card" onclick="showWebsiteStructureGenerator()" style="cursor: pointer; text-decoration: none; color: inherit;">
+                            <div class="sdlc-card-header">
+                                <div class="tool-icon sdlc-icon design">
+                                    <i data-lucide="globe"></i>
+                                </div>
+                                <div class="sdlc-badge">Structure</div>
+                            </div>
+                            <div class="sdlc-content">
+                                <h3 class="tool-title">Website Structure Generator</h3>
+                                <p class="tool-description">Generate complete website structure and project layout based on your concept or idea</p>
+                                <div class="tool-features">
+                                    <span class="feature-tag">Site Structure</span>
+                                    <span class="feature-tag">File Organization</span>
+                                    <span class="feature-tag">Project Layout</span>
+                                </div>
                             </div>
                         </div>
                     </div>
