@@ -1304,22 +1304,59 @@ function exportWebsiteStructureToPDF() {
     alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
 }
 
-// Ensure DOM is ready before exposing global functions
+// IMMEDIATE function exposure for Netlify compatibility - before DOMContentLoaded
+console.log('🎯 SDLC Functions: Exposing globally for immediate access...');
+
+// Design Tools Navigation - IMMEDIATE Global exposure for onclick handlers
+window.showToolSelection = showToolSelection;
+window.showHighLevelDesignGenerator = showHighLevelDesignGenerator;
+window.showERDGenerator = showERDGenerator;
+window.showLowLevelDiagramGenerator = showLowLevelDiagramGenerator;
+window.showWebsiteStructureGenerator = showWebsiteStructureGenerator;
+
+// Design Tools Functions - IMMEDIATE Global exposure
+window.generateHighLevelDesign = generateHighLevelDesign;
+window.generateERD = generateERD;
+window.generateLowLevelDiagram = generateLowLevelDiagram;
+window.generateWebsiteStructure = generateWebsiteStructure;
+
+// Export Functions - IMMEDIATE Global exposure
+window.exportDesignToPDF = exportDesignToPDF;
+window.copyDesignToClipboard = copyDesignToClipboard;
+window.exportERDToPDF = exportERDToPDF;
+window.copyERDToClipboard = copyERDToClipboard;
+window.exportLowLevelToPDF = exportLowLevelToPDF;
+window.copyLowLevelToClipboard = copyLowLevelToClipboard;
+window.exportWebsiteStructureToPDF = exportWebsiteStructureToPDF;
+window.copyWebsiteStructureToClipboard = copyWebsiteStructureToClipboard;
+
+// Planning Tools Functions - IMMEDIATE Global exposure
+window.showPlanningToolSelection = showPlanningToolSelection;
+window.showRequirementGenerator = showRequirementGenerator;
+window.showUserStoryGenerator = showUserStoryGenerator;
+window.generateRequirementsDocument = generateRequirementsDocument;
+window.generateUserStories = generateUserStories;
+window.copyUserStoriesToClipboard = copyUserStoriesToClipboard;
+window.exportUserStoriesPDF = exportUserStoriesPDF;
+window.copyRequirementsToClipboard = copyRequirementsToClipboard;
+window.exportRequirementsPDF = exportRequirementsPDF;
+
+console.log('✅ All functions exposed immediately for onclick handlers');
+
+// Ensure DOM is ready for additional setup
 document.addEventListener('DOMContentLoaded', function() {
-    // Design Tools Navigation - Global exposure for onclick handlers
+    console.log('🎯 SDLC Functions: DOMContentLoaded event fired');
+    
+    // Re-expose all functions for extra safety
     window.showToolSelection = showToolSelection;
     window.showHighLevelDesignGenerator = showHighLevelDesignGenerator;
     window.showERDGenerator = showERDGenerator;
     window.showLowLevelDiagramGenerator = showLowLevelDiagramGenerator;
     window.showWebsiteStructureGenerator = showWebsiteStructureGenerator;
-
-    // Design Tools Functions - Global exposure for onclick handlers
     window.generateHighLevelDesign = generateHighLevelDesign;
     window.generateERD = generateERD;
     window.generateLowLevelDiagram = generateLowLevelDiagram;
     window.generateWebsiteStructure = generateWebsiteStructure;
-
-    // Export Functions - Global exposure for onclick handlers
     window.exportDesignToPDF = exportDesignToPDF;
     window.copyDesignToClipboard = copyDesignToClipboard;
     window.exportERDToPDF = exportERDToPDF;
@@ -1328,8 +1365,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.copyLowLevelToClipboard = copyLowLevelToClipboard;
     window.exportWebsiteStructureToPDF = exportWebsiteStructureToPDF;
     window.copyWebsiteStructureToClipboard = copyWebsiteStructureToClipboard;
-
-    // Planning Tools Functions - Global exposure for onclick handlers
     window.showPlanningToolSelection = showPlanningToolSelection;
     window.showRequirementGenerator = showRequirementGenerator;
     window.showUserStoryGenerator = showUserStoryGenerator;
@@ -1340,8 +1375,26 @@ document.addEventListener('DOMContentLoaded', function() {
     window.copyRequirementsToClipboard = copyRequirementsToClipboard;
     window.exportRequirementsPDF = exportRequirementsPDF;
 
-    console.log('🎯 Design page functions exposed globally');
-    console.log('📋 Planning page functions exposed globally');
+    console.log('✅ All functions re-confirmed after DOMContentLoaded');
+    
+    // Netlify-specific verification
+    if (window.NETLIFY_ENVIRONMENT || window.netlifyEnvironmentForced) {
+        const requiredFunctions = [
+            'showRequirementGenerator', 'showUserStoryGenerator', 'showPlanningToolSelection',
+            'showHighLevelDesignGenerator', 'showERDGenerator', 'showLowLevelDiagramGenerator', 
+            'showWebsiteStructureGenerator', 'showToolSelection'
+        ];
+        
+        const available = requiredFunctions.filter(fn => typeof window[fn] === 'function');
+        const missing = requiredFunctions.filter(fn => typeof window[fn] !== 'function');
+        
+        console.log(`🔍 Netlify function check: ${available.length}/${requiredFunctions.length} available`);
+        if (missing.length > 0) {
+            console.error('❌ Missing functions:', missing);
+        } else {
+            console.log('✅ All Netlify onclick functions ready!');
+        }
+    }
 });
 
 // Also expose functions immediately for immediate availability

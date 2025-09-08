@@ -40,9 +40,9 @@ function copyDirectory(src, dest) {
 // Copy static files
 copyDirectory('./', distDir);
 
-// Create a simple environment detection script for Netlify
+// Create a comprehensive environment detection script for Netlify
 const netlifyDetection = `
-// Netlify Environment Detection
+// Netlify Environment Detection - Must run first!
 window.NETLIFY_ENVIRONMENT = true;
 
 // Remove GitHub Pages specific code for Netlify deployment
@@ -50,6 +50,28 @@ if (window.githubPagesAI) {
     // Disable GitHub Pages AI since we have server-side functions
     window.githubPagesAI = null;
 }
+
+// Force proper environment detection for cross-browser compatibility
+window.netlifyEnvironmentForced = true;
+
+// Ensure functions are available immediately for onclick handlers
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Netlify environment fully loaded - server-side functions ready');
+    
+    // Double-check that all required functions are exposed
+    const requiredFunctions = [
+        'showRequirementGenerator', 'showUserStoryGenerator', 'showPlanningToolSelection',
+        'showHighLevelDesignGenerator', 'showERDGenerator', 'showLowLevelDiagramGenerator', 
+        'showWebsiteStructureGenerator', 'showToolSelection'
+    ];
+    
+    const missing = requiredFunctions.filter(fn => typeof window[fn] !== 'function');
+    if (missing.length > 0) {
+        console.warn('⚠️ Missing functions on Netlify:', missing);
+    } else {
+        console.log('✅ All functions properly exposed on Netlify');
+    }
+});
 
 console.log('🚀 Netlify environment detected - using server-side functions');
 `;
@@ -65,10 +87,16 @@ htmlFiles.forEach(file => {
     if (fs.existsSync(filePath)) {
         let content = fs.readFileSync(filePath, 'utf8');
         
-        // Add Netlify environment script before GitHub Pages AI script
+        // Add Netlify environment script at the very beginning of head section for early loading
+        content = content.replace(
+            '<head>',
+            '<head>\n    <script src="js/netlify-env.js"></script>'
+        );
+        
+        // Also add it before the github pages script for redundancy
         content = content.replace(
             '<script src="js/github-pages-ai.js"></script>',
-            '<script src="js/netlify-env.js"></script>\n    <script src="js/github-pages-ai.js"></script>'
+            '<script src="js/github-pages-ai.js"></script>'
         );
         
         fs.writeFileSync(filePath, content);
