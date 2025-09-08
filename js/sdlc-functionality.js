@@ -1540,20 +1540,22 @@ Please ensure each user story:
 
 Generate exactly 10 user stories with the format above.`;
 
-    // Detect environment and call appropriate API
-    console.log('🌍 Environment detection:', {
-        netlify: !!window.NETLIFY_ENVIRONMENT,
-        githubPages: !!window.githubPagesAI,
-        replit: !window.NETLIFY_ENVIRONMENT && !window.githubPagesAI,
-        currentDomain: window.location.hostname
+    // Detect environment and call appropriate API - Enhanced for cross-browser compatibility
+    const isNetlify = !!(window.NETLIFY_ENVIRONMENT || (typeof netlify !== 'undefined'));
+    const isGitHubPages = !!(window.githubPagesAI && typeof window.githubPagesAI === 'object');
+    const isReplit = window.location.hostname === 'localhost' || 
+                     window.location.hostname.indexOf('replit.dev') !== -1 ||
+                     window.location.hostname.indexOf('replit.co') !== -1;
+    
+    console.log('🌍 Enhanced environment detection:', {
+        netlify: isNetlify,
+        githubPages: isGitHubPages,
+        replit: isReplit,
+        hostname: window.location.hostname,
+        userAgent: navigator.userAgent.substring(0, 50)
     });
     
-    // Force Replit environment if we're on localhost or *.replit.dev
-    const isReplit = window.location.hostname === 'localhost' || 
-                     window.location.hostname.includes('replit.dev') ||
-                     window.location.hostname.includes('replit.co');
-    
-    if (window.NETLIFY_ENVIRONMENT && !isReplit) {
+    if (isNetlify && !isReplit) {
         // Netlify serverless function
         console.log('☁️ Using Netlify serverless function');
         const response = await fetch('/.netlify/functions/user-stories', {
@@ -1570,7 +1572,7 @@ Generate exactly 10 user stories with the format above.`;
         
         const data = await response.json();
         return data.content;
-    } else if (window.githubPagesAI && !isReplit) {
+    } else if (isGitHubPages && !isReplit) {
         // GitHub Pages client-side integration
         console.log('🔗 Using GitHub Pages AI integration');
         return await generateUserStoriesForGitHubPages(concept);

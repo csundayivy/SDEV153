@@ -210,6 +210,23 @@ async function handleApiRequest(req, res, endpoint, query) {
                     res.end(JSON.stringify({ error: 'Failed to generate user stories' }));
                 }
             });
+        } else if (endpoint === '/api/requirements' && req.method === 'POST') {
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+            req.on('end', async () => {
+                try {
+                    const { concept } = JSON.parse(body);
+                    const document = await generateRequirementsDocument(concept);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ document }));
+                } catch (error) {
+                    console.error('Requirements generation error:', error);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Failed to generate requirements document' }));
+                }
+            });
         } else {
             res.writeHead(404, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: false, error: 'Endpoint not found' }));
@@ -492,6 +509,51 @@ async function generateUserStories(prompt) {
             }
         ],
         max_tokens: 2000,
+        temperature: 0.7
+    });
+    
+    return completion.choices[0].message.content;
+}
+
+// Generate Requirements Document using OpenAI
+async function generateRequirementsDocument(concept) {
+    if (!openai) {
+        throw new Error('OpenAI API not initialized. Please check your API key configuration.');
+    }
+    
+    const completion = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+            {
+                role: "system",
+                content: `You are an expert business analyst and product manager. Generate a comprehensive requirements document that includes:
+
+1. **Executive Summary** - Project overview, goals, and value proposition
+2. **Functional Requirements** - Detailed feature specifications with acceptance criteria
+3. **Non-Functional Requirements** - Performance, security, usability, scalability requirements
+4. **User Requirements** - User roles, permissions, and interaction patterns
+5. **System Requirements** - Technical specifications, platform requirements, and constraints
+6. **Business Requirements** - Success metrics, compliance needs, and business rules
+7. **Interface Requirements** - UI/UX specifications, API requirements, and integration needs
+
+Format your response in clean HTML with proper headings, sections, numbered lists, and professional styling. Make it comprehensive, detailed, and suitable for development teams and stakeholders. Include specific acceptance criteria and measurable requirements.`
+            },
+            {
+                role: "user",
+                content: `Generate a comprehensive requirements document for this project concept:
+
+${concept}
+
+Please provide detailed requirements covering:
+- Complete functional specifications with user scenarios
+- Performance, security, and scalability requirements
+- Technical requirements and system constraints
+- Business requirements and success criteria
+- User interface and experience requirements
+- Integration and API specifications`
+            }
+        ],
+        max_tokens: 4000,
         temperature: 0.7
     });
     
