@@ -96,10 +96,12 @@ body {
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
     display: none;
+    pointer-events: none;
 }
 
 .sidebar-overlay.active {
     display: block;
+    pointer-events: auto;
 }
 
 .sidebar-header {
@@ -1196,11 +1198,13 @@ body {
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
+        pointer-events: none;
     }
     
     .sidebar-overlay.active {
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
     }
     
     .main-content {
