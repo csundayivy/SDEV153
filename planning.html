@@ -113,83 +113,208 @@
                     </div>
                     <div class="badge planning-badge">Powered by ChatGPT-4</div>
 
-                    <!-- Input Card -->
-                    <div class="card input-card">
-                        <h2 class="input-title">Describe Your App Idea</h2>
-                        <p class="input-description">Provide a detailed description of your application concept. Include the target audience, main features, and any specific requirements you have in mind.</p>
-                        <textarea 
-                            id="conceptInput" 
-                            class="textarea" 
-                            placeholder="Example: I want to create a mobile app for fitness enthusiasts that allows users to track their workouts, set personal goals, and connect with trainers. The app should include features like workout logging, progress tracking, social sharing, and in-app purchases for premium content. Target audience: 18-45 year olds who are interested in fitness and wellness..."
-                        ></textarea>
-                        <div class="input-footer">
-                            <div class="character-count">
-                                <span id="charCount">0</span> characters
+                    <!-- Planning Tools Selection -->
+                    <div class="planning-tools-grid">
+                        <div class="planning-tool-card" onclick="showRequirementGenerator()">
+                            <div class="tool-icon">
+                                <i data-lucide="file-text"></i>
                             </div>
-                            <button id="analyzeButton" class="button">
-                                <span id="buttonText">Generate AI Project Plan</span>
+                            <h3 class="tool-title">Requirements Document Generator</h3>
+                            <p class="tool-description">Transform your app concept into a comprehensive development plan with detailed analysis and implementation roadmap</p>
+                            <div class="tool-features">
+                                <span class="feature-tag">Project Analysis</span>
+                                <span class="feature-tag">Technical Stack</span>
+                                <span class="feature-tag">Implementation Plan</span>
+                            </div>
+                        </div>
+
+                        <div class="planning-tool-card" onclick="showUserStoryGenerator()">
+                            <div class="tool-icon">
+                                <i data-lucide="users"></i>
+                            </div>
+                            <h3 class="tool-title">User Story Generator</h3>
+                            <p class="tool-description">Generate comprehensive user stories with website features and implementation approaches based on your concept</p>
+                            <div class="tool-features">
+                                <span class="feature-tag">User Stories</span>
+                                <span class="feature-tag">Feature Mapping</span>
+                                <span class="feature-tag">Implementation Guide</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Requirements Document Generator -->
+                    <div id="requirementGeneratorSection" class="generator-section hidden">
+                        <div class="section-header">
+                            <button class="back-button" onclick="showPlanningToolSelection()">
+                                <i data-lucide="arrow-left"></i>
+                                Back to Tools
                             </button>
-                        </div>
-                    </div>
-
-                    <!-- Analysis Results -->
-                    <div id="analysisResults" class="analysis-section hidden">
-                        <div class="analysis-header-success">
-                            <div class="success-icon">
-                                <i data-lucide="check-circle"></i>
-                            </div>
-                            <div>
-                                <h2 class="analysis-title-main">Your AI-Generated Project Plan</h2>
-                                <p class="analysis-subtitle">Comprehensive analysis and implementation roadmap</p>
-                            </div>
+                            <h2 class="section-title">Requirements Document Generator</h2>
                         </div>
 
-                        <div id="analysisContent"></div>
-
-                        <!-- Export Options -->
-                        <div class="export-section">
-                            <h3>Export Your Plan</h3>
-                            <div class="export-buttons">
-                                <button id="exportPDF" class="button button-outline">
-                                    <i data-lucide="file-text"></i>
-                                    Export as PDF
-                                </button>
-                                <button id="exportJSON" class="button button-outline">
-                                    <i data-lucide="download"></i>
-                                    Export as JSON
-                                </button>
-                                <button id="copyToClipboard" class="button button-outline">
-                                    <i data-lucide="copy"></i>
-                                    Copy to Clipboard
+                        <div class="card input-card">
+                            <h2 class="input-title">Describe Your App Idea</h2>
+                            <p class="input-description">Provide a detailed description of your application concept. Include the target audience, main features, and any specific requirements you have in mind.</p>
+                            <textarea 
+                                id="conceptInput" 
+                                class="textarea" 
+                                placeholder="Example: I want to create a mobile app for fitness enthusiasts that allows users to track their workouts, set personal goals, and connect with trainers. The app should include features like workout logging, progress tracking, social sharing, and in-app purchases for premium content. Target audience: 18-45 year olds who are interested in fitness and wellness..."
+                            ></textarea>
+                            <div class="input-footer">
+                                <div class="character-count">
+                                    <span id="charCount">0</span> characters
+                                </div>
+                                <button id="analyzeButton" class="button">
+                                    <span id="buttonText">Generate AI Project Plan</span>
                                 </button>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Loading State -->
-                    <div id="loadingState" class="loading-section hidden">
-                        <div class="loading-content">
-                            <div class="loading-spinner">
-                                <i data-lucide="loader-2" class="loading"></i>
+                        <!-- Analysis Results -->
+                        <div id="analysisResults" class="analysis-section hidden">
+                            <div class="analysis-header-success">
+                                <div class="success-icon">
+                                    <i data-lucide="check-circle"></i>
+                                </div>
+                                <div>
+                                    <h2 class="analysis-title-main">Your AI-Generated Project Plan</h2>
+                                    <p class="analysis-subtitle">Comprehensive analysis and implementation roadmap</p>
+                                </div>
                             </div>
-                            <h3>AI is analyzing your concept...</h3>
-                            <p>This may take a few moments while we generate your comprehensive project plan.</p>
-                            <div class="loading-steps">
-                                <div class="step active">
-                                    <i data-lucide="check"></i>
-                                    <span>Processing your input</span>
+
+                            <div id="analysisContent"></div>
+
+                            <!-- Export Options -->
+                            <div class="export-section">
+                                <h3>Export Your Plan</h3>
+                                <div class="export-buttons">
+                                    <button id="exportPDF" class="button button-outline">
+                                        <i data-lucide="file-text"></i>
+                                        Export as PDF
+                                    </button>
+                                    <button id="exportJSON" class="button button-outline">
+                                        <i data-lucide="download"></i>
+                                        Export as JSON
+                                    </button>
+                                    <button id="copyToClipboard" class="button button-outline">
+                                        <i data-lucide="copy"></i>
+                                        Copy to Clipboard
+                                    </button>
                                 </div>
-                                <div class="step">
-                                    <i data-lucide="brain"></i>
-                                    <span>Analyzing with AI</span>
+                            </div>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="loadingState" class="loading-section hidden">
+                            <div class="loading-content">
+                                <div class="loading-spinner">
+                                    <i data-lucide="loader-2" class="loading"></i>
                                 </div>
-                                <div class="step">
-                                    <i data-lucide="file-text"></i>
-                                    <span>Generating plan</span>
+                                <h3>AI is analyzing your concept...</h3>
+                                <p>This may take a few moments while we generate your comprehensive project plan.</p>
+                                <div class="loading-steps">
+                                    <div class="step active">
+                                        <i data-lucide="check"></i>
+                                        <span>Processing your input</span>
+                                    </div>
+                                    <div class="step">
+                                        <i data-lucide="brain"></i>
+                                        <span>Analyzing with AI</span>
+                                    </div>
+                                    <div class="step">
+                                        <i data-lucide="file-text"></i>
+                                        <span>Generating plan</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- User Story Generator -->
+                    <div id="userStoryGeneratorSection" class="generator-section hidden">
+                        <div class="section-header">
+                            <button class="back-button" onclick="showPlanningToolSelection()">
+                                <i data-lucide="arrow-left"></i>
+                                Back to Tools
+                            </button>
+                            <h2 class="section-title">User Story Generator</h2>
+                        </div>
+
+                        <div class="card input-card">
+                            <h2 class="input-title">Describe Your Project Concept</h2>
+                            <p class="input-description">Provide a brief description of your project or website concept. The AI will generate 10 comprehensive user stories with features and implementation approaches.</p>
+                            <textarea 
+                                id="userStoryInput" 
+                                class="textarea" 
+                                placeholder="Example: Portfolio website for a software developer to showcase projects and skills to potential employers and clients..."
+                                rows="8"
+                            ></textarea>
+                            <div class="input-footer">
+                                <div class="character-count">
+                                    <span id="userStoryCharCount">0</span> characters
+                                </div>
+                                <button id="generateUserStoriesButton" class="button">
+                                    <span>Generate User Stories</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- User Stories Results -->
+                        <div id="userStoriesResults" class="analysis-section hidden">
+                            <div class="analysis-header-success">
+                                <div class="success-icon">
+                                    <i data-lucide="users"></i>
+                                </div>
+                                <div>
+                                    <h2 class="analysis-title-main">Generated User Stories</h2>
+                                    <p class="analysis-subtitle">10 comprehensive user stories with features and implementation</p>
+                                </div>
+                            </div>
+
+                            <div id="userStoriesContent"></div>
+
+                            <!-- Export Options -->
+                            <div class="export-section">
+                                <h3>Export Your User Stories</h3>
+                                <div class="export-buttons">
+                                    <button id="exportUserStoriesPDF" class="button button-outline">
+                                        <i data-lucide="file-text"></i>
+                                        Export as PDF
+                                    </button>
+                                    <button id="copyUserStoriesToClipboard" class="button button-outline">
+                                        <i data-lucide="copy"></i>
+                                        Copy to Clipboard
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Stories Loading State -->
+                        <div id="userStoriesLoadingState" class="loading-section hidden">
+                            <div class="loading-content">
+                                <div class="loading-spinner">
+                                    <i data-lucide="loader-2" class="loading"></i>
+                                </div>
+                                <h3>AI is generating your user stories...</h3>
+                                <p>Creating 10 detailed user stories with features and implementation approaches.</p>
+                                <div class="loading-steps">
+                                    <div class="step active">
+                                        <i data-lucide="check"></i>
+                                        <span>Processing concept</span>
+                                    </div>
+                                    <div class="step">
+                                        <i data-lucide="brain"></i>
+                                        <span>Generating stories</span>
+                                    </div>
+                                    <div class="step">
+                                        <i data-lucide="users"></i>
+                                        <span>Formatting output</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
