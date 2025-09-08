@@ -1333,9 +1333,12 @@ document.addEventListener('DOMContentLoaded', function() {
     window.showPlanningToolSelection = showPlanningToolSelection;
     window.showRequirementGenerator = showRequirementGenerator;
     window.showUserStoryGenerator = showUserStoryGenerator;
+    window.generateRequirementsDocument = generateRequirementsDocument;
     window.generateUserStories = generateUserStories;
     window.copyUserStoriesToClipboard = copyUserStoriesToClipboard;
     window.exportUserStoriesPDF = exportUserStoriesPDF;
+    window.copyRequirementsToClipboard = copyRequirementsToClipboard;
+    window.exportRequirementsPDF = exportRequirementsPDF;
 
     console.log('🎯 Design page functions exposed globally');
     console.log('📋 Planning page functions exposed globally');
@@ -1362,9 +1365,12 @@ window.copyWebsiteStructureToClipboard = copyWebsiteStructureToClipboard;
 window.showPlanningToolSelection = showPlanningToolSelection;
 window.showRequirementGenerator = showRequirementGenerator;
 window.showUserStoryGenerator = showUserStoryGenerator;
+window.generateRequirementsDocument = generateRequirementsDocument;
 window.generateUserStories = generateUserStories;
 window.copyUserStoriesToClipboard = copyUserStoriesToClipboard;
 window.exportUserStoriesPDF = exportUserStoriesPDF;
+window.copyRequirementsToClipboard = copyRequirementsToClipboard;
+window.exportRequirementsPDF = exportRequirementsPDF;
 
 // ========================================
 // PLANNING PAGE FUNCTIONALITY
@@ -1767,10 +1773,240 @@ function exportUserStoriesPDF() {
     alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
 }
 
+// ========================================
+// REQUIREMENTS DOCUMENT GENERATION
+// ========================================
+
+// Requirements Document Generation Function
+async function generateRequirementsDocument() {
+    console.log('📋 Generate Requirements Document function called');
+    
+    const requirementsInput = document.getElementById('requirementsInput');
+    if (!requirementsInput) {
+        console.error('❌ Requirements input element not found');
+        alert('Error: Input field not found. Please refresh the page and try again.');
+        return;
+    }
+    
+    const concept = requirementsInput.value.trim();
+    console.log('📝 Project concept:', concept);
+    
+    if (!concept || concept.length < 20) {
+        alert('Please provide a more detailed description of your project concept (at least 20 characters).');
+        return;
+    }
+    
+    if (concept.length > 2000) {
+        alert('Your description is too long. Please keep it under 2000 characters.');
+        return;
+    }
+    
+    // Show loading state
+    const loadingState = document.getElementById('requirementsLoadingState');
+    const resultsSection = document.getElementById('requirementsResults');
+    const generateButton = document.getElementById('generateRequirementsButton');
+    
+    if (loadingState) loadingState.classList.remove('hidden');
+    if (resultsSection) resultsSection.classList.add('hidden');
+    
+    // Disable button and show loading
+    if (generateButton) {
+        generateButton.disabled = true;
+        generateButton.innerHTML = '<span>Generating...</span>';
+    }
+    
+    try {
+        const document = await callRequirementsAPI(concept);
+        displayRequirementsDocument(document);
+        
+        // Hide loading, show results
+        if (loadingState) loadingState.classList.add('hidden');
+        if (resultsSection) resultsSection.classList.remove('hidden');
+        
+    } catch (error) {
+        console.error('❌ Full error details:', error);
+        
+        let errorMessage = 'Failed to generate requirements document. ';
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+            errorMessage += 'Network connection issue. Please check your internet connection.';
+        } else if (error.message.includes('HTTP error')) {
+            errorMessage += `Server error: ${error.message}`;
+        } else {
+            errorMessage += `Error: ${error.message}`;
+        }
+        
+        alert(errorMessage);
+        
+        // Hide loading
+        if (loadingState) loadingState.classList.add('hidden');
+    } finally {
+        // Re-enable button
+        if (generateButton) {
+            generateButton.disabled = false;
+            generateButton.innerHTML = '<span>Generate Requirements Document</span>';
+        }
+    }
+}
+
+// API Call for Requirements Document Generation
+async function callRequirementsAPI(concept) {
+    console.log('🔗 Calling requirements API with concept');
+    
+    // Detect environment and call appropriate API - Enhanced for cross-browser compatibility
+    const isNetlify = !!(window.NETLIFY_ENVIRONMENT || (typeof netlify !== 'undefined'));
+    const isGitHubPages = !!(window.githubPagesAI && typeof window.githubPagesAI === 'object');
+    const isReplit = window.location.hostname === 'localhost' || 
+                     window.location.hostname.indexOf('replit.dev') !== -1 ||
+                     window.location.hostname.indexOf('replit.co') !== -1;
+    
+    console.log('🌍 Enhanced environment detection:', {
+        netlify: isNetlify,
+        githubPages: isGitHubPages,
+        replit: isReplit,
+        hostname: window.location.hostname,
+        userAgent: navigator.userAgent.substring(0, 50)
+    });
+    
+    if (isNetlify && !isReplit) {
+        // Netlify serverless function
+        console.log('☁️ Using Netlify serverless function for requirements');
+        const response = await fetch('/.netlify/functions/requirements', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ concept })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.error || 'Unknown error'}`);
+        }
+        
+        const data = await response.json();
+        return data.document;
+    } else if (isGitHubPages && !isReplit) {
+        // GitHub Pages client-side integration
+        console.log('🔗 Using GitHub Pages AI integration for requirements');
+        return await generateRequirementsForGitHubPages(concept);
+    } else {
+        // Replit server-side API
+        console.log('🚀 Calling Replit API for requirements');
+        
+        const response = await fetch('/api/requirements', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ concept })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.error || 'Unknown error'}`);
+        }
+        
+        const data = await response.json();
+        return data.document;
+    }
+}
+
+// Display Requirements Document Function
+function displayRequirementsDocument(content) {
+    const requirementsContent = document.getElementById('requirementsContent');
+    if (!requirementsContent) return;
+    
+    requirementsContent.innerHTML = content;
+    
+    // Add export functionality
+    setupRequirementsExports();
+}
+
+// Setup Requirements Export Functions
+function setupRequirementsExports() {
+    const copyButton = document.querySelector('.requirements-copy-btn');
+    const exportButton = document.querySelector('.requirements-export-btn');
+    
+    if (copyButton && !copyButton.dataset.listenerAdded) {
+        copyButton.addEventListener('click', copyRequirementsToClipboard);
+        copyButton.dataset.listenerAdded = 'true';
+    }
+    
+    if (exportButton && !exportButton.dataset.listenerAdded) {
+        exportButton.addEventListener('click', exportRequirementsPDF);
+        exportButton.dataset.listenerAdded = 'true';
+    }
+}
+
+function copyRequirementsToClipboard() {
+    const requirementsContent = document.getElementById('requirementsContent');
+    if (!requirementsContent) return;
+    
+    // Get text content without HTML
+    const textContent = requirementsContent.innerText || requirementsContent.textContent;
+    
+    // Cross-browser clipboard support
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textContent).then(() => {
+            alert('Requirements document copied to clipboard!');
+        }).catch(err => {
+            console.error('Modern clipboard failed:', err);
+            fallbackCopyRequirements(textContent);
+        });
+    } else {
+        fallbackCopyRequirements(textContent);
+    }
+}
+
+function fallbackCopyRequirements(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        alert('Requirements document copied to clipboard!');
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        alert('Failed to copy to clipboard. Please select and copy manually.');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function exportRequirementsPDF() {
+    // For now, show a helpful message about PDF export
+    alert('PDF export feature coming soon! Use "Copy to Clipboard" to save the content for now.');
+}
+
+// GitHub Pages AI Integration for Requirements (if needed)
+async function generateRequirementsForGitHubPages(concept) {
+    if (!window.githubPagesAI || !window.githubPagesAI.isReady()) {
+        throw new Error('GitHub Pages AI not configured. Please provide your API key.');
+    }
+    
+    const messages = [
+        {
+            role: "system",
+            content: "You are an expert business analyst and product manager. Generate a comprehensive requirements document with executive summary, functional requirements, non-functional requirements, user requirements, system requirements, business requirements, and interface requirements. Format in clean HTML with proper headings and sections."
+        },
+        {
+            role: "user", 
+            content: `Generate a comprehensive requirements document for this project concept: ${concept}`
+        }
+    ];
+    
+    return await window.githubPagesAI.makeAPICall(messages, { maxTokens: 4000 });
+}
+
 // Planning Tools Navigation - Global exposure for onclick handlers
 window.showPlanningToolSelection = showPlanningToolSelection;
 window.showRequirementGenerator = showRequirementGenerator;
 window.showUserStoryGenerator = showUserStoryGenerator;
+window.generateRequirementsDocument = generateRequirementsDocument;
 window.generateUserStories = generateUserStories;
 window.copyUserStoriesToClipboard = copyUserStoriesToClipboard;
 window.exportUserStoriesPDF = exportUserStoriesPDF;
+window.copyRequirementsToClipboard = copyRequirementsToClipboard;
+window.exportRequirementsPDF = exportRequirementsPDF;
