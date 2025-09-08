@@ -1397,33 +1397,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Also expose functions immediately for immediate availability
-window.showToolSelection = showToolSelection;
-window.showHighLevelDesignGenerator = showHighLevelDesignGenerator;
-window.showERDGenerator = showERDGenerator;
-window.showLowLevelDiagramGenerator = showLowLevelDiagramGenerator;
-window.showWebsiteStructureGenerator = showWebsiteStructureGenerator;
-window.generateHighLevelDesign = generateHighLevelDesign;
-window.generateERD = generateERD;
-window.generateLowLevelDiagram = generateLowLevelDiagram;
-window.generateWebsiteStructure = generateWebsiteStructure;
-window.exportDesignToPDF = exportDesignToPDF;
-window.copyDesignToClipboard = copyDesignToClipboard;
-window.exportERDToPDF = exportERDToPDF;
-window.copyERDToClipboard = copyERDToClipboard;
-window.exportLowLevelToPDF = exportLowLevelToPDF;
-window.copyLowLevelToClipboard = copyLowLevelToClipboard;
-window.exportWebsiteStructureToPDF = exportWebsiteStructureToPDF;
-window.copyWebsiteStructureToClipboard = copyWebsiteStructureToClipboard;
-window.showPlanningToolSelection = showPlanningToolSelection;
-window.showRequirementGenerator = showRequirementGenerator;
-window.showUserStoryGenerator = showUserStoryGenerator;
-window.generateRequirementsDocument = generateRequirementsDocument;
-window.generateUserStories = generateUserStories;
-window.copyUserStoriesToClipboard = copyUserStoriesToClipboard;
-window.exportUserStoriesPDF = exportUserStoriesPDF;
-window.copyRequirementsToClipboard = copyRequirementsToClipboard;
-window.exportRequirementsPDF = exportRequirementsPDF;
+// Functions are now exposed immediately above - no need for duplication
 
 // ========================================
 // PLANNING PAGE FUNCTIONALITY
