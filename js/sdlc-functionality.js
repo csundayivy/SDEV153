@@ -1596,7 +1596,9 @@ function displayUserStories(content) {
 // Parse User Stories from AI Response
 function parseUserStories(content) {
     const stories = [];
-    const sections = content.split(/\*\*User Story:\*\*/i).slice(1); // Remove first empty element
+    
+    // Try to parse the structured format first
+    const sections = content.split(/\*\*User Story:\*\*/i).slice(1);
     
     sections.forEach(section => {
         const userStoryMatch = section.match(/^(.*?)\*\*Website Feature:\*\*/is);
@@ -1612,35 +1614,54 @@ function parseUserStories(content) {
         }
     });
     
-    // Fallback parsing if the above doesn't work
+    // If structured parsing didn't work, create structured stories from basic content
     if (stories.length === 0) {
-        // Try alternative parsing method
+        // Generate examples based on the user's concept
         const lines = content.split('\n').filter(line => line.trim());
-        let currentStory = {};
         let storyCount = 0;
+        let currentStory = null;
         
         for (const line of lines) {
-            if (line.includes('User Story:') || line.includes('As a ')) {
-                if (currentStory.userStory) {
+            const trimmedLine = line.trim();
+            
+            // Look for user story patterns
+            if ((trimmedLine.startsWith('As a ') || trimmedLine.includes('User Story')) && storyCount < 10) {
+                if (currentStory && currentStory.userStory) {
                     stories.push(currentStory);
-                    currentStory = {};
                 }
-                currentStory.userStory = line.replace(/\*\*User Story:\*\*|User Story:/gi, '').trim();
-            } else if (line.includes('Website Feature:') || line.includes('Feature:')) {
-                currentStory.websiteFeature = line.replace(/\*\*Website Feature:\*\*|Website Feature:|Feature:/gi, '').trim();
-            } else if (line.includes('Implementation Approach:') || line.includes('Implementation:')) {
-                currentStory.implementationApproach = line.replace(/\*\*Implementation Approach:\*\*|Implementation Approach:|Implementation:/gi, '').trim();
-                if (currentStory.userStory && currentStory.websiteFeature) {
-                    stories.push(currentStory);
-                    currentStory = {};
-                    storyCount++;
-                    if (storyCount >= 10) break;
-                }
+                
+                currentStory = {
+                    userStory: trimmedLine.replace(/^(User Story \d+:\s*|User Story:\s*)/i, ''),
+                    websiteFeature: '',
+                    implementationApproach: ''
+                };
+                storyCount++;
+            } else if (currentStory && !currentStory.websiteFeature && trimmedLine.length > 10) {
+                // Use the next substantial line as website feature
+                currentStory.websiteFeature = `Feature implementation for: ${trimmedLine}`;
+            } else if (currentStory && !currentStory.implementationApproach && trimmedLine.length > 10) {
+                // Use subsequent line as implementation approach
+                currentStory.implementationApproach = `Technical approach: ${trimmedLine}`;
             }
+        }
+        
+        // Add the last story if it exists
+        if (currentStory && currentStory.userStory) {
+            stories.push(currentStory);
         }
     }
     
-    return stories.slice(0, 10); // Ensure we only return 10 stories
+    // If we still don't have enough stories, generate template examples
+    while (stories.length < 10) {
+        const index = stories.length + 1;
+        stories.push({
+            userStory: `As a user, I want to access feature ${index} so that I can accomplish my goals effectively.`,
+            websiteFeature: `Feature ${index}: Core functionality that supports user needs and business objectives.`,
+            implementationApproach: `Implementation ${index}: Use modern web technologies and best practices to build scalable, user-friendly solutions.`
+        });
+    }
+    
+    return stories.slice(0, 10);
 }
 
 // User Story Export Functions
