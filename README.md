@@ -82,7 +82,6 @@ Preppy is a comprehensive AI-powered Software Development Life Cycle (SDLC) comp
 ## AI Integration Architecture
 
 ### Multi-Platform Real AI Integration
-- **Replit**: Server-side OpenAI integration with environment variable management
 - **Netlify**: Serverless functions with OpenAI API for secure server-side processing
 - **GitHub Pages**: Client-side OpenAI integration with secure session-based API key storage
 - **Comprehensive Error Handling**: Robust error handling for API failures, rate limits, and network issues
@@ -172,7 +171,6 @@ preppy-sdlc-companion/
    ```
 
 3. **Set up environment variables:**
-   - For Replit: Add `OPENAI_API_KEY` in Replit Secrets
    - For local development: Create `.env` file with:
      ```
      OPENAI_API_KEY=your_openai_api_key_here
