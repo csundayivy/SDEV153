@@ -243,11 +243,10 @@ preppy-sdlc-companion/
 1. **Static Website Approach**: Chosen for simplicity, fast deployment, and multi-platform compatibility
 2. **Custom HTTP Server**: Implemented to serve static files with proper cache control and CORS support
 3. **localStorage Authentication**: Demo implementation for client-side session management suitable for educational use
-4. **Port 5000 Configuration**: Required for Replit environment compatibility and firewall requirements
-5. **Cache Control**: Disabled caching to prevent Replit iframe issues and ensure real-time updates
-6. **Multi-Platform AI Strategy**: Designed to work optimally on all three major deployment platforms
-7. **Mobile-First Design**: Responsive design approach ensuring excellent mobile user experience
-8. **Modular Design Tools**: Separate specialized tools for different aspects of system design
+4. **Cache Control**: Disabled caching to prevent Replit iframe issues and ensure real-time updates
+5. **Multi-Platform AI Strategy**: Designed to work optimally on all three major deployment platforms
+6. **Mobile-First Design**: Responsive design approach ensuring excellent mobile user experience
+7. **Modular Design Tools**: Separate specialized tools for different aspects of system design
 
 ## Browser Compatibility
 - **Modern Browsers**: Chrome 60+, Firefox 55+, Safari 12+, Edge 79+
