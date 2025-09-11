@@ -275,7 +275,7 @@ preppy-sdlc-companion/
 1. **Fork the repository** from GitHub
 2. **Create a feature branch**: `git checkout -b feature/new-feature`
 3. **Follow coding standards**: Maintain consistent code style and mobile-first approach
-4. **Test thoroughly**: Verify functionality across all platforms (Replit, Netlify, GitHub Pages)
+4. **Test thoroughly**: Verify functionality across all platforms 
 5. **Test mobile functionality**: Ensure responsive design and touch interactions work properly
 6. **Commit changes**: `git commit -am 'Add new feature'`
 7. **Push to branch**: `git push origin feature/new-feature`
