@@ -206,7 +206,6 @@ preppy-sdlc-companion/
 ## Technical Setup
 - **Runtime**: Node.js 20
 - **Server**: Custom HTTP server (server.js)
-- **Port**: 5000 (configured for Replit environment)
 - **Dependencies**: OpenAI SDK, Lucide icons (CDN)
 - **Authentication**: Demo implementation using localStorage
 - **Deployment**: Configured for autoscale deployment
