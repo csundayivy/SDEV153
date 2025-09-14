@@ -8,12 +8,11 @@ Preppy is a comprehensive AI-powered Software Development Life Cycle (SDLC) comp
 
 ### Key Features
 
-- **Multi-Platform AI Integration**: Real ChatGPT functionality across Replit, Netlify, and GitHub Pages
+- **Multi-Platform AI Integration**: Real ChatGPT functionality across Netlify, and GitHub Pages
 - **Comprehensive Planning Suite**: Requirements document generator and user story generator with structured outputs
 - **Four Specialized Design Tools**: High-level design, ERD generation, low-level diagrams, and website structure planning
 - **Comprehensive SDLC Coverage**: Complete workflow from planning to maintenance with AI guidance
 - **Mobile-First Responsive Design**: Optimized for all devices with touch-friendly navigation
-- **Cross-Platform Deployment**: Identical functionality whether deployed on Replit, Netlify, or GitHub Pages
 
 - **Live Demo Access**: https://preppysdlcai.netlify.app
 
@@ -120,7 +119,7 @@ preppy-sdlc-companion/
 │       ├── generate.js     # Requirements generation API
 │       └── user-stories.js # User story generation API
 ├── dist/                   # Netlify build output directory
-├── server.js               # Node.js HTTP server for Replit
+├── server.js               # Node.js HTTP server 
 ├── build-netlify.js        # Netlify build and optimization script
 ├── package.json            # Node.js project dependencies and scripts
 └── README.md               # This documentation file
@@ -145,9 +144,6 @@ preppy-sdlc-companion/
 - **File System Module**: Built-in Node.js module for file serving
 - **Path Module**: Built-in Node.js module for path resolution
 - **URL Module**: Built-in Node.js module for URL parsing
-
-## Development Environment
-- **Environment Variable Management**: OPENAI_API_KEY stored in Replit Secrets
 - **Package Management**: npm with package.json configuration for dependencies
 
 ## Getting Started
@@ -242,10 +238,9 @@ preppy-sdlc-companion/
 1. **Static Website Approach**: Chosen for simplicity, fast deployment, and multi-platform compatibility
 2. **Custom HTTP Server**: Implemented to serve static files with proper cache control and CORS support
 3. **localStorage Authentication**: Demo implementation for client-side session management suitable for educational use
-4. **Cache Control**: Disabled caching to prevent Replit iframe issues and ensure real-time updates
-5. **Multi-Platform AI Strategy**: Designed to work optimally on all three major deployment platforms
-6. **Mobile-First Design**: Responsive design approach ensuring excellent mobile user experience
-7. **Modular Design Tools**: Separate specialized tools for different aspects of system design
+4. **Multi-Platform AI Strategy**: Designed to work optimally on all three major deployment platforms
+5. **Mobile-First Design**: Responsive design approach ensuring excellent mobile user experience
+6. **Modular Design Tools**: Separate specialized tools for different aspects of system design
 
 ## Browser Compatibility
 - **Modern Browsers**: Chrome 60+, Firefox 55+, Safari 12+, Edge 79+
@@ -267,7 +262,6 @@ preppy-sdlc-companion/
 - **Target**: Autoscale (suitable for stateless frontend with AI backend)
 - **Command**: `npm start`
 - **Status**: ✅ Ready for production deployment across all platforms
-- **Multi-Platform Support**: Optimized for Replit, Netlify, and GitHub Pages
 
 ## Contributing
 
